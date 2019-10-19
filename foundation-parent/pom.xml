@@ -12,6 +12,7 @@
     <modules>
         <module>../foundation-common</module>
         <module>../foundation-model</module>
+        <module>../foundation-utility</module>
     </modules>
 
     <scm>
