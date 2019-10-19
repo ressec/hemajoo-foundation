@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ressec.hemajoo.foundation</groupId>
+    <artifactId>foundation-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../foundation-common</module>
+        <module>../foundation-model</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git://github.com/ressec/hemajoo-foundation.git</connection>
+        <developerConnection>scm:git:git@github.com/ressec/hemajoo-foundation.git</developerConnection>
+        <url>https://github.com/ressec/hemajoo-foundation</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>ressec</id>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+            <name>Resse Christophe</name>
+            <url>https://github.com/ressec</url>
+            <email>christophe.resse@gmail.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.directory.benchmark>file://${basedir}/benchmark}</project.directory.benchmark>
+        <project.directory.run>${basedir}/run</project.directory.run>
+        <project.directory.data>${basedir}/data</project.directory.data>
+        <project.directory.log>${basedir}/log</project.directory.log>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Project Lombok: https://projectlombok.org/ -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <optional>true</optional>
+                <version>1.18.8</version>
+            </dependency>
+
+            <!-- Google Gson: https://github.com/google/gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.5</version>
+            </dependency>
+
+            <!-- Google Guava: https://github.com/google/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>28.1-jre</version>
+            </dependency>
+
+            <!-- Log4j 1.2: http://logging.apache.org/log4j/2.x/index.html -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.12.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.12.1</version>
+            </dependency>
+
+            <!-- JUnit 4: https://junit.org/junit4/ -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13-beta-3</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Java Bean Validation: https://beanvalidation.org/ -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- Java Bean Validation -->
+            <!--            <dependency>-->
+            <!--                <groupId>org.glassfish</groupId>-->
+            <!--                <artifactId>javax.el</artifactId>-->
+            <!--                <version>3.0.1-b08</version>-->
+            <!--            </dependency>-->
+
+            <!-- Java Bean Validation Extension: https://github.com/nomemory/java-bean-validation-extension -->
+            <dependency>
+                <groupId>net.andreinc.jbvext</groupId>
+                <artifactId>jbvext</artifactId>
+                <version>0.0.11</version>
+                <type>jar</type>
+            </dependency>
+
+            <!-- Easy Properties: https://github.com/j-easy/easy-props -->
+            <dependency>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-props</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+
+            <!-- Annotation Detection: https://github.com/rmuller/infomas-asl -->
+            <dependency>
+                <groupId>eu.infomas</groupId>
+                <artifactId>annotation-detector</artifactId>
+                <version>3.0.5</version>
+            </dependency>
+
+            <!-- Reflection & Introspection: https://code.google.com/archive/p/reflections/ -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>0.9.9-RC1</version>
+            </dependency>
+
+            <!-- Spring Framework: https://github.com/spring-projects/spring-framework -->
+            <!--              See: https://www.baeldung.com/spring-bean -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>org.springframework.beans</artifactId>
+                <version>3.2.2.RELEASE</version>
+            </dependency>
+
+            <!-- Apache Commons Lang: https://commons.apache.org/proper/commons-lang/ -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.9</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <distributionManagement>
+
+        <snapshotRepository>
+            <id>amazon-s3-snapshot</id>
+            <url>${distribution-url-snapshot}</url>
+        </snapshotRepository>
+
+        <repository>
+            <id>amazon-s3-release</id>
+            <url>${distribution-url-release}</url>
+        </repository>
+
+    </distributionManagement>
+
+    <build>
+
+        <!-- Amazon S3 Wagon: https://github.com/gkatzioura/CloudStorageMaven -->
+        <extensions>
+            <extension>
+                <groupId>com.gkatzioura.maven.cloud</groupId>
+                <artifactId>s3-storage-wagon</artifactId>
+                <version>2.3</version>
+            </extension>
+        </extensions>
+
+        <!--        <extensions>-->
+        <!--            <extension>-->
+        <!--                <groupId>org.springframework.build</groupId>-->
+        <!--                <artifactId>aws-maven</artifactId>-->
+        <!--                <version>5.0.0.RELEASE</version>-->
+        <!--            </extension>-->
+        <!--        </extensions>-->
+
+        <plugins>
+
+            <!-- JAR: Compile the sources. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <!-- JAR: Create a jar of the test classes. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- JAVADOC: Used to generate the Javadoc JAR file. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <charset>UTF-8</charset>
+                    <source>8</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- SOURCE: Used to generate the sources JAR file. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- RELEASE: Used to release a project with Maven. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+
+            <!-- QUALITY: Java Code Coverage. -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.4</version>
+            </plugin>
+
+            <!-- SITE: The Site Plugin is used to generate a site for the project. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+
+            <!-- INFO REPORTS: The Maven Project Info Reports plugin is used to generate reports information about the project. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+
+            <!-- SONAR: The Maven Project Sonar plugin is used to execute static analysis on the code. -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.6.0.1398</version>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
