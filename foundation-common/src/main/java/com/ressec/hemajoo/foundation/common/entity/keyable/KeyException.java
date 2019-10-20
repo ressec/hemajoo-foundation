@@ -18,7 +18,6 @@ import com.ressec.hemajoo.foundation.common.exception.AbstractUncheckedException
 
 /**
  * Exception thrown to indicate an error occurred when manipulating a key.
- *
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -39,7 +38,6 @@ public class KeyException extends AbstractUncheckedException
 
     /**
      * Creates a new exception based on a parent exception.
-     *
      * @param exception Parent exception.
      */
     public KeyException(final Exception exception)
@@ -49,7 +47,6 @@ public class KeyException extends AbstractUncheckedException
 
     /**
      * Creates a new exception based on a parent exception.
-     *
      * @param message Message of the exception.
      */
     public KeyException(final String message)
@@ -59,7 +56,6 @@ public class KeyException extends AbstractUncheckedException
 
     /**
      * Creates a new exception based on a message and a parent exception.
-     *
      * @param message   Message of the exception.
      * @param exception Parent exception.
      */
