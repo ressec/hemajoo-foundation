@@ -661,7 +661,7 @@ public final class KeyManager
      */
     private void checkForKeyDuplicate(final @NonNull Keyable keyable)
     {
-        // Check at least one key is the natural one.
+        // Check at least one key is the primary one.
         boolean found = false;
         for (Annotation key : keys.values())
         {
@@ -676,7 +676,7 @@ public final class KeyManager
         {
             throw new KeyException(
                     String.format(
-                            "Keyable entity: '%s' does not contain a natural key! One of the defined keys must be set as the natural key",
+                            "Keyable entity: '%s' does not contain a primary key! One of the defined keys must be set as the primary key",
                             keyable.getClass().getName()));
         }
     }
