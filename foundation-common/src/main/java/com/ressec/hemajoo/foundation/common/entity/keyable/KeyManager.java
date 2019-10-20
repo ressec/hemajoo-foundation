@@ -31,7 +31,6 @@ import java.util.*;
  * - provide services to manage the registered keys<br>
  * - provide services to manage the keyable entities<br>
  * - provide service to retrieve keyable entities based on keys
- *
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -69,7 +68,6 @@ public final class KeyManager
 
     /**
      * Returns the (unique) instance of the key manager.
-     *
      * @return {@link KeyManager} instance.
      */
     public static KeyManager getInstance()
@@ -95,7 +93,6 @@ public final class KeyManager
 
     /**
      * Registers the given keyable entity and all its keys against the key manager.
-     *
      * @param keyable Keyable entity.
      */
     public final void register(final @NonNull Keyable keyable)
@@ -143,7 +140,6 @@ public final class KeyManager
 
     /**
      * Unregisters the given keyable entity (and all its keys).
-     *
      * @param keyable Keyable entity.
      */
     public final void unregister(final @NonNull Keyable keyable)
@@ -172,19 +168,16 @@ public final class KeyManager
 
     /**
      * Unregisters all keys of given a key type and a given keyable type.
-     *
      * @param keyableClass Keyable class.
-     * @param keyType      Key type.
+     * @param keyType Key type.
      */
-    public final void unregisterKeysByKeyType(final @NonNull Class<? extends Keyable> keyableClass,
-                                              final @NonNull Class<?> keyType)
+    public final void unregisterKeysByKeyType(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull Class<?> keyType)
     {
         entities.get(keyableClass).remove(keyType);
     }
 
     /**
      * Unregisters all keys and of all keyables of a given keyable type.
-     *
      * @param keyableClass Keyable type.
      */
     public final void unregisterKeysByKeyableType(final @NonNull Class<? extends Keyable> keyableClass)
@@ -195,12 +188,10 @@ public final class KeyManager
     /**
      * Unregisters a key given its name.<br>
      * This service will unregister all keys matching the given key name for all keyable entities of the given type.
-     *
      * @param keyableClass Keyable class.
-     * @param keyName      Key name.
+     * @param keyName Key name.
      */
-    public final void unregisterKeysByName(final @NonNull Class<? extends Keyable> keyableClass,
-                                           final @NonNull String keyName)
+    public final void unregisterKeysByName(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull String keyName)
     {
         Class<?> keyType = getKeyTypeFor(keyableClass, keyName);
 
@@ -209,17 +200,14 @@ public final class KeyManager
 
     /**
      * Unregisters a specific key of a given keyable entity.
-     *
-     * @param keyable    Keyable entity.
-     * @param field      Field holding the key value.
+     * @param keyable Keyable entity.
+     * @param field Field holding the key value.
      * @param annotation Annotation of the key.
      */
-    private void unregisterKey(final @NonNull Keyable keyable, final @NonNull Field field,
-                               final @NonNull Annotation annotation)
+    private void unregisterKey(final @NonNull Keyable keyable, final @NonNull Field field, final @NonNull Annotation annotation)
     {
         Object value = null;
-        String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() :
-                ((AlternateKey) annotation).name();
+        String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() : ((AlternateKey) annotation).name();
         Class<?> type = field.getType();
 
         try
@@ -253,8 +241,7 @@ public final class KeyManager
 
     /**
      * Returns the field annotated with the given annotation.
-     *
-     * @param keyable    Keyable.
+     * @param keyable Keyable.
      * @param annotation Annotation.
      * @return Field annotated with the given annotation.
      */
@@ -297,7 +284,6 @@ public final class KeyManager
 
     /**
      * Registers the keys of a keyable entity against the key manager.
-     *
      * @param keyable Keyable entity.
      */
     private void registerKeyable(final @NonNull Keyable keyable)
@@ -324,17 +310,15 @@ public final class KeyManager
 
     /**
      * Checks that the given key can be registered by the key manager.
-     *
-     * @param key     Key.
-     * @param field   Annotated field.
+     * @param key Key.
+     * @param field Annotated field.
      * @param keyable Keyable.
      */
     private void checkKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull Keyable keyable)
     {
         Object value = null;
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
-        boolean mandatory =
-                key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
+        boolean mandatory = key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
         field.setAccessible(true);
@@ -499,9 +483,8 @@ public final class KeyManager
 
     /**
      * Adds a primary key to the collection of defined keys for a keyable entity.
-     *
-     * @param key     Key.
-     * @param field   Field annotated as a primary key.
+     * @param key Key.
+     * @param field Field annotated as a primary key.
      * @param keyable Keyable entity holding the annotated field.
      */
     private void addKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull Keyable keyable)
@@ -525,9 +508,8 @@ public final class KeyManager
 
     /**
      * Registers a key of a keyable entity.
-     *
-     * @param key     Key.
-     * @param field   Field annotated as a primary key.
+     * @param key Key.
+     * @param field Field annotated as a primary key.
      * @param keyable Keyable entity holding the annotated field.
      */
     private void registerKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull Keyable keyable)
@@ -613,7 +595,6 @@ public final class KeyManager
 
     /**
      * Returns the collection of keyables by keyable type.
-     *
      * @param keyable Keyable entity.
      * @return Collection of keyable.
      */
@@ -633,12 +614,10 @@ public final class KeyManager
 
     /**
      * Returns the collection of keyables by keyable type.
-     *
      * @param keyableClass Keyable entity class.
      * @return Collection of keyable.
      */
-    private Map<Class<?>, Map<String, Multimap<Object, Keyable>>> getCollectionByKeyableClass(
-            final @NonNull Class<? extends Keyable> keyableClass)
+    private Map<Class<?>, Map<String, Multimap<Object, Keyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends Keyable> keyableClass)
     {
         Map<Class<?>, Map<String, Multimap<Object, Keyable>>> collection = null;
 
@@ -654,13 +633,11 @@ public final class KeyManager
 
     /**
      * Returns the collection of keyables by key type.
-     *
-     * @param map  Source map.
+     * @param map Source map.
      * @param type Key type.
      * @return Collection of keyables.
      */
-    private Map<String, Multimap<Object, Keyable>> getCollectionByKeyType(
-            final @NonNull Map<Class<?>, Map<String, Multimap<Object, Keyable>>> map, final @NonNull Class<?> type)
+    private Map<String, Multimap<Object, Keyable>> getCollectionByKeyType(final @NonNull Map<Class<?>, Map<String, Multimap<Object, Keyable>>> map, final @NonNull Class<?> type)
     {
         Map<String, Multimap<Object, Keyable>> collection = null;
 
@@ -676,13 +653,11 @@ public final class KeyManager
 
     /**
      * Returns the collection of keyables by key name.
-     *
-     * @param map  Source map.
+     * @param map Source map.
      * @param name Key name.
      * @return Collection of keyables.
      */
-    private Multimap<Object, Keyable> getCollectionByKeyName(final @NonNull Map<String, Multimap<Object, Keyable>> map,
-                                                             final @NonNull String name)
+    private Multimap<Object, Keyable> getCollectionByKeyName(final @NonNull Map<String, Multimap<Object, Keyable>> map, final @NonNull String name)
     {
         Multimap<Object, Keyable> collection = null;
 
@@ -698,7 +673,6 @@ public final class KeyManager
 
     /**
      * Checks for key duplicates.
-     *
      * @param keyable Keyable entity.
      */
     private void checkForKeyDuplicate(final @NonNull Keyable keyable)
@@ -725,14 +699,12 @@ public final class KeyManager
 
     /**
      * Checks if the given key exist ?
-     *
      * @param keyableClass Keyable entity.
-     * @param name         Key name.
-     * @param value        Key value.
+     * @param name Key name.
+     * @param value Key value.
      * @return True if the given key exist, false otherwise.
      */
-    private boolean exist(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull Field field,
-                          final @NonNull String name, final Object value)
+    private boolean exist(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull Field field, final @NonNull String name, final Object value)
     {
         if (value == null)
         {
@@ -759,14 +731,12 @@ public final class KeyManager
 
     /**
      * Generates the next key value.
-     *
      * @param keyable Keyable entity the key refers to.
-     * @param type    Key type.
-     * @param name    Key name.
+     * @param type Key type.
+     * @param name Key name.
      * @return Next generated key value.
      */
-    private Object generateNextKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type,
-                                        final @NonNull String name)
+    private Object generateNextKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type, final @NonNull String name)
     {
         if (type == UUID.class)
         {
@@ -812,14 +782,12 @@ public final class KeyManager
 
     /**
      * Retrieves the latest generated key value.
-     *
      * @param keyable Keyable entity the key refers to.
-     * @param type    Key type.
-     * @param name    Key name.
+     * @param type Key type.
+     * @param name Key name.
      * @return Next generated key value.
      */
-    private Object getLatestKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type,
-                                     final @NonNull String name)
+    private Object getLatestKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type, final @NonNull String name)
     {
         Map<Class<?>, Map<String, Object>> keyTypes = values.get(keyable.getClass());
         if (keyTypes != null)
@@ -836,14 +804,12 @@ public final class KeyManager
 
     /**
      * Updates the latest generated key value.
-     *
      * @param keyable Keyable entity the key refers to.
-     * @param type    Key type.
-     * @param name    Key name.
-     * @param value   New latest key value.
+     * @param type Key type.
+     * @param name Key name.
+     * @param value New latest key value.
      */
-    private void updateLatestKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type,
-                                      final @NonNull String name, final @NonNull Object value)
+    private void updateLatestKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type, final @NonNull String name, final @NonNull Object value)
     {
         Map<Class<?>, Map<String, Object>> keyTypes = null;
         Map<String, Object> keys = null;
@@ -870,9 +836,8 @@ public final class KeyManager
 
     /**
      * Retrieves the type of a key.
-     *
      * @param keyableClass Keyable entity class.
-     * @param keyName      Key name.
+     * @param keyName Key name.
      * @return Type of the key.
      * @throws KeyManagerException Thrown in case the type of the key cannot be determined.
      */
@@ -894,7 +859,9 @@ public final class KeyManager
         }
 
         throw new KeyManagerException(
-                String.format("Cannot determine type for key name: '%s' on keyable entity type: '%s'", keyName,
+                String.format(
+                        "Cannot determine type for key name: '%s' on keyable entity type: '%s'",
+                        keyName,
                         keyableClass));
     }
 
@@ -920,14 +887,12 @@ public final class KeyManager
 
     /**
      * Returns a list of keyables matching the given key name and value.
-     *
      * @param keyableClass Keyable class.
-     * @param keyName      Key name.
-     * @param keyValue     Key value.
+     * @param keyName Key name.
+     * @param keyValue Key value.
      * @return List of keyables or an empty list if no keyable has been found matching the given criteria.
      */
-    public final List<? extends Keyable> get(final @NonNull Class<? extends Keyable> keyableClass,
-                                             final @NonNull String keyName, final @NonNull Object keyValue)
+    public final List<? extends Keyable> get(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
     {
         Class<?> type = getKeyTypeFor(keyableClass, keyName);
 
@@ -943,9 +908,8 @@ public final class KeyManager
 
     /**
      * Returns a list of keyables matching the given key.
-     *
      * @param keyableClass Keyable class.
-     * @param key          Key.
+     * @param key Key.
      * @return List of keyables or an empty list if no keyable has been found matching the given criteria.
      */
     public final List<Keyable> get(final @NonNull Class<? extends Keyable> keyableClass, final @NonNull IKey key)
