@@ -24,7 +24,6 @@ import java.util.UUID;
 
 /**
  * Provides a concrete implementation of a key.
- *
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -89,10 +88,9 @@ public final class Key implements IKey
 
     /**
      * Creates a new key.
-     *
      * @param keyable Keyable entity the key refers to.
-     * @param name    Key name.
-     * @param value   Key value.
+     * @param name Key name.
+     * @param value Key value.
      */
     @Builder
     public Key(final @NonNull Keyable keyable, final @NonNull String name, final @NonNull Object value)
@@ -140,14 +138,12 @@ public final class Key implements IKey
 
     /**
      * Creates a new key given its type, its value and the keyable entity it refers to.
-     *
-     * @param type      Key type.
-     * @param value     Key value.
+     * @param type Key type.
+     * @param value Key value.
      * @param reference Keyable entity the key refers to.
      * @return Newly created key.
      */
-    public static Key create(final @NonNull Class<?> type, final @NonNull Object value,
-                             final @NonNull Class<? extends Keyable> reference)
+    public static Key create(final @NonNull Class<?> type, final @NonNull Object value, final @NonNull Class<? extends Keyable> reference)
     {
         if (type != Integer.class && type != Long.class && type != String.class && type != UUID.class)
         {
@@ -167,8 +163,7 @@ public final class Key implements IKey
      * Creates a new key given its type and the keyable entity it refers to.
      * <br><br>
      * The key value is generated using the key manager.
-     *
-     * @param type      Key type.
+     * @param type Key type.
      * @param reference Keyable entity the key refers to.
      * @return Newly created key.
      */

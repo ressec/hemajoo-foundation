@@ -155,8 +155,7 @@ public final class KeyManager
             }
             else
             {
-                String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() :
-                        ((AlternateKey) annotation).name();
+                String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() : ((AlternateKey) annotation).name();
 
                 throw new KeyException(String.format(
                         "Cannot unregister key with name: %s, on keyable entity: '%s' because no related field found!",
