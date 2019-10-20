@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * Provides an abstract implementation of the {@link Keyable} interface.
- *
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -184,8 +183,7 @@ public abstract class AbstractKeyable implements Keyable
     @Override
     public final Field getAnnotatedField(final @NonNull Annotation annotation)
     {
-        String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() :
-                ((AlternateKey) annotation).name();
+        String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() : ((AlternateKey) annotation).name();
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields)
