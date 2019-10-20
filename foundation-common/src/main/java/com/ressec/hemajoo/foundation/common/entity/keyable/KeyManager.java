@@ -144,7 +144,7 @@ public final class KeyManager
      */
     public final void unregister(final @NonNull Keyable keyable)
     {
-        Field field = null;
+        Field field;
 
         for (Annotation annotation : keyable.getKeys())
         {
@@ -206,7 +206,7 @@ public final class KeyManager
      */
     private void unregisterKey(final @NonNull Keyable keyable, final @NonNull Field field, final @NonNull Annotation annotation)
     {
-        Object value = null;
+        Object value;
         String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() : ((AlternateKey) annotation).name();
         Class<?> type = field.getType();
 
@@ -316,7 +316,7 @@ public final class KeyManager
      */
     private void checkKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull Keyable keyable)
     {
-        Object value = null;
+        Object value;
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean mandatory = key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
@@ -514,10 +514,10 @@ public final class KeyManager
      */
     private void registerKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull Keyable keyable)
     {
-        Object value = null;
-        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> map1 = null;
-        Map<String, Multimap<Object, Keyable>> map2 = null;
-        Multimap<Object, Keyable> map3 = null;
+        Object value;
+        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> map1;
+        Map<String, Multimap<Object, Keyable>> map2;
+        Multimap<Object, Keyable> map3;
 
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean unique = key instanceof PrimaryKey ? ((PrimaryKey) key).unique() : ((AlternateKey) key).unique();
@@ -600,14 +600,9 @@ public final class KeyManager
      */
     private Map<Class<?>, Map<String, Multimap<Object, Keyable>>> getCollectionByKeyable(final @NonNull Keyable keyable)
     {
-        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> collection = null;
+        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> collection;
 
-        collection = entities.get(keyable.getClass());
-        if (collection == null)
-        {
-            collection = new HashMap<>();
-            entities.put(keyable.getClass(), collection);
-        }
+        collection = entities.computeIfAbsent(keyable.getClass(), k -> new HashMap<>());
 
         return collection;
     }
@@ -619,14 +614,9 @@ public final class KeyManager
      */
     private Map<Class<?>, Map<String, Multimap<Object, Keyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends Keyable> keyableClass)
     {
-        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> collection = null;
+        Map<Class<?>, Map<String, Multimap<Object, Keyable>>> collection;
 
-        collection = entities.get(keyableClass);
-        if (collection == null)
-        {
-            collection = new HashMap<>();
-            entities.put(keyableClass, collection);
-        }
+        collection = entities.computeIfAbsent(keyableClass, k -> new HashMap<>());
 
         return collection;
     }
@@ -639,14 +629,9 @@ public final class KeyManager
      */
     private Map<String, Multimap<Object, Keyable>> getCollectionByKeyType(final @NonNull Map<Class<?>, Map<String, Multimap<Object, Keyable>>> map, final @NonNull Class<?> type)
     {
-        Map<String, Multimap<Object, Keyable>> collection = null;
+        Map<String, Multimap<Object, Keyable>> collection;
 
-        collection = map.get(type);
-        if (collection == null)
-        {
-            collection = new HashMap<>();
-            map.put(type, collection);
-        }
+        collection = map.computeIfAbsent(type, k -> new HashMap<>());
 
         return collection;
     }
@@ -659,7 +644,7 @@ public final class KeyManager
      */
     private Multimap<Object, Keyable> getCollectionByKeyName(final @NonNull Map<String, Multimap<Object, Keyable>> map, final @NonNull String name)
     {
-        Multimap<Object, Keyable> collection = null;
+        Multimap<Object, Keyable> collection;
 
         collection = map.get(name);
         if (collection == null)
@@ -811,7 +796,7 @@ public final class KeyManager
      */
     private void updateLatestKeyValue(final @NonNull Keyable keyable, final @NonNull Class<?> type, final @NonNull String name, final @NonNull Object value)
     {
-        Map<Class<?>, Map<String, Object>> keyTypes = null;
+        Map<Class<?>, Map<String, Object>> keyTypes;
         Map<String, Object> keys = null;
 
         keyTypes = values.get(keyable.getClass());
