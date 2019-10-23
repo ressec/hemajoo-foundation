@@ -17,9 +17,9 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableMultipleKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableNoKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableOnlyPrimaryKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountry;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountryWithPrimaryAndAlternateKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountryWithPrimaryKey;
 import org.junit.*;
 
 /**
@@ -51,7 +51,7 @@ public class KeyableTestCase
     @Before
     public final void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(TestKeyableNoKey.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountry.class);
     }
 
     /**
@@ -66,9 +66,9 @@ public class KeyableTestCase
      * Ensure a {@link KeyException} is thrown when we try to register a keyable entity not having a primary key set.
      */
     @Test(expected = KeyException.class)
-    public final void testErrorOfCreateKeyableWhenKeyableHasNoPrimaryKey()
+    public final void testExpectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
     {
-        TestKeyableNoKey country = TestKeyableNoKey.builder()
+        KeyableCountry country = KeyableCountry.builder()
                 .name("Alexander")
                 .build();
     }
@@ -79,7 +79,7 @@ public class KeyableTestCase
     @Test
     public final void testSuccessOfCreateKeyableWhenKeyableWithPrimaryKey()
     {
-        TestKeyableOnlyPrimaryKey entity = TestKeyableOnlyPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
                 .name("Alexander")
                 .build();
 
@@ -92,7 +92,7 @@ public class KeyableTestCase
     @Test
     public final void testSuccessOfCreateKeyableWhenKeyableWithPrimaryAndAlternateKey()
     {
-        TestKeyableMultipleKey entity = TestKeyableMultipleKey.builder()
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
                 .name("Alexander")
                 .code("ALEX")
                 .build();

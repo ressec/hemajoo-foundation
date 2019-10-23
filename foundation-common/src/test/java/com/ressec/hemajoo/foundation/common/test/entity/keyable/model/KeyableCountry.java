@@ -22,14 +22,15 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * A keyable entity test class that does not declare any key.
+ * A keyable test class representing a basic country class and providing a concrete implementation
+ * of a keyable entity BUT that does not declare any key!
  * <br><br>
  * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class TestKeyableCountry extends AbstractKeyable
+public class KeyableCountry extends AbstractKeyable
 {
     /**
      * Numeric ISO code of the country.
@@ -64,13 +65,13 @@ public class TestKeyableCountry extends AbstractKeyable
     /**
      * Avoid direct instantiation of country entity.
      */
-    private TestKeyableCountry()
+    private KeyableCountry()
     {
         // Empty.
     }
 
     @Builder
-    public TestKeyableCountry(final int numericCode, final String iso2, final String iso3, final String name, final String officialName)
+    public KeyableCountry(final int numericCode, final String iso2, final String iso3, final String name, final String officialName)
     {
         this.numeric = numericCode;
         this.iso2 = iso2;
@@ -85,29 +86,29 @@ public class TestKeyableCountry extends AbstractKeyable
      * Creates an empty (fake) country. Used to query the key manager.
      * @return Empty country.
      */
-    public static TestKeyableCountry empty()
+    public static KeyableCountry empty()
     {
-        return new TestKeyableCountry();
+        return new KeyableCountry();
     }
 
     /**
      * Retrieves a country from the key manager given a key name and a key value.
      * @param keyName Key name.
      * @param keyValue Key value.
-     * @return {@link TestKeyableCountry} if found, null otherwise.
+     * @return {@link KeyableCountry} if found, null otherwise.
      */
-    public static TestKeyableCountry get(final @NonNull String keyName, final @NonNull Object keyValue)
+    public static KeyableCountry get(final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return (TestKeyableCountry) TestKeyableCountry.empty().firstFrom(keyName, keyValue);
+        return (KeyableCountry) KeyableCountry.empty().firstFrom(keyName, keyValue);
     }
 
     /**
      * Retrieves a country from the key manager given a key.
      * @param key Key.
-     * @return {@link TestKeyableCountry} if found, null otherwise.
+     * @return {@link KeyableCountry} if found, null otherwise.
      */
-    public static TestKeyableCountry get(final @NonNull IKey key)
+    public static KeyableCountry get(final @NonNull IKey key)
     {
-        return (TestKeyableCountry) TestKeyableCountry.empty().firstFrom(key);
+        return (KeyableCountry) KeyableCountry.empty().firstFrom(key);
     }
 }

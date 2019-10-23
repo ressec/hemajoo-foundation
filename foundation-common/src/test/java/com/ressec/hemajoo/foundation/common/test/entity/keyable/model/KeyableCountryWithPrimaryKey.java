@@ -17,36 +17,38 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.AbstractKeyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * A keyable entity test class that does not declare any key.
+ * A keyable entity test class that only declare a primary key.
  * <br><br>
  * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class TestKeyableNoKey extends AbstractKeyable
+public class KeyableCountryWithPrimaryKey extends AbstractKeyable
 {
     /**
      * Name.
      */
+    @PrimaryKey(name = "name", unique = true, mandatory = true, auto = false)
     @Getter
     private String name;
 
     /**
      * Avoid direct instantiation of objects of this type!
      */
-    private TestKeyableNoKey()
+    private KeyableCountryWithPrimaryKey()
     {
         // Empty.
     }
 
     @Builder
-    public TestKeyableNoKey(final String name)
+    public KeyableCountryWithPrimaryKey(final String name)
     {
         this.name = name;
 
@@ -58,29 +60,29 @@ public class TestKeyableNoKey extends AbstractKeyable
      * Creates an empty (fake) keyable object of this type. Generally used to query the key manager.
      * @return Empty keyable entity.
      */
-    public static TestKeyableNoKey empty()
+    public static KeyableCountryWithPrimaryKey empty()
     {
-        return new TestKeyableNoKey();
+        return new KeyableCountryWithPrimaryKey();
     }
 
     /**
      * Retrieves a keyable from the key manager given a key name and a key value.
      * @param keyName Key name.
      * @param keyValue Key value.
-     * @return {@link TestKeyableNoKey} if found, null otherwise.
+     * @return {@link KeyableCountryWithPrimaryKey} if found, null otherwise.
      */
-    public static TestKeyableNoKey get(final @NonNull String keyName, final @NonNull Object keyValue)
+    public static KeyableCountryWithPrimaryKey get(final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return (TestKeyableNoKey) TestKeyableNoKey.empty().firstFrom(keyName, keyValue);
+        return (KeyableCountryWithPrimaryKey) KeyableCountryWithPrimaryKey.empty().firstFrom(keyName, keyValue);
     }
 
     /**
      * Retrieves a keyable from the key manager given a key.
      * @param key Key.
-     * @return {@link TestKeyableNoKey} if found, null otherwise.
+     * @return {@link KeyableCountryWithPrimaryKey} if found, null otherwise.
      */
-    public static TestKeyableNoKey get(final @NonNull IKey key)
+    public static KeyableCountryWithPrimaryKey get(final @NonNull IKey key)
     {
-        return (TestKeyableNoKey) TestKeyableNoKey.empty().firstFrom(key);
+        return (KeyableCountryWithPrimaryKey) KeyableCountryWithPrimaryKey.empty().firstFrom(key);
     }
 }

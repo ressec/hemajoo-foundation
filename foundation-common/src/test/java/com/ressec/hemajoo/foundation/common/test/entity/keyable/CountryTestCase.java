@@ -17,8 +17,8 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Key;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountry;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableNoKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountry;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountryWithoutKey;
 import org.junit.*;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class CountryTestCase
     @Before
     public final void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(TestKeyableNoKey.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountry.class);
     }
 
     /**
@@ -70,7 +70,7 @@ public class CountryTestCase
     @Test
     public final void testCreateCountry()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -86,7 +86,7 @@ public class CountryTestCase
     @Test
     public final void testRetrieveCountry()
     {
-        TestKeyableCountry germany = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey germany = KeyableCountryWithoutKey.builder()
                 .name("Germany")
                 .numericCode(276)
                 .iso3("DEU")
@@ -96,10 +96,10 @@ public class CountryTestCase
         Assert.assertNotNull(germany);
 
         @SuppressWarnings("unchecked")
-        List<TestKeyableNoKey> countries = (List<TestKeyableNoKey>) germany.from("iso3", "DEU");
+        List<KeyableCountry> countries = (List<KeyableCountry>) germany.from("iso3", "DEU");
         Assert.assertEquals(1, countries.size());
 
-        TestKeyableNoKey country = (TestKeyableNoKey) germany.firstFrom("numericCode", 276);
+        KeyableCountry country = (KeyableCountry) germany.firstFrom("numericCode", 276);
         Assert.assertNotNull(country);
     }
 
@@ -109,7 +109,7 @@ public class CountryTestCase
     @Test
     public final void testRetrieveOneCountry()
     {
-        TestKeyableCountry germany = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey germany = KeyableCountryWithoutKey.builder()
                 .name("Germany")
                 .numericCode(276)
                 .iso3("DEU")
@@ -118,7 +118,7 @@ public class CountryTestCase
 
         Assert.assertNotNull(germany);
 
-        TestKeyableCountry country = (TestKeyableCountry) germany.from("iso3", "DEU").get(0);
+        KeyableCountryWithoutKey country = (KeyableCountryWithoutKey) germany.from("iso3", "DEU").get(0);
         Assert.assertNotNull(country);
     }
 
@@ -128,7 +128,7 @@ public class CountryTestCase
     @Test
     public final void testUnregisterKeyable()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -141,7 +141,7 @@ public class CountryTestCase
 
         KeyManager.getInstance().unregister(france);
 
-        TestKeyableCountry country = TestKeyableCountry.get(key);
+        KeyableCountryWithoutKey country = KeyableCountryWithoutKey.get(key);
 
         Assert.assertNull(country);
     }
@@ -152,7 +152,7 @@ public class CountryTestCase
     @Test
     public final void testUnregisterKeyByName()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -161,9 +161,9 @@ public class CountryTestCase
 
         Assert.assertNotNull(france);
 
-        KeyManager.getInstance().unregisterKeysByName(TestKeyableCountry.class, "numericCode");
+        KeyManager.getInstance().unregisterKeysByName(KeyableCountryWithoutKey.class, "numericCode");
 
-        TestKeyableCountry country = TestKeyableCountry.get("numericCode", "250");
+        KeyableCountryWithoutKey country = KeyableCountryWithoutKey.get("numericCode", "250");
 
         Assert.assertNull(country);
     }
@@ -174,7 +174,7 @@ public class CountryTestCase
     @Test
     public final void testUnregisterKeyByKeyType()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -183,9 +183,9 @@ public class CountryTestCase
 
         Assert.assertNotNull(france);
 
-        KeyManager.getInstance().unregisterKeysByKeyType(TestKeyableCountry.class, String.class);
+        KeyManager.getInstance().unregisterKeysByKeyType(KeyableCountryWithoutKey.class, String.class);
 
-        TestKeyableCountry result = TestKeyableCountry.get("iso3", "FRA");
+        KeyableCountryWithoutKey result = KeyableCountryWithoutKey.get("iso3", "FRA");
 
         Assert.assertNull(result);
     }
@@ -196,7 +196,7 @@ public class CountryTestCase
     @Test
     public final void testUnregisterKeyByKeyableType()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -205,9 +205,9 @@ public class CountryTestCase
 
         Assert.assertNotNull(france);
 
-        KeyManager.getInstance().unregisterKeysByKeyableType(TestKeyableCountry.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithoutKey.class);
 
-        TestKeyableCountry result = TestKeyableCountry.get("iso3", "FRA");
+        KeyableCountryWithoutKey result = KeyableCountryWithoutKey.get("iso3", "FRA");
 
         Assert.assertNull(result);
     }
@@ -218,7 +218,7 @@ public class CountryTestCase
     @Test
     public final void testRetrieveEntityByKeyableType()
     {
-        TestKeyableCountry france = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey france = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .numericCode(250)
                 .iso3("FRA")
@@ -228,7 +228,8 @@ public class CountryTestCase
         Assert.assertNotNull(france);
 
         @SuppressWarnings("unchecked")
-        List<TestKeyableCountry> countries = (List<TestKeyableCountry>) KeyManager.getInstance().get(TestKeyableCountry.class, "numericCode", 250);
+        List<KeyableCountryWithoutKey> countries = (List<KeyableCountryWithoutKey>) KeyManager.getInstance().get(
+                KeyableCountryWithoutKey.class, "numericCode", 250);
 
         Assert.assertEquals(1, countries.size());
     }

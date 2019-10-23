@@ -30,7 +30,7 @@ import lombok.NonNull;
  * @version 1.0.0
  */
 @Internal
-public class TestKeyableMultipleKey extends AbstractKeyable
+public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
 {
     /**
      * Name.
@@ -49,13 +49,13 @@ public class TestKeyableMultipleKey extends AbstractKeyable
     /**
      * Avoid direct instantiation of objects of this type!
      */
-    private TestKeyableMultipleKey()
+    private KeyableCountryWithPrimaryAndAlternateKey()
     {
         // Empty.
     }
 
     @Builder
-    public TestKeyableMultipleKey(final String name, final String code)
+    public KeyableCountryWithPrimaryAndAlternateKey(final String name, final String code)
     {
         this.name = name;
         this.code = code;
@@ -68,29 +68,30 @@ public class TestKeyableMultipleKey extends AbstractKeyable
      * Creates an empty (fake) keyable object of this type. Generally used to query the key manager.
      * @return Empty keyable entity.
      */
-    public static TestKeyableMultipleKey empty()
+    public static KeyableCountryWithPrimaryAndAlternateKey empty()
     {
-        return new TestKeyableMultipleKey();
+        return new KeyableCountryWithPrimaryAndAlternateKey();
     }
 
     /**
      * Retrieves a keyable from the key manager given a key name and a key value.
      * @param keyName Key name.
      * @param keyValue Key value.
-     * @return {@link TestKeyableMultipleKey} if found, null otherwise.
+     * @return {@link KeyableCountryWithPrimaryAndAlternateKey} if found, null otherwise.
      */
-    public static TestKeyableMultipleKey get(final @NonNull String keyName, final @NonNull Object keyValue)
+    public static KeyableCountryWithPrimaryAndAlternateKey get(final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return (TestKeyableMultipleKey) TestKeyableMultipleKey.empty().firstFrom(keyName, keyValue);
+        return (KeyableCountryWithPrimaryAndAlternateKey) KeyableCountryWithPrimaryAndAlternateKey
+                .empty().firstFrom(keyName, keyValue);
     }
 
     /**
      * Retrieves a keyable from the key manager given a key.
      * @param key Key.
-     * @return {@link TestKeyableMultipleKey} if found, null otherwise.
+     * @return {@link KeyableCountryWithPrimaryAndAlternateKey} if found, null otherwise.
      */
-    public static TestKeyableMultipleKey get(final @NonNull IKey key)
+    public static KeyableCountryWithPrimaryAndAlternateKey get(final @NonNull IKey key)
     {
-        return (TestKeyableMultipleKey) TestKeyableMultipleKey.empty().firstFrom(key);
+        return (KeyableCountryWithPrimaryAndAlternateKey) KeyableCountryWithPrimaryAndAlternateKey.empty().firstFrom(key);
     }
 }

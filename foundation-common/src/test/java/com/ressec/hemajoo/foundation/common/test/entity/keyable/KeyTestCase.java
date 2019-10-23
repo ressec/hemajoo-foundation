@@ -17,8 +17,7 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Key;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountry;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableNoKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountryWithoutKey;
 import org.junit.*;
 
 /**
@@ -50,7 +49,7 @@ public class KeyTestCase
     @Before
     public final void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(TestKeyableNoKey.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithoutKey.class);
     }
 
     /**
@@ -67,7 +66,7 @@ public class KeyTestCase
     @Test
     public final void createKey()
     {
-        TestKeyableCountry country = TestKeyableCountry.builder()
+        KeyableCountryWithoutKey country = KeyableCountryWithoutKey.builder()
                 .numericCode(250)
                 .iso2("FR")
                 .iso3("FRA")
