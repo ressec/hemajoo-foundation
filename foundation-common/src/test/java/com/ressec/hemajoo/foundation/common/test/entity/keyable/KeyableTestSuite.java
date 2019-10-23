@@ -14,6 +14,8 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithPrimaryKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithoutKey;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -24,7 +26,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        KeyableTestSuite.class,
+        TestKeyableCountryWithoutKey.class,
+        TestKeyableCountryWithPrimaryKey.class
 })
 public class KeyableTestSuite
 {

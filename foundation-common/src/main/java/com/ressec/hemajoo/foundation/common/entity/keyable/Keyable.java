@@ -14,95 +14,54 @@
  */
 package com.ressec.hemajoo.foundation.common.entity.keyable;
 
+import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import lombok.NonNull;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.List;
-
 /**
- * Interface providing the ability to define and use keys based on class fields.
- * Classes implementing the {@link Keyable} interface can declare any field as a key field by annotating the
- * field with the {@link Key} annotation.
- *
+ * Provides a concrete implementation of a keyable entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
-public interface Keyable
+@Internal
+public class Keyable extends AbstractKeyable
 {
     /**
-     * Returns the primary key of the keyable entity, if one has been defined.
-     *
-     * @return Primary {@link IKey} or null if no primary key set.
+     * Creates a new keyable entity.
      */
-    IKey getKey();
+    protected Keyable()
+    {
+        // Empty.
+    }
 
     /**
-     * Returns the key matching the given key name and value.
-     *
-     * @param name  Key name.
-     * @param value Key value.
-     * @return {@link IKey} if one has been found, null otherwise.
+     * Creates an empty (fake) country. Used to query the key manager.
+     * @return Empty keyable.
      */
-    IKey getKey(final @NonNull String name, final @NonNull Object value);
+    public static IKeyable empty()
+    {
+        return new Keyable();
+    }
 
     /**
-     * Returns a list of the keys set for this keyable entity.
-     *
-     * @return List of keys or an empty list if no key defined.
+     * Retrieves a keyable from the key manager given a key name and a key value.
+     * @param clazz Class of the caller.
+     * @param keyName Key name.
+     * @param keyValue Key value.
+     * @return Keyable if found, null otherwise.
      */
-    List<Annotation> getKeys();
+    public static IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
+    {
+        return Keyable.empty().firstFrom(clazz, keyName, keyValue);
+    }
 
     /**
-     * Retrieves a list of keyable entities according to the given key name and value.
-     *
-     * @param name  Key name.
-     * @param value Key value.
-     * @return List of {@link Keyable} entities or null if no keyable entity has been found.
-     */
-    List<? extends Keyable> from(final @NonNull String name, final @NonNull Object value);
-
-    /**
-     * Retrieves a list of keyable entity according to the given key.
-     *
+     * Retrieves a keyable from the key manager given a key.
+     * @param clazz Class of the caller.
      * @param key Key.
-     * @return List of {@link Keyable} entities or null if no keyable entity has been found.
+     * @return Keyable if found, null otherwise.
      */
-    List<? extends Keyable> from(final @NonNull IKey key);
-
-    /**
-     * Retrieves the first keyable entity matching the given key name and key value.
-     * This service can be used in case the key used is set with the property 'unique' set to true.
-     *
-     * @param name  Key name.
-     * @param value Key value.
-     * @return {@link Keyable} entity or null if no keyable entity has been found.
-     */
-    Keyable firstFrom(final @NonNull String name, final @NonNull Object value);
-
-    /**
-     * Retrieves the first keyable matching the given key.
-     * This service can be used in case the key used is set with the property 'unique' set to true.
-     *
-     * @param key Key.
-     * @return {@link Keyable} entity or null if no keyable entity has been found.
-     */
-    Keyable firstFrom(final @NonNull IKey key);
-
-    /**
-     * Returns the key annotation matching the given key name.
-     *
-     * @param name Key name.
-     * @return Key annotation if found, null otherwise.
-     */
-    Annotation getKeyAnnotation(final @NonNull String name);
-
-    /**
-     * Returns the field annotated with the given annotation.
-     *
-     * @param annotation Annotation.
-     * @return Field.
-     */
-    Field getAnnotatedField(final @NonNull Annotation annotation);
+    public static IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    {
+        return Keyable.empty().firstFrom(clazz, key);
+    }
 }
-

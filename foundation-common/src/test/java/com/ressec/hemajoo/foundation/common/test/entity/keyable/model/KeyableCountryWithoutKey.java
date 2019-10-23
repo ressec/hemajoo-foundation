@@ -15,11 +15,9 @@
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
-import com.ressec.hemajoo.foundation.common.entity.keyable.AbstractKeyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * A keyable entity test class that does not declare any key!
@@ -29,7 +27,7 @@ import lombok.NonNull;
  * @version 1.0.0
  */
 @Internal
-public class KeyableCountryWithoutKey extends AbstractKeyable
+public class KeyableCountryWithoutKey extends Keyable
 {
     /**
      * Numeric ISO code of the country.
@@ -79,35 +77,5 @@ public class KeyableCountryWithoutKey extends AbstractKeyable
         this.officialName = officialName;
 
         super.register();
-    }
-
-    /**
-     * Creates an empty (fake) country. Used to query the key manager.
-     * @return Empty country.
-     */
-    public static KeyableCountryWithoutKey empty()
-    {
-        return new KeyableCountryWithoutKey();
-    }
-
-    /**
-     * Retrieves a country from the key manager given a key name and a key value.
-     * @param keyName Key name.
-     * @param keyValue Key value.
-     * @return {@link KeyableCountryWithoutKey} if found, null otherwise.
-     */
-    public static KeyableCountryWithoutKey get(final @NonNull String keyName, final @NonNull Object keyValue)
-    {
-        return (KeyableCountryWithoutKey) KeyableCountryWithoutKey.empty().firstFrom(keyName, keyValue);
-    }
-
-    /**
-     * Retrieves a country from the key manager given a key.
-     * @param key Key.
-     * @return {@link KeyableCountryWithoutKey} if found, null otherwise.
-     */
-    public static KeyableCountryWithoutKey get(final @NonNull IKey key)
-    {
-        return (KeyableCountryWithoutKey) KeyableCountryWithoutKey.empty().firstFrom(key);
     }
 }

@@ -46,7 +46,7 @@ public final class Key implements IKey
      * Keyable entity class this key refers to.
      */
     @Getter
-    private Class<? extends Keyable> reference;
+    private Class<? extends IKeyable> reference;
 
     /**
      * Value of the key.
@@ -93,7 +93,7 @@ public final class Key implements IKey
      * @param value Key value.
      */
     @Builder
-    public Key(final @NonNull Keyable keyable, final @NonNull String name, final @NonNull Object value)
+    public Key(final @NonNull IKeyable keyable, final @NonNull String name, final @NonNull Object value)
     {
         Field[] fields = keyable.getClass().getDeclaredFields();
         for (Field field : fields)
@@ -143,7 +143,7 @@ public final class Key implements IKey
      * @param reference Keyable entity the key refers to.
      * @return Newly created key.
      */
-    public static Key create(final @NonNull Class<?> type, final @NonNull Object value, final @NonNull Class<? extends Keyable> reference)
+    public static Key create(final @NonNull Class<?> type, final @NonNull Object value, final @NonNull Class<? extends IKeyable> reference)
     {
         if (type != Integer.class && type != Long.class && type != String.class && type != UUID.class)
         {
@@ -167,7 +167,7 @@ public final class Key implements IKey
      * @param reference Keyable entity the key refers to.
      * @return Newly created key.
      */
-    public static Key create(final @NonNull Class<?> type, final @NonNull Class<? extends Keyable> reference)
+    public static Key create(final @NonNull Class<?> type, final @NonNull Class<? extends IKeyable> reference)
     {
         if (type != Integer.class && type != Long.class && type != String.class && type != UUID.class)
         {
