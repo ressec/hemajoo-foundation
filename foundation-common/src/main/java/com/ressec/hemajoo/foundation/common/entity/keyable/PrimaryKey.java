@@ -17,7 +17,7 @@ package com.ressec.hemajoo.foundation.common.entity.keyable;
 import java.lang.annotation.*;
 
 /**
- * Annotation used to annotate one field of a {@link Keyable} entity as the primary key of this entity.
+ * Annotation used to annotate one field of a {@link IKeyable} entity as the primary key of this entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */

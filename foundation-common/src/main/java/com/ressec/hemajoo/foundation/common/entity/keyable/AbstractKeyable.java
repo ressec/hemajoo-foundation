@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides an abstract implementation of the {@link Keyable} interface.
+ * Provides an abstract implementation of the {@link IKeyable} interface.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
-public abstract class AbstractKeyable implements Keyable
+public abstract class AbstractKeyable implements IKeyable
 {
     /**
      * Creates an abstract keyable.
@@ -44,25 +44,25 @@ public abstract class AbstractKeyable implements Keyable
     }
 
     @Override
-    public final List<? extends Keyable> from(final @NonNull String name, final @NonNull Object value)
+    public final List<? extends IKeyable> from(final @NonNull String name, final @NonNull Object value)
     {
         return KeyManager.getInstance().get(this.getClass(), name, value);
     }
 
     @Override
-    public final List<Keyable> from(final @NonNull IKey key)
+    public final List<IKeyable> from(final @NonNull IKey key)
     {
         return KeyManager.getInstance().get(this.getClass(), key);
     }
 
     @Override
-    public final Keyable firstFrom(final @NonNull String name, final @NonNull Object value)
+    public final IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
-        List<? extends Keyable> keyables;
+        List<? extends IKeyable> keyables;
 
         try
         {
-            keyables = KeyManager.getInstance().get(this.getClass(), name, value);
+            keyables = KeyManager.getInstance().get(clazz, name, value);
         }
         catch (Exception e)
         {
@@ -73,9 +73,9 @@ public abstract class AbstractKeyable implements Keyable
     }
 
     @Override
-    public final Keyable firstFrom(final @NonNull IKey key)
+    public final IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
-        List<Keyable> keyables = KeyManager.getInstance().get(this.getClass(), key);
+        List<IKeyable> keyables = KeyManager.getInstance().get(clazz, key);
 
         return keyables.isEmpty() ? null : keyables.get(0);
     }

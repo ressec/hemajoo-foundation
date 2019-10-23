@@ -15,6 +15,7 @@
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import org.junit.After;
@@ -46,7 +47,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToCreateEmptyKeyableWhenKeyableHasNoKey()
     {
-        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
+        IKeyable entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
     }
 
@@ -56,7 +57,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToQueryFieldOfEmptyKeyableWhenKeyableHasNoKey()
     {
-        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
+        KeyableCountryWithoutKey entity = (KeyableCountryWithoutKey) KeyableCountryWithoutKey.empty();
         Assert.assertNull(entity.getIso3());
         Assert.assertEquals(0, entity.getNumeric());
     }
@@ -67,7 +68,7 @@ public class TestKeyableCountryWithoutKey
     @Test(expected = KeyException.class)
     public void expectFailureToGetKeyWhenKeyableHasNoKey()
     {
-        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
+        IKeyable entity = KeyableCountryWithoutKey.empty();
         IKey key = entity.getKey();
     }
 
@@ -88,7 +89,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToRetrieveNullKeyWhenKeyDoesNotExist()
     {
-        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
+        IKeyable entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
 
         IKey key = entity.getKey("name", "name");
@@ -101,7 +102,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToRetrieveNullAnnotationWhenKeyDoesNotExist()
     {
-        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
+        IKeyable entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
 
         Assert.assertNull(entity.getKeyAnnotation("name"));

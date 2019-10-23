@@ -14,14 +14,14 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Key;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
-import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.KeyableCountryWithoutKey;
 import org.junit.*;
 
 /**
- * Test case for the {@link Keyable} entity class hierarchy.
+ * Test case for the {@link IKeyable} entity class hierarchy.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */

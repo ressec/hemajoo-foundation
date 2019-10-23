@@ -15,7 +15,9 @@
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,21 +47,18 @@ public class TestKeyableCountryWithPrimaryKey
     @Test
     public void expectSuccessToCreateEmptyKeyableWhenKeyableHasPrimaryKey()
     {
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.empty();
+        IKeyable entity = KeyableCountryWithPrimaryKey.empty();
         Assert.assertNotNull(entity);
     }
 
     /**
-     * Ensure an empty keyable entity can query its own fields that will return null or 0.
+     * Ensure an empty keyable entity return a {@link IKeyable} not null instance.
      */
     @Test
-    public void expectSuccessToQueryFieldOfEmptyKeyableWhenKeyableHasNoKey()
+    public void expectSuccessToGetEmptyKeyable()
     {
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.empty();
-        Assert.assertNull(entity.getName());
-        Assert.assertNull(entity.getIso2());
-        Assert.assertNull(entity.getIso3());
-        Assert.assertEquals(0, entity.getNumeric());
+        IKeyable entity = Keyable.empty();
+        Assert.assertNotNull(entity);
     }
 
     /**
@@ -135,7 +134,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .build();
         Assert.assertNotNull(entity);
 
-        KeyableCountryWithPrimaryKey o = KeyableCountryWithPrimaryKey.get("name", name);
+        KeyableCountryWithPrimaryKey o = (KeyableCountryWithPrimaryKey) Keyable.get(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertEquals(name, o.getName());
     }
 
@@ -154,7 +153,7 @@ public class TestKeyableCountryWithPrimaryKey
 
         IKey primary = entity.getKey();
 
-        KeyableCountryWithPrimaryKey country = KeyableCountryWithPrimaryKey.get(primary);
+        KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.get(KeyableCountryWithPrimaryKey.class, primary);
 
         Assert.assertNotNull(country);
         Assert.assertEquals(name, country.getName());
