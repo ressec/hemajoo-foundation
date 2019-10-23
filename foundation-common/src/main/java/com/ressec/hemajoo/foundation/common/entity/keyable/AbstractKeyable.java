@@ -125,6 +125,7 @@ public abstract class AbstractKeyable implements Keyable
                 .name(name)
                 .value(value)
                 .build();
+
         if (key.getName() == null)
         {
             return null;

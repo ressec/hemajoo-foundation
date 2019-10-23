@@ -32,7 +32,7 @@ public class TestKeyableCountryWithoutKey
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountry.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithoutKey.class);
     }
 
     @After
@@ -46,7 +46,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToCreateEmptyKeyableWhenKeyableHasNoKey()
     {
-        KeyableCountry entity = KeyableCountry.empty();
+        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
     }
 
@@ -56,7 +56,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToQueryFieldOfEmptyKeyableWhenKeyableHasNoKey()
     {
-        KeyableCountry entity = KeyableCountry.empty();
+        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
         Assert.assertNull(entity.getIso3());
         Assert.assertEquals(0, entity.getNumeric());
     }
@@ -67,7 +67,7 @@ public class TestKeyableCountryWithoutKey
     @Test(expected = KeyException.class)
     public void expectFailureToGetKeyWhenKeyableHasNoKey()
     {
-        KeyableCountry entity = KeyableCountry.empty();
+        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
         IKey key = entity.getKey();
     }
 
@@ -88,7 +88,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToRetrieveNullKeyWhenKeyDoesNotExist()
     {
-        KeyableCountry entity = KeyableCountry.empty();
+        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
 
         IKey key = entity.getKey("name", "name");
@@ -101,7 +101,7 @@ public class TestKeyableCountryWithoutKey
     @Test
     public void expectSuccessToRetrieveNullAnnotationWhenKeyDoesNotExist()
     {
-        KeyableCountry entity = KeyableCountry.empty();
+        KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
 
         Assert.assertNull(entity.getKeyAnnotation("name"));

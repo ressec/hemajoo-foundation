@@ -900,4 +900,21 @@ public final class KeyManager
     {
         return (List<Keyable>) entities.get(keyableClass).get(key.getType()).get(key.getName()).get(key.getValue());
     }
+
+    /**
+     * Returns the number of entities stored in the key manager for the given keyable class.
+     * @param keyableClass Keyable class.
+     * @return Number of entities stored.
+     */
+    public final int countKeyable(final @NonNull Class<? extends Keyable> keyableClass)
+    {
+        try
+        {
+            return entities.get(keyableClass).size();
+        }
+        catch (NullPointerException npe)
+        {
+            return 0;
+        }
+    }
 }
