@@ -15,8 +15,7 @@
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
-import com.ressec.hemajoo.foundation.common.entity.keyable.AbstractKeyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +29,7 @@ import lombok.NonNull;
  * @version 1.0.0
  */
 @Internal
-public class KeyableCountryWithPrimaryKey extends AbstractKeyable
+public class KeyableCountryWithPrimaryKey extends Keyable
 {
     /**
      * Name.
@@ -61,7 +60,6 @@ public class KeyableCountryWithPrimaryKey extends AbstractKeyable
      * Official name of the country.
      */
     @Getter
-
     private String officialName;
     /**
      * Avoid direct instantiation of objects of this type!
@@ -88,35 +86,5 @@ public class KeyableCountryWithPrimaryKey extends AbstractKeyable
 
         // Invoke the key manager for registration.
         super.register();
-    }
-
-    /**
-     * Creates an empty (fake) keyable object of this type. Generally used to query the key manager.
-     * @return Empty keyable entity.
-     */
-    public static KeyableCountryWithPrimaryKey empty()
-    {
-        return new KeyableCountryWithPrimaryKey();
-    }
-
-    /**
-     * Retrieves a keyable from the key manager given a key name and a key value.
-     * @param keyName Key name.
-     * @param keyValue Key value.
-     * @return {@link KeyableCountryWithPrimaryKey} if found, null otherwise.
-     */
-    public static KeyableCountryWithPrimaryKey get(final @NonNull String keyName, final @NonNull Object keyValue)
-    {
-        return (KeyableCountryWithPrimaryKey) KeyableCountryWithPrimaryKey.empty().firstFrom(keyName, keyValue);
-    }
-
-    /**
-     * Retrieves a keyable from the key manager given a key.
-     * @param key Key.
-     * @return {@link KeyableCountryWithPrimaryKey} if found, null otherwise.
-     */
-    public static KeyableCountryWithPrimaryKey get(final @NonNull IKey key)
-    {
-        return (KeyableCountryWithPrimaryKey) KeyableCountryWithPrimaryKey.empty().firstFrom(key);
     }
 }
