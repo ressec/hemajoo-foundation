@@ -41,31 +41,28 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * An empty entity can be created even if the keyable has no key!
+     * Ensure an empty entity can be created even if the keyable has no key.
      */
     @Test
     public void expectSuccessToCreateEmptyKeyableWhenKeyableHasNoKey()
     {
         KeyableCountry entity = KeyableCountry.empty();
-
         Assert.assertNotNull(entity);
     }
 
     /**
-     * An empty keyable entity can query its own fields that will return null or 0!
+     * Ensure an empty keyable entity can query its own fields that will return null or 0.
      */
     @Test
     public void expectSuccessToQueryFieldOfEmptyKeyableWhenKeyableHasNoKey()
     {
         KeyableCountry entity = KeyableCountry.empty();
-        Assert.assertNotNull(entity);
-
         Assert.assertNull(entity.getIso3());
         Assert.assertEquals(0, entity.getNumeric());
     }
 
     /**
-     * A key instance is not retrievable on a keyable empty instance!
+     * Ensure a key instance is not retrievable on a keyable empty instance.
      */
     @Test(expected = KeyException.class)
     public void expectFailureToGetKeyWhenKeyableHasNoKey()
@@ -75,7 +72,7 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * A keyable entity is not buildable if it does not set a primary key!
+     * Ensure a keyable entity is not buildable if it does not set a primary key.
      */
     @Test(expected = KeyException.class)
     public void expectFailureToBuildKeyableWhenKeyableHasNoKey()
@@ -86,16 +83,27 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * An empty keyable entity can query its own fields that will return null or 0!
+     * Ensure a null key is returned when the key does not exist.
      */
     @Test
-    public void expectSuccessTo()
+    public void expectSuccessToRetrieveNullKeyWhenKeyDoesNotExist()
     {
         KeyableCountry entity = KeyableCountry.empty();
         Assert.assertNotNull(entity);
 
         IKey key = entity.getKey("name", "name");
+        Assert.assertNull(key);
+    }
 
-        System.out.println("");
+    /**
+     * Ensure a null annotation is returned when the key does not exist.
+     */
+    @Test
+    public void expectSuccessToRetrieveNullAnnotationWhenKeyDoesNotExist()
+    {
+        KeyableCountry entity = KeyableCountry.empty();
+        Assert.assertNotNull(entity);
+
+        Assert.assertNull(entity.getKeyAnnotation("name"));
     }
 }

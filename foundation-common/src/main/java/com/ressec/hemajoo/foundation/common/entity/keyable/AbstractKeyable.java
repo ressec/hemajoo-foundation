@@ -118,13 +118,19 @@ public abstract class AbstractKeyable implements Keyable
     }
 
     @Override
-    public final Key getKey(final @NonNull String name, final @NonNull Object value)
+    public final IKey getKey(final @NonNull String name, final @NonNull Object value)
     {
-        return Key.builder()
+        IKey key = Key.builder()
                 .keyable(this)
                 .name(name)
                 .value(value)
                 .build();
+        if (key.getName() == null)
+        {
+            return null;
+        }
+
+        return key;
     }
 
     @Override

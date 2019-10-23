@@ -33,18 +33,18 @@ public interface Keyable
     /**
      * Returns the primary key of the keyable entity, if one has been defined.
      *
-     * @return Primary {@link Key} or null if no primary key set.
+     * @return Primary {@link IKey} or null if no primary key set.
      */
-    Key getKey();
+    IKey getKey();
 
     /**
      * Returns the key matching the given key name and value.
      *
      * @param name  Key name.
      * @param value Key value.
-     * @return {@link Key} if one has been found, null otherwise.
+     * @return {@link IKey} if one has been found, null otherwise.
      */
-    Key getKey(final @NonNull String name, final @NonNull Object value);
+    IKey getKey(final @NonNull String name, final @NonNull Object value);
 
     /**
      * Returns a list of the keys set for this keyable entity.
