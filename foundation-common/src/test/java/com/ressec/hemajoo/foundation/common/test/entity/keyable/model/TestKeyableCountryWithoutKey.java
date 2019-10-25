@@ -14,10 +14,7 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
-import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.entity.keyable.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,14 +49,13 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * Ensure an empty keyable entity can query its own fields that will return null or 0.
+     * Ensure an empty keyable entity can be instantiated.
      */
     @Test
-    public void expectSuccessToQueryFieldOfEmptyKeyableWhenKeyableHasNoKey()
+    public void expectSuccessToGetEmpty()
     {
-        KeyableCountryWithoutKey entity = (KeyableCountryWithoutKey) KeyableCountryWithoutKey.empty();
-        Assert.assertNull(entity.getIso3());
-        Assert.assertEquals(0, entity.getNumeric());
+        IKeyable empty = Keyable.empty();
+        Assert.assertNotNull(empty);
     }
 
     /**
@@ -105,6 +101,6 @@ public class TestKeyableCountryWithoutKey
         IKeyable entity = KeyableCountryWithoutKey.empty();
         Assert.assertNotNull(entity);
 
-        Assert.assertNull(entity.getKeyAnnotation("name"));
+        Assert.assertNull(entity.getAnnotationKey("name"));
     }
 }
