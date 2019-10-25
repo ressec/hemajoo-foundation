@@ -42,26 +42,15 @@ public class Keyable extends AbstractKeyable
         return new Keyable();
     }
 
-    /**
-     * Retrieves a keyable from the key manager given a key name and a key value.
-     * @param clazz Class of the caller.
-     * @param keyName Key name.
-     * @param keyValue Key value.
-     * @return Keyable if found, null otherwise.
-     */
-    public static IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
+    @Override
+    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return Keyable.empty().firstFrom(clazz, keyName, keyValue);
+        return super.get(clazz, keyName, keyValue);
     }
 
-    /**
-     * Retrieves a keyable from the key manager given a key.
-     * @param clazz Class of the caller.
-     * @param key Key.
-     * @return Keyable if found, null otherwise.
-     */
-    public static IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    @Override
+    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
-        return Keyable.empty().firstFrom(clazz, key);
+        return super.get(clazz, key);
     }
 }

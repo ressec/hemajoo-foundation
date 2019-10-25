@@ -65,7 +65,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, "name", name);
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertNotNull(country);
     }
 
@@ -81,7 +81,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, entity.getKey());
         Assert.assertNotNull(country);
     }
 
@@ -97,7 +97,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        List<? extends IKeyable> countries = Keyable.empty().from(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        List<? extends IKeyable> countries = Keyable.empty().getList(KeyableCountryWithPrimaryKey.class, entity.getKey());
         Assert.assertNotNull(countries);
         Assert.assertFalse(countries.isEmpty());
     }
@@ -114,7 +114,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        List<? extends IKeyable> countries = Keyable.empty().from(KeyableCountryWithPrimaryKey.class, "name", name);
+        List<? extends IKeyable> countries = Keyable.empty().getList(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertNotNull(countries);
         Assert.assertFalse(countries.isEmpty());
     }
@@ -131,7 +131,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
         Assert.assertNull(country);
     }
 
@@ -147,7 +147,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, "other", "France");
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "other", "France");
         Assert.assertNull(country);
     }
 
@@ -163,7 +163,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
         Assert.assertNull(country);
     }
 
@@ -179,7 +179,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, null, "Switzerland");
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, null, "Switzerland");
     }
 
     /**
@@ -194,7 +194,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, "name", null);
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", null);
     }
 
     /**
@@ -209,7 +209,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().firstFrom(KeyableCountryWithPrimaryKey.class, null);
+        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, null);
     }
 
     /**
@@ -285,7 +285,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .build();
         Assert.assertNotNull(entity);
 
-        KeyableCountryWithPrimaryKey o = (KeyableCountryWithPrimaryKey) Keyable.get(KeyableCountryWithPrimaryKey.class, "name", name);
+        KeyableCountryWithPrimaryKey o = (KeyableCountryWithPrimaryKey) Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertEquals(name, o.getName());
     }
 
@@ -304,7 +304,7 @@ public class TestKeyableCountryWithPrimaryKey
 
         IKey primary = entity.getKey();
 
-        KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.get(KeyableCountryWithPrimaryKey.class, primary);
+        KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.empty().get(KeyableCountryWithPrimaryKey.class, primary);
 
         Assert.assertNotNull(country);
         Assert.assertEquals(name, country.getName());
