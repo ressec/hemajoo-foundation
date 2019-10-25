@@ -44,15 +44,15 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<? extends IKeyable> from(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
+    public final List<? extends IKeyable> from(final @NonNull String name, final @NonNull Object value)
     {
-        return KeyManager.getInstance().get(clazz, name, value);
+        return KeyManager.getInstance().get(this.getClass(), name, value);
     }
 
     @Override
-    public final List<IKeyable> from(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    public final List<IKeyable> from(final @NonNull IKey key)
     {
-        return KeyManager.getInstance().get(clazz, key);
+        return KeyManager.getInstance().get(this.getClass(), key);
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<Annotation> getAnnotationKeys()
+    public final List<Annotation> getKeys()
     {
         List<Annotation> keys = new ArrayList<>();
 
@@ -161,9 +161,9 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final Annotation getAnnotationKey(final @NonNull String name)
+    public final Annotation getKeyAnnotation(final @NonNull String name)
     {
-        for (Annotation annotation : getAnnotationKeys())
+        for (Annotation annotation : getKeys())
         {
             if (annotation instanceof PrimaryKey)
             {
