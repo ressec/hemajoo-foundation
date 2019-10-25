@@ -44,19 +44,19 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<? extends IKeyable> from(final @NonNull String name, final @NonNull Object value)
+    public final List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
-        return KeyManager.getInstance().get(this.getClass(), name, value);
+        return KeyManager.getInstance().get(clazz, name, value);
     }
 
     @Override
-    public final List<IKeyable> from(final @NonNull IKey key)
+    public final List<IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
-        return KeyManager.getInstance().get(this.getClass(), key);
+        return KeyManager.getInstance().get(clazz, key);
     }
 
     @Override
-    public final IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
+    public IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
         List<? extends IKeyable> keyables;
 
@@ -73,7 +73,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    public IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
         List<IKeyable> keyables = KeyManager.getInstance().get(clazz, key);
 
@@ -135,7 +135,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<Annotation> getKeys()
+    public final List<Annotation> getAnnotationKeys()
     {
         List<Annotation> keys = new ArrayList<>();
 
@@ -161,9 +161,9 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final Annotation getKeyAnnotation(final @NonNull String name)
+    public final Annotation getAnnotationKey(final @NonNull String name)
     {
-        for (Annotation annotation : getKeys())
+        for (Annotation annotation : getAnnotationKeys())
         {
             if (annotation instanceof PrimaryKey)
             {

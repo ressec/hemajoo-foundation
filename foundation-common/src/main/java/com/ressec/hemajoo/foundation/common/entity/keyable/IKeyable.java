@@ -36,7 +36,7 @@ public interface IKeyable
     IKey getKey();
 
     /**
-     * Returns the key matching the given key name and value.
+     * Returns the key matching the given name and value.
      * @param name Key name.
      * @param value Key value.
      * @return {@link IKey} if one has been found, null otherwise.
@@ -44,51 +44,71 @@ public interface IKeyable
     IKey getKey(final @NonNull String name, final @NonNull Object value);
 
     /**
-     * Returns a list of the keys set for this keyable entity.
-     * @return List of keys or an empty list if no key defined.
+     * Returns a list of all keys.
+     * @return List of {@link IKey}, or an empty list if no key has been found.
      */
-    List<Annotation> getKeys();
+    //List<IKey> getKeyList();
+
+    /**
+     * Returns a list of unique keys.
+     * @return List of {@link IKey}, or an empty list if no key has been found.
+     */
+    //List<IKey> getUniqueKeyList();
+
+    /**
+     * Returns a list of mandatory keys.
+     * @return List of {@link IKey}, or an empty list if no key has been found.
+     */
+    //List<IKey> getMandatoryKeyList();
 
     /**
      * Retrieves a list of keyable entities according to the given key name and value.
+     * @param clazz Keyable class to retrieve.
      * @param name Key name.
      * @param value Key value.
      * @return List of {@link IKeyable} entities or null if no keyable entity has been found.
      */
-    List<? extends IKeyable> from(final @NonNull String name, final @NonNull Object value);
+    List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value);
 
     /**
      * Retrieves a list of keyable entity according to the given key.
+     * @param clazz Keyable class to retrieve.
      * @param key Key.
      * @return List of {@link IKeyable} entities or null if no keyable entity has been found.
      */
-    List<? extends IKeyable> from(final @NonNull IKey key);
+    List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key);
 
     /**
      * Retrieves the first keyable entity matching the given key name and key value.
      * This service can be used in case the key used is set with the property 'unique' set to true.
-     * @param clazz Class of the caller.
+     * @param clazz Keyable class to retrieve.
      * @param name Key name.
      * @param value Key value.
      * @return {@link IKeyable} entity or null if no keyable entity has been found.
      */
-    IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value);
+    IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value);
 
     /**
      * Retrieves the first keyable matching the given key.
      * This service can be used in case the key used is set with the property 'unique' set to true.
-     * @param clazz Class of the caller.
+     * @param clazz Keyable class to retrieve.
      * @param key Key.
      * @return {@link IKeyable} entity or null if no keyable entity has been found.
      */
-    IKeyable firstFrom(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key);
+    IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key);
 
     /**
      * Returns the key annotation matching the given key name.
      * @param name Key name.
      * @return Key annotation if found, null otherwise.
      */
-    Annotation getKeyAnnotation(final @NonNull String name);
+    Annotation getAnnotationKey(final @NonNull String name);
+
+    /**
+     * Returns a list of all key annotations.
+     * @return List of key annotations or an empty list if no key has been defined.
+     */
+    List<Annotation> getAnnotationKeys();
 
     /**
      * Returns the field annotated with the given annotation.
