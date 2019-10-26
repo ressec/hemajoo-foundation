@@ -944,7 +944,7 @@ public final class KeyManager
      * @param keyableClass Keyable class.
      * @return Number of entities stored.
      */
-    public final int countByKeyable(final @NonNull Class<? extends IKeyable> keyableClass)
+    public final int countByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
     {
         PrimaryKey annotation;
 

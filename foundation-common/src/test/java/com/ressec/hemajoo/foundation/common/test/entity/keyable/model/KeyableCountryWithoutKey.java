@@ -67,6 +67,14 @@ public class KeyableCountryWithoutKey extends Keyable
         // Empty.
     }
 
+    /**
+     * Creates a new test country entity.
+     * @param numericCode Country ISO numeric code.
+     * @param iso2 Country ISO Alpha-2 code.
+     * @param iso3 Country ISO Alpha-3 code.
+     * @param name Country name.
+     * @param officialName Country official name.
+     */
     @Builder
     public KeyableCountryWithoutKey(final int numericCode, final String iso2, final String iso3, final String name, final String officialName)
     {

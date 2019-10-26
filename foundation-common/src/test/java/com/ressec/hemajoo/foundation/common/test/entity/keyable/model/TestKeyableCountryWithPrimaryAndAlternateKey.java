@@ -41,11 +41,12 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     }
 
     /**
-     * Ensure a {@link KeyException} is thrown when a keyable is created and one of its mandatory key value is not set.
+     * Ensure a {@link KeyException} is raised when a keyable is created and one of its mandatory key value is not set.
      */
     @Test(expected = KeyException.class)
-    public void expectKeyExceptionWhenMandatoryKeyValueIsNotSet()
+    public void expectFailureWhenMandatoryKeyValueIsNotSet()
     {
+        // The iso3 mandatory key value is not set at creation time.
         KeyableCountryWithPrimaryAndAlternateKey.builder()
                 .name("France")
                 .iso2("FR")
@@ -273,7 +274,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     {
         KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryAndAlternateKey.class);
 
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryAndAlternateKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyableCountryWithPrimaryAndAlternateKey.class));
 
         KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
                 .name("France")
@@ -282,7 +283,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
 
-        int count = KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryAndAlternateKey.class);
+        int count = KeyManager.getInstance().countByKeyableClass(KeyableCountryWithPrimaryAndAlternateKey.class);
         Assert.assertEquals(1, count);
     }
 

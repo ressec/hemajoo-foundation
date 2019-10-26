@@ -41,7 +41,7 @@ public class TestKeyableCountryWithPrimaryKey
     }
 
     /**
-     * Ensure the success to retrieve the first keyable using the static empty service and the key name and value.
+     * Ensure the success to create a keyable with only the primary key value set.
      */
     @Test
     public void expectSuccessToCreateKeyableWithPrimaryKey()
@@ -267,14 +267,14 @@ public class TestKeyableCountryWithPrimaryKey
     @Test
     public void expectSuccessToRegisterKeyableWithPrimaryKey()
     {
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyableCountryWithPrimaryKey.class));
 
         KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
                 .name("France")
                 .build();
         Assert.assertNotNull(entity);
 
-        int count = KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryKey.class);
+        int count = KeyManager.getInstance().countByKeyableClass(KeyableCountryWithPrimaryKey.class);
         Assert.assertEquals(1, count);
     }
 

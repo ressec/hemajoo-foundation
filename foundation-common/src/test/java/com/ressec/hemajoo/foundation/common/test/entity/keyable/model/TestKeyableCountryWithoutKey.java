@@ -39,7 +39,7 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * Ensure a key exception is raised while trying to create a keyable not having one primary key set.
+     * Ensure an exception is raised while trying to create a keyable not having a primary key defined.
      */
     @Test(expected = KeyException.class)
     public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
