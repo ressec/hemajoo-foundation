@@ -355,8 +355,7 @@ public final class KeyManager
         }
 
         // Check the type property.
-        if (field.getType() != String.class && field.getType() != Integer.class && field.getType() != Long.class &&
-                field.getType() != UUID.class)
+        if (!isFieldTypeAuthorized(field))
         {
             throw new KeyException(
                     String.format("Key with name: '%s', of type: '%s' for keyable: '%s' has an invalid type!",
@@ -521,6 +520,7 @@ public final class KeyManager
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean unique = key instanceof PrimaryKey ? ((PrimaryKey) key).unique() : ((AlternateKey) key).unique();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
+        boolean mandatory = key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
 
         field.setAccessible(true);
 
@@ -569,26 +569,64 @@ public final class KeyManager
         map2 = getCollectionByKeyType(map1, field.getType());
         map3 = getCollectionByKeyName(map2, name);
 
-        if (unique)
+        boolean skip = false;
+        if (!mandatory)
         {
-            if (!map3.containsKey(value))
+            if (field.getType().isPrimitive())
             {
-                map3.put(value, keyable);
+                if (value instanceof Integer && (Integer) value == 0)
+                {
+                    skip = true;
+                }
+                else if (value instanceof Long && (Long) value == 0)
+                {
+                    skip = true;
+                }
+                else if (value instanceof Byte && (Byte) value == 0)
+                {
+                    skip = true;
+                }
+                else if (value instanceof Double && (Double) value == 0.0)
+                {
+                    skip = true;
+                }
+                else if (value instanceof Float && (Float) value == 0.0f)
+                {
+                    skip = true;
+                }
             }
             else
             {
-                throw new KeyException(
-                        String.format(
-                                "Cannot register key with name: '%s' with value: '%s', of type: '%s' for keyable entity: '%s', because key value is not unique!",
-                                name,
-                                value,
-                                field.getType().getName(),
-                                keyable.getClass().getName()));
+                if (value == null)
+                {
+                    skip = true;
+                }
             }
         }
-        else
+
+        if (!skip)
         {
-            map3.put(value, keyable);
+            if (unique)
+            {
+                if (!map3.containsKey(value))
+                {
+                    map3.put(value, keyable);
+                }
+                else
+                {
+                    throw new KeyException(
+                            String.format(
+                                    "Cannot register key with name: '%s' with value: '%s', of type: '%s' for keyable entity: '%s', because key value is not unique!",
+                                    name,
+                                    value,
+                                    field.getType().getName(),
+                                    keyable.getClass().getName()));
+                }
+            }
+            else
+            {
+                map3.put(value, keyable);
+            }
         }
     }
 
@@ -916,5 +954,25 @@ public final class KeyManager
         {
             return 0;
         }
+    }
+
+    /**
+     * Returns if the given field (annotated with a key annotation) is of an authorized type?
+     * @param field Annotated field.
+     * @return True if the field has an authorized type, false otherwise.
+     */
+    private boolean isFieldTypeAuthorized(final @NonNull Field field)
+    {
+        return field.getType().isPrimitive()
+                || field.getType() == Integer.class
+                || field.getType() == Long.class
+                || field.getType() == Double.class
+                || field.getType() == Float.class
+                || field.getType() == Boolean.class
+                || field.getType() == Short.class
+                || field.getType() == Byte.class
+                || field.getType() == Character.class
+                || field.getType() == UUID.class
+                || field.getType() == String.class;
     }
 }
