@@ -100,9 +100,9 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     }
 
     /**
-     * Ensure an exception is raised when trying to query on an non-existent key name.
+     * Ensure a null keyable is returned when trying to query a non-existent key name.
      */
-    @Test(expected = KeyManagerException.class)
+    @Test
     public void expectKeyManagerExceptionWhenQueryingOnNonExistentAlternateKeyName()
     {
         KeyableCountryWithPrimaryAndAlternateKey.builder()
@@ -171,10 +171,10 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Test
     public void expectSuccessToRetrieveNullWhenQueryingNonExistentKeyName()
     {
-        String name = "France";
-
         KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name(name)
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
                 .build();
 
         IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryAndAlternateKey.class, "other", "France");
@@ -233,10 +233,10 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Test(expected = NullPointerException.class)
     public void expectNullPointerExceptionWhenUsingNullKey()
     {
-        String name = "France";
-
         KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name(name)
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
                 .build();
 
         Keyable.retrieve(KeyableCountryWithPrimaryAndAlternateKey.class, null);

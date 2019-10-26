@@ -14,7 +14,10 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.*;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,8 +58,8 @@ public class TestKeyableCountryWithPrimaryKey
     /**
      * Ensure an exception is raised while trying to retrieve a keyable when the query is based on a non-existent key name.
      */
-    @Test(expected = KeyManagerException.class)
-    public void expectFailureToRetrieveKeyableWhileQueryingOnNonExistentKeyName()
+    @Test
+    public void expectSuccessToGetNullKeyableWhileQueryingNonExistentKeyName()
     {
         KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
                 .name("France")
@@ -146,26 +149,10 @@ public class TestKeyableCountryWithPrimaryKey
     }
 
     /**
-     * Ensure the success to retrieve null when querying for an unknown keyable.
-     */
-    @Test
-    public void expectSuccessToRetrieveNullWhenQueryingNonExistentKeyable()
-    {
-        String name = "France";
-
-        KeyableCountryWithPrimaryKey.builder()
-                .name(name)
-                .build();
-
-        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
-        Assert.assertNull(country);
-    }
-
-    /**
      * Ensure a key manager exception is raised while trying to retrieve a keyable when querying on a non-existent key name.
      */
-    @Test(expected = KeyManagerException.class)
-    public void expectKeyManagerExceptionToRetrieveKeyableWhenQueryingNonExistentKeyName()
+    @Test
+    public void expectSuccessToGetNullKeyableWhenQueryingNonExistentKeyName()
     {
         String name = "France";
 

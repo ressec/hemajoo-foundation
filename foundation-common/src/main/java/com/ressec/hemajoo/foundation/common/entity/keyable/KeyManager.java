@@ -909,30 +909,10 @@ public final class KeyManager
 
         throw new KeyManagerException(
                 String.format(
-                        "Cannot determine type for key name: '%s' on keyable entity type: '%s'",
+                        "Cannot determine type for key name: '%s' on keyable entity type: '%s'. Are you sure it's a real key?",
                         keyName,
                         keyableClass));
     }
-
-//    /**
-//     * Returns a list of keyables matching the given key name and value.
-//     * @param keyable Keyable.
-//     * @param name Key name.
-//     * @param value Key value.
-//     * @return List of keyables or an empty list if no keyable has been found matching the given criteria.
-//     */
-//    public final List<Keyable> get(final @NonNull Keyable keyable, final @NonNull String name, final @NonNull Object value)
-//    {
-//        Annotation annotation = keyable.getKeyAnnotation(name);
-//        Field field = keyable.getAnnotatedField(annotation);
-//
-//        if (annotation != null && field != null)
-//        {
-//            return new ArrayList<>(entities.get(keyable.getClass()).get(field.getType()).get(name).get(value));
-//        }
-//
-//        return new ArrayList<>();
-//    }
 
     /**
      * Returns a list of keyables matching the given key name and value.
@@ -943,13 +923,24 @@ public final class KeyManager
      */
     public final List<? extends IKeyable> get(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        Class<?> type = getKeyTypeFor(keyableClass, keyName);
+        Class<?> type = null;
 
-        if (type == null)
+        try
         {
-            throw new KeyManagerException(
-                    String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName,
-                            keyableClass));
+            type = getKeyTypeFor(keyableClass, keyName);
+
+            if (type == null)
+            {
+                // TODO Should log the error then return null instead of raising an exception!
+                throw new KeyManagerException(
+                        String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName,
+                                keyableClass));
+            }
+        }
+        catch (KeyManagerException e)
+        {
+            // TODO Should log the error
+            return new ArrayList<>();
         }
 
         return new ArrayList<>(entities.get(keyableClass).get(type).get(keyName).get(keyValue));
@@ -1000,7 +991,14 @@ public final class KeyManager
 
         if (!entities.isEmpty())
         {
-            map = entities.get(keyableClass).get(keyType).get(keyName);
+            try
+            {
+                map = entities.get(keyableClass).get(keyType).get(keyName);
+            }
+            catch (NullPointerException e)
+            {
+                // Do nothing!
+            }
         }
 
         return map == null ? new ArrayList<>() : new ArrayList<>(map.values());
