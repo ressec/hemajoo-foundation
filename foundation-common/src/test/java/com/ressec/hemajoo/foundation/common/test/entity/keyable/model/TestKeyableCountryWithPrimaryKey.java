@@ -14,10 +14,7 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
-import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,55 +30,84 @@ import java.util.List;
 public class TestKeyableCountryWithPrimaryKey
 {
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryKey.class);
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
-    }
-
-    /**
-     * Ensure the success to create an empty keyable entity.
-     */
-    @Test
-    public void expectSuccessToCreateEmptyKeyableWhenKeyableHasPrimaryKey()
-    {
-        IKeyable entity = KeyableCountryWithPrimaryKey.empty();
-        Assert.assertNotNull(entity);
     }
 
     /**
      * Ensure the success to retrieve the first keyable using the static empty service and the key name and value.
      */
     @Test
-    public void expectSuccessToRetrieveFirstFromKeyableUsingEmptyWithNameAndValue()
+    public void expectSuccessToCreateKeyableWithPrimaryKey()
     {
-        String name = "USA";
-
         KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
-                .name(name)
+                .name("France")
+                .build();
+        Assert.assertNotNull(entity);
+    }
+
+    /**
+     * Ensure an exception is raised while trying to retrieve a keyable when the query is based on a non-existent key name.
+     */
+    @Test(expected = KeyManagerException.class)
+    public void expectFailureToRetrieveKeyableWhileQueryingOnNonExistentKeyName()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .iso2("FR")
+                .build();
+        Assert.assertNotNull(entity);
+
+        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "iso2", "FR");
+    }
+
+    /**
+     * Ensure the success to retrieve a null keyable when the query is based on a non-existent key value.
+     */
+    @Test
+    public void expectSuccessToRetrieveNullKeyableWhenQueryingOnNonExistentKeyValue()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .iso2("FR")
+                .build();
+        Assert.assertNotNull(entity);
+
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "GE");
+        Assert.assertNull(country);
+    }
+
+    /**
+     * Ensure the success to retrieve a keyable using a key entity.
+     */
+    @Test
+    public void expectSuccessToRetrieveKeyableUsingKey()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", name);
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, entity.getKey());
         Assert.assertNotNull(country);
     }
 
     /**
-     * Ensure the success to retrieve the first keyable using the static empty service and the key.
+     * Ensure the success to retrieve a keyable using a key name and value.
      */
     @Test
-    public void expectSuccessToRetrieveFirstFromKeyableUsingEmptyWithKey()
+    public void expectSuccessToRetrieveKeyableUsingKeyNameAndValue()
     {
-        String name = "Spain";
-
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
-                .name(name)
+        KeyableCountryWithPrimaryKey.builder()
+                .name("France")
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
         Assert.assertNotNull(country);
     }
 
@@ -97,7 +123,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        List<? extends IKeyable> countries = Keyable.empty().getList(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        List<? extends IKeyable> countries = Keyable.query(KeyableCountryWithPrimaryKey.class, entity.getKey());
         Assert.assertNotNull(countries);
         Assert.assertFalse(countries.isEmpty());
     }
@@ -110,11 +136,11 @@ public class TestKeyableCountryWithPrimaryKey
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        List<? extends IKeyable> countries = Keyable.empty().getList(KeyableCountryWithPrimaryKey.class, "name", name);
+        List<? extends IKeyable> countries = Keyable.query(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertNotNull(countries);
         Assert.assertFalse(countries.isEmpty());
     }
@@ -127,28 +153,27 @@ public class TestKeyableCountryWithPrimaryKey
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
         Assert.assertNull(country);
     }
 
     /**
-     * Ensure the success to retrieve null while querying for keyable when key name does not exist.
+     * Ensure a key manager exception is raised while trying to retrieve a keyable when querying on a non-existent key name.
      */
-    @Test
-    public void expectSuccessToRetrieveNullWhenQueryingNonExistentKeyName()
+    @Test(expected = KeyManagerException.class)
+    public void expectKeyManagerExceptionToRetrieveKeyableWhenQueryingNonExistentKeyName()
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "other", "France");
-        Assert.assertNull(country);
+        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "other", "France");
     }
 
     /**
@@ -159,57 +184,57 @@ public class TestKeyableCountryWithPrimaryKey
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "Switzerland");
         Assert.assertNull(country);
     }
 
     /**
-     * Ensure to raise a NullPointerException while querying for keyable when key name is null.
+     * Ensure an exception is raised while trying to retrieve a keyable when querying on a null key name.
      */
     @Test(expected = NullPointerException.class)
     public void expectNullPointerExceptionWhenUsingNullKeyName()
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, null, "Switzerland");
+        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, null, "Switzerland");
     }
 
     /**
-     * Ensure to raise a NullPointerException while querying for keyable when key value is null.
+     * Ensure an exception is raised while trying to retrieve a keyable when querying on a null key value.
      */
     @Test(expected = NullPointerException.class)
     public void expectNullPointerExceptionWhenUsingNullKeyValue()
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", null);
+        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", null);
     }
 
     /**
-     * Ensure the success to retrieve null when querying based on a non-existent key name.
+     * Ensure an exception is raised while trying to retrieve a keyable when querying on a null key.
      */
     @Test(expected = NullPointerException.class)
     public void expectNullPointerExceptionWhenUsingNullKey()
     {
         String name = "France";
 
-        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+        KeyableCountryWithPrimaryKey.builder()
                 .name(name)
                 .build();
 
-        IKeyable country = Keyable.empty().get(KeyableCountryWithPrimaryKey.class, null);
+        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, null);
     }
 
     /**
@@ -285,7 +310,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .build();
         Assert.assertNotNull(entity);
 
-        KeyableCountryWithPrimaryKey o = (KeyableCountryWithPrimaryKey) Keyable.empty().get(KeyableCountryWithPrimaryKey.class, "name", name);
+        KeyableCountryWithPrimaryKey o = (KeyableCountryWithPrimaryKey) Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", name);
         Assert.assertEquals(name, o.getName());
     }
 
@@ -304,7 +329,7 @@ public class TestKeyableCountryWithPrimaryKey
 
         IKey primary = entity.getKey();
 
-        KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.empty().get(KeyableCountryWithPrimaryKey.class, primary);
+        KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.retrieve(KeyableCountryWithPrimaryKey.class, primary);
 
         Assert.assertNotNull(country);
         Assert.assertEquals(name, country.getName());

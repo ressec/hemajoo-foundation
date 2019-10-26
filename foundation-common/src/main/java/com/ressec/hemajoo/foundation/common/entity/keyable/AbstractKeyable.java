@@ -56,24 +56,17 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
+    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
         List<? extends IKeyable> keyables;
 
-        try
-        {
-            keyables = KeyManager.getInstance().get(clazz, name, value);
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        keyables = KeyManager.getInstance().get(clazz, name, value);
 
         return keyables.isEmpty() ? null : keyables.get(0);
     }
 
     @Override
-    public IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
         List<IKeyable> keyables = KeyManager.getInstance().get(clazz, key);
 
@@ -81,7 +74,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public Key getKey()
+    public final Key getKey()
     {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields)
@@ -120,6 +113,8 @@ public abstract class AbstractKeyable implements IKeyable
     @Override
     public final IKey getKey(final @NonNull String name, final @NonNull Object value)
     {
+        // TODO Review and correct this code
+
         IKey key = Key.builder()
                 .keyable(this)
                 .name(name)

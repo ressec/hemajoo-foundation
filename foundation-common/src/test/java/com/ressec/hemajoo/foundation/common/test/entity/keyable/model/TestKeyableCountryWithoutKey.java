@@ -14,9 +14,9 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.*;
+import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
+import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,68 +39,13 @@ public class TestKeyableCountryWithoutKey
     }
 
     /**
-     * Ensure an empty entity can be created even if the keyable has no key.
-     */
-    @Test
-    public void expectSuccessToCreateEmptyKeyableWhenKeyableHasNoKey()
-    {
-        IKeyable entity = KeyableCountryWithoutKey.empty();
-        Assert.assertNotNull(entity);
-    }
-
-    /**
-     * Ensure an empty keyable entity can be instantiated.
-     */
-    @Test
-    public void expectSuccessToGetEmpty()
-    {
-        IKeyable empty = Keyable.empty();
-        Assert.assertNotNull(empty);
-    }
-
-    /**
-     * Ensure a key instance is not retrievable on a keyable empty instance.
+     * Ensure a key exception is raised while trying to create a keyable not having one primary key set.
      */
     @Test(expected = KeyException.class)
-    public void expectFailureToGetKeyWhenKeyableHasNoKey()
-    {
-        IKeyable entity = KeyableCountryWithoutKey.empty();
-        IKey key = entity.getKey();
-    }
-
-    /**
-     * Ensure a keyable entity is not buildable if it does not set a primary key.
-     */
-    @Test(expected = KeyException.class)
-    public void expectFailureToBuildKeyableWhenKeyableHasNoKey()
+    public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
     {
         KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.builder()
-                .iso3("FRA")
+                .name("France")
                 .build();
-    }
-
-    /**
-     * Ensure a null key is returned when the key does not exist.
-     */
-    @Test
-    public void expectSuccessToRetrieveNullKeyWhenKeyDoesNotExist()
-    {
-        IKeyable entity = KeyableCountryWithoutKey.empty();
-        Assert.assertNotNull(entity);
-
-        IKey key = entity.getKey("name", "name");
-        Assert.assertNull(key);
-    }
-
-    /**
-     * Ensure a null annotation is returned when the key does not exist.
-     */
-    @Test
-    public void expectSuccessToRetrieveNullAnnotationWhenKeyDoesNotExist()
-    {
-        IKeyable entity = KeyableCountryWithoutKey.empty();
-        Assert.assertNotNull(entity);
-
-        Assert.assertNull(entity.getAnnotationKey("name"));
     }
 }

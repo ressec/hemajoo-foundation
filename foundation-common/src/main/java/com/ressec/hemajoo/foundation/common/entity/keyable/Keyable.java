@@ -17,8 +17,13 @@ package com.ressec.hemajoo.foundation.common.entity.keyable;
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import lombok.NonNull;
 
+import java.util.List;
+
 /**
  * Provides a concrete implementation of a keyable entity.
+ * <br>
+ * This class should be used instead of the {@link AbstractKeyable} when creating new implementations of a
+ * {@link IKeyable}.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -34,23 +39,63 @@ public class Keyable extends AbstractKeyable
     }
 
     /**
-     * Creates an empty (fake) country. Used to query the key manager.
-     * @return Empty keyable.
+     * Queries the key manager to retrieve a list of {@link IKeyable} entities matching the given parameters.
+     * <br>
+     * Should be called when querying a non-unique key.
+     * @param clazz Keyable class.
+     * @param keyName Key name.
+     * @param keyValue Key value.
+     * @return List of found entities or an empty list if no matching entities have been found.
      */
-    public static IKeyable empty()
+    public static List<? extends IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return new Keyable();
+        return KeyManager.getInstance().get(clazz, keyName, keyValue);
     }
 
-    @Override
-    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
+    /**
+     * Queries the key manager to retrieve a list of {@link IKeyable} entities matching the given parameters.
+     * <br>
+     * Should be called when querying a non-unique key.
+     * @param clazz Keyable class.
+     * @param key Key.
+     * @return List of found entities or an empty list if no matching entities have been found.
+     */
+    public static List<? extends IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
-        return super.get(clazz, keyName, keyValue);
+        return KeyManager.getInstance().get(clazz, key);
     }
 
-    @Override
-    public final IKeyable get(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    /**
+     * Queries the key manager to retrieve a {@link IKeyable} entity matching the given parameters.
+     * <br>
+     * Should be called when querying a unique key.
+     * @param clazz Keyable class.
+     * @param keyName Key name.
+     * @param keyValue Key value.
+     * @return Keyable entity or null if no matching entities have been found.
+     */
+    public static IKeyable retrieve(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
     {
-        return super.get(clazz, key);
+        List<? extends IKeyable> entities = KeyManager.getInstance().get(clazz, keyName, keyValue);
+
+        if (entities.size() > 0)
+        {
+            return entities.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Queries the key manager to retrieve a {@link IKeyable} entity matching the given parameters.
+     * <br>
+     * Should be called when querying a unique key.
+     * @param clazz Keyable class.
+     * @param key Key.
+     * @return Keyable entity or null if no matching entities have been found.
+     */
+    public static IKeyable retrieve(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    {
+        return retrieve(clazz, key.getName(), key.getValue());
     }
 }

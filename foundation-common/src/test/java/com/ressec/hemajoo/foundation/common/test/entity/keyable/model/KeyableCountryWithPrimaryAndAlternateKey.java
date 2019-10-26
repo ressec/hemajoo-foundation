@@ -34,6 +34,7 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     /**
      * Numeric ISO code of the country.
      */
+    @AlternateKey(name = "numeric", mandatory = false, unique = true)
     @Getter
     private int numeric;
 
@@ -58,6 +59,20 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     private String name;
 
     /**
+     * Comment.
+     */
+    @PrimaryKey(name = "comment", unique = false, mandatory = false, auto = false)
+    @Getter
+    private String comment;
+
+    /**
+     * Estimated population in 2019 (useless key ... just for testing purpose).
+     */
+    @PrimaryKey(name = "population", unique = false, mandatory = false, auto = false)
+    @Getter
+    private long population;
+
+    /**
      * Official name of the country.
      */
     @Getter
@@ -73,13 +88,21 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     /**
      * Creates a new country.
      * @param name Country name.
+     * @param iso2 Country ISO Alpha-2 code.
      * @param iso3 Country ISO Alpha-3 code.
+     * @param numeric Country ISO numeric code.
+     * @param population Country estimated population in 2019.
+     * @param comment Country comment.
      */
     @Builder
-    public KeyableCountryWithPrimaryAndAlternateKey(final String name, final String iso3)
+    public KeyableCountryWithPrimaryAndAlternateKey(final String name, final String iso2, final String iso3, final int numeric, final long population, final String comment)
     {
         this.name = name;
+        this.iso2 = iso2;
         this.iso3 = iso3;
+        this.numeric = numeric;
+        this.population = population;
+        this.comment = comment;
 
         // Invoke the key manager for registration.
         super.register();
