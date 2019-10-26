@@ -186,10 +186,10 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Test
     public void expectSuccessToRetrieveNullWhenQueryingNonExistentKeyValue()
     {
-        String name = "France";
-
         KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name(name)
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
                 .build();
 
         IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "Switzerland");
@@ -271,14 +271,18 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Test
     public void expectSuccessToRegisterKeyableWithPrimaryKey()
     {
-        Assert.assertEquals(0, KeyManager.getInstance().countKeyable(KeyableCountryWithPrimaryAndAlternateKey.class));
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryAndAlternateKey.class);
+
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryAndAlternateKey.class));
 
         KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
                 .name("France")
+                .iso2("FR")
+                .iso3("FRA")
                 .build();
         Assert.assertNotNull(entity);
 
-        int count = KeyManager.getInstance().countKeyable(KeyableCountryWithPrimaryAndAlternateKey.class);
+        int count = KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryAndAlternateKey.class);
         Assert.assertEquals(1, count);
     }
 

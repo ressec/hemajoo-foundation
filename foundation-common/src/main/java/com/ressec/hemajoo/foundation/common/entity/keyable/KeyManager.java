@@ -944,16 +944,39 @@ public final class KeyManager
      * @param keyableClass Keyable class.
      * @return Number of entities stored.
      */
-    public final int countKeyable(final @NonNull Class<? extends IKeyable> keyableClass)
+    public final int countByKeyable(final @NonNull Class<? extends IKeyable> keyableClass)
     {
-        try
+        PrimaryKey annotation;
+
+        for (Field field : keyableClass.getDeclaredFields())
         {
-            return entities.get(keyableClass).size();
+            annotation = field.getAnnotation(PrimaryKey.class);
+            if (annotation != null)
+            {
+                return getKeyables(keyableClass, field.getType(), field.getName()).size();
+            }
         }
-        catch (NullPointerException npe)
+
+        return 0;
+    }
+
+    /**
+     * Returns a list of registered keyables matching the given parameters.
+     * @param keyableClass Keyable class.
+     * @param keyType Key type.
+     * @param keyName Key name.
+     * @return List of matching keyables or an empty list if no keyable found.
+     */
+    private List<? extends IKeyable> getKeyables(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Class<?> keyType, final @NonNull String keyName)
+    {
+        Multimap<Object, IKeyable> map = null;
+
+        if (!entities.isEmpty())
         {
-            return 0;
+            map = entities.get(keyableClass).get(keyType).get(keyName);
         }
+
+        return map == null ? new ArrayList<>() : new ArrayList<>(map.values());
     }
 
     /**

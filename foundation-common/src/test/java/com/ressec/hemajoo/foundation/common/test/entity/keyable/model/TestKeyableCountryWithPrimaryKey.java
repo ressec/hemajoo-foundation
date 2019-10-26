@@ -267,14 +267,14 @@ public class TestKeyableCountryWithPrimaryKey
     @Test
     public void expectSuccessToRegisterKeyableWithPrimaryKey()
     {
-        Assert.assertEquals(0, KeyManager.getInstance().countKeyable(KeyableCountryWithPrimaryKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryKey.class));
 
         KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
                 .name("France")
                 .build();
         Assert.assertNotNull(entity);
 
-        int count = KeyManager.getInstance().countKeyable(KeyableCountryWithPrimaryKey.class);
+        int count = KeyManager.getInstance().countByKeyable(KeyableCountryWithPrimaryKey.class);
         Assert.assertEquals(1, count);
     }
 
