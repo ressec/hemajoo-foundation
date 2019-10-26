@@ -133,6 +133,7 @@ public final class KeyManager
             }
         }
 
+        checkPrimaryKey(keyable);
         checkForKeyDuplicate(keyable);
 
         registerKeyable(keyable);
@@ -716,6 +717,32 @@ public final class KeyManager
                     String.format(
                             "Keyable entity: '%s' does not contain a primary key! One of the defined keys must be set as the primary key",
                             keyable.getClass().getName()));
+        }
+    }
+
+    /**
+     * Checks only one field can be annotated with the primary key annotation.
+     * @param keyable Keyable entity.
+     */
+    private void checkPrimaryKey(final @NonNull IKeyable keyable)
+    {
+        boolean found = false;
+        for (Annotation key : keys.values())
+        {
+            if (key instanceof PrimaryKey)
+            {
+                if (!found)
+                {
+                    found = true;
+                }
+                else
+                {
+                    throw new KeyException(
+                            String.format(
+                                    "Keyable entity: '%s' contains multiple fields annotated as primary keys! Only one field can be annotated as the primary key",
+                                    keyable.getClass().getName()));
+                }
+            }
         }
     }
 

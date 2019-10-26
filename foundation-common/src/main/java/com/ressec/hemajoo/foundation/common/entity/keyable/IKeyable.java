@@ -36,30 +36,35 @@ public interface IKeyable
     IKey getKey();
 
     /**
-     * Returns the key matching the given name and value.
+     * Returns the key matching the given name.
      * @param name Key name.
-     * @param value Key value.
      * @return {@link IKey} if one has been found, null otherwise.
      */
-    IKey getKey(final @NonNull String name, final @NonNull Object value);
+    IKey getKey(final @NonNull String name);
 
     /**
      * Returns a list of all keys.
      * @return List of {@link IKey}, or an empty list if no key has been found.
      */
-    //List<IKey> getKeyList();
+    List<IKey> getKeyList();
 
     /**
      * Returns a list of unique keys.
-     * @return List of {@link IKey}, or an empty list if no key has been found.
+     * @return List of {@link IKey}, or an empty list if no matching key has been found.
      */
-    //List<IKey> getUniqueKeyList();
+    List<IKey> getUniqueKeyList();
 
     /**
      * Returns a list of mandatory keys.
-     * @return List of {@link IKey}, or an empty list if no key has been found.
+     * @return List of {@link IKey}, or an empty list if no matching key has been found.
      */
-    //List<IKey> getMandatoryKeyList();
+    List<IKey> getMandatoryKeyList();
+
+    /**
+     * Returns a list of automatically generated keys.
+     * @return List of {@link IKey}, or an empty list if no matching key has been found.
+     */
+    List<IKey> getAutoKeyList();
 
     /**
      * Retrieves a list of keyable entities according to the given key name and value.

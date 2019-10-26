@@ -19,6 +19,7 @@ import lombok.NonNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -111,28 +112,46 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final IKey getKey(final @NonNull String name, final @NonNull Object value)
+    public final IKey getKey(final @NonNull String name)
     {
-        // TODO Review and correct this code
-
-        IKey key = Key.builder()
-                .keyable(this)
-                .name(name)
-                .value(value)
-                .build();
-
-        if (key.getName() == null)
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields)
         {
-            return null;
+            AlternateKey alternate = field.getAnnotation(AlternateKey.class);
+            if (alternate != null)
+            {
+                if (alternate.name().equals(name))
+                {
+                    try
+                    {
+                        field.setAccessible(true);
+                        Object value = field.get(this);
+                        field.setAccessible(false);
+
+                        return Key.builder()
+                                .keyable(this)
+                                .name(alternate.name())
+                                .value(value)
+                                .build();
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        throw new KeyException(
+                                String.format("Cannot retrieve alternate key on keyable: '%s', due to: '%s'",
+                                        this.getClass().getName(),
+                                        e.getMessage()));
+                    }
+                }
+            }
         }
 
-        return key;
+        return null;
     }
 
     @Override
     public final List<Annotation> getAnnotationKeys()
     {
-        List<Annotation> keys = new ArrayList<>();
+        List<Annotation> annotations = new ArrayList<>();
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields)
@@ -140,19 +159,19 @@ public abstract class AbstractKeyable implements IKeyable
             PrimaryKey primary = field.getAnnotation(PrimaryKey.class);
             if (primary != null)
             {
-                keys.add(primary);
+                annotations.add(primary);
             }
             else
             {
                 AlternateKey alternate = field.getAnnotation(AlternateKey.class);
                 if (alternate != null)
                 {
-                    keys.add(alternate);
+                    annotations.add(alternate);
                 }
             }
         }
 
-        return keys;
+        return Collections.unmodifiableList(annotations);
     }
 
     @Override
@@ -212,5 +231,113 @@ public abstract class AbstractKeyable implements IKeyable
         }
 
         return null;
+    }
+
+    @Override
+    public final List<IKey> getKeyList()
+    {
+        List<IKey> keys = new ArrayList<>();
+
+        for (Annotation annotation : getAnnotationKeys())
+        {
+            if (annotation instanceof PrimaryKey)
+            {
+                keys.add(getKey());
+            }
+            else if (annotation instanceof AlternateKey)
+            {
+                keys.add(getKey(((AlternateKey) annotation).name()));
+            }
+        }
+
+        return Collections.unmodifiableList(keys);
+    }
+
+    @Override
+    public final List<IKey> getUniqueKeyList()
+    {
+        IKey key;
+        List<IKey> keys = new ArrayList<>();
+
+        for (Annotation annotation : getAnnotationKeys())
+        {
+            if (annotation instanceof PrimaryKey)
+            {
+                key = getKey();
+                if (key != null && key.isUnique())
+                {
+                    keys.add(getKey());
+                }
+            }
+            else if (annotation instanceof AlternateKey)
+            {
+                key = getKey(((AlternateKey) annotation).name());
+                if (key != null && key.isUnique())
+                {
+                    keys.add(key);
+                }
+            }
+        }
+
+        return Collections.unmodifiableList(keys);
+    }
+
+    @Override
+    public final List<IKey> getMandatoryKeyList()
+    {
+        IKey key;
+        List<IKey> keys = new ArrayList<>();
+
+        List<Annotation> annotations = getAnnotationKeys();
+        for (Annotation annotation : annotations)
+        {
+            if (annotation instanceof PrimaryKey)
+            {
+                key = getKey();
+                if (key != null && key.isMandatory())
+                {
+                    keys.add(key);
+                }
+            }
+            else if (annotation instanceof AlternateKey)
+            {
+                key = getKey(((AlternateKey) annotation).name());
+                if (key != null && key.isMandatory())
+                {
+                    keys.add(key);
+                }
+            }
+        }
+
+        return Collections.unmodifiableList(keys);
+    }
+
+    @Override
+    public final List<IKey> getAutoKeyList()
+    {
+        IKey key;
+        List<IKey> keys = new ArrayList<>();
+
+        for (Annotation annotation : getAnnotationKeys())
+        {
+            if (annotation instanceof PrimaryKey)
+            {
+                key = getKey();
+                if (key != null && key.isAuto())
+                {
+                    keys.add(getKey());
+                }
+            }
+            else if (annotation instanceof AlternateKey)
+            {
+                key = getKey(((AlternateKey) annotation).name());
+                if (key != null && key.isAuto())
+                {
+                    keys.add(key);
+                }
+            }
+        }
+
+        return Collections.unmodifiableList(keys);
     }
 }

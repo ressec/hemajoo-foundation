@@ -389,4 +389,76 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
     }
+
+    /**
+     * Ensure the success to get the list of all keys of a keyable.
+     */
+    @Test
+    public void expectSuccessToGetKeyList()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        List<IKey> keys = entity.getKeyList();
+        Assert.assertEquals(5, keys.size());
+    }
+
+    /**
+     * Ensure the success to get the list of all unique keys of a keyable.
+     */
+    @Test
+    public void expectSuccessToGetUniqueKeyList()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        List<IKey> keys = entity.getUniqueKeyList();
+        Assert.assertEquals(3, keys.size());
+    }
+
+    /**
+     * Ensure the success to get the list of all mandatory keys of a keyable.
+     */
+    @Test
+    public void expectSuccessToGetMandatoryKeyList()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        List<IKey> keys = entity.getMandatoryKeyList();
+        Assert.assertEquals(2, keys.size());
+    }
+
+    /**
+     * Ensure the success to get the list of all automatically generated keys of a keyable.
+     */
+    @Test
+    public void expectSuccessToGetAutoKeyList()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        List<IKey> keys = entity.getAutoKeyList();
+        Assert.assertEquals(0, keys.size());
+    }
 }

@@ -61,14 +61,14 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     /**
      * Comment.
      */
-    @PrimaryKey(name = "comment", unique = false, mandatory = false, auto = false)
+    @AlternateKey(name = "comment", unique = false, mandatory = false, auto = false)
     @Getter
     private String comment;
 
     /**
      * Estimated population in 2019 (useless key ... just for testing purpose).
      */
-    @PrimaryKey(name = "population", unique = false, mandatory = false, auto = false)
+    @AlternateKey(name = "population", unique = false, mandatory = false, auto = false)
     @Getter
     private long population;
 
