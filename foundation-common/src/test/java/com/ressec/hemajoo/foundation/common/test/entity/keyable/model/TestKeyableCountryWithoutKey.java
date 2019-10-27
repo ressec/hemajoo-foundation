@@ -16,8 +16,10 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,6 +27,7 @@ import org.junit.Test;
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
+@Log4j2
 public class TestKeyableCountryWithoutKey
 {
     @Before
@@ -47,5 +50,18 @@ public class TestKeyableCountryWithoutKey
         KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.builder()
                 .name("France")
                 .build();
+    }
+
+    /**
+     * Ensure rolling log files are generated.
+     */
+    @Ignore
+    @Test
+    public void expectLogFileRollOver()
+    {
+        for (int i = 0; i < 10000; i++)
+        {
+            log.info(String.format("Generate log line #: %d", i));
+        }
     }
 }

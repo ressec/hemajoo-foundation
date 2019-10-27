@@ -17,6 +17,7 @@ package com.ressec.hemajoo.foundation.common.entity.keyable;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -34,6 +35,7 @@ import java.util.*;
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
+@Log4j2
 public final class KeyManager
 {
     /**
@@ -329,40 +331,55 @@ public final class KeyManager
         }
         catch (IllegalAccessException e)
         {
-            throw new KeyException(String.format(
+            String message = String.format(
                     "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                     name,
                     field.getType().getName(),
                     keyable.getClass().getName(),
-                    e.getMessage()));
+                    e.getMessage());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
 
         if (mandatory && !auto && value == null)
         {
-            throw new KeyException(String.format(
+            String message = String.format(
                     "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is not set!",
                     name,
                     field.getType().getName(),
-                    keyable.getClass().getName()));
+                    keyable.getClass().getName());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
 
         if (auto && value != null)
         {
-            throw new KeyException(String.format(
+            String message = String.format(
                     "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' because key is set to 'auto' but key value is provided!",
                     name,
                     field.getType().getName(),
-                    keyable.getClass().getName()));
+                    keyable.getClass().getName());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
 
         // Check the type property.
         if (!isFieldTypeAuthorized(field))
         {
-            throw new KeyException(
-                    String.format("Key with name: '%s', of type: '%s' for keyable: '%s' has an invalid type!",
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName()));
+            String message = String.format("Key with name: '%s', of type: '%s' for keyable: '%s' has an invalid type!",
+                    name,
+                    field.getType().getName(),
+                    keyable.getClass().getName());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
 
         // Check the mandatory property.
@@ -372,22 +389,29 @@ public final class KeyManager
             {
                 if (field.get(keyable) == null)
                 {
-                    throw new KeyException(
-                            String.format(
-                                    "The key named: '%s', of type: '%s' for keyable: '%s' is declared as mandatory but its value is null!",
-                                    name,
-                                    field.getType().getName(),
-                                    keyable.getClass().getName()));
+                    String message = String.format(
+                            "The key named: '%s', of type: '%s' for keyable: '%s' is declared as mandatory but its value is null!",
+                            name,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
                 }
             }
             catch (IllegalAccessException e)
             {
-                throw new KeyException(String.format(
+                String message = String.format(
                         "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                         name,
                         field.getType().getName(),
                         keyable.getClass().getName(),
-                        e.getMessage()));
+                        e.getMessage());
+
+                log.error(message);
+
+                throw new KeyException(message);
             }
         }
 
@@ -397,11 +421,15 @@ public final class KeyManager
             // A key of type string cannot be declared with auto = true
             if (auto)
             {
-                throw new KeyException(String.format(
+                String message = String.format(
                         "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
                         name,
                         field.getType().getName(),
-                        keyable.getClass().getName()));
+                        keyable.getClass().getName());
+
+                log.error(message);
+
+                throw new KeyException(message);
             }
 
             try
@@ -410,12 +438,16 @@ public final class KeyManager
             }
             catch (IllegalAccessException e)
             {
-                throw new KeyException(String.format(
+                String message = String.format(
                         "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                         name,
                         field.getType().getName(),
                         keyable.getClass().getName(),
-                        e.getMessage()));
+                        e.getMessage());
+
+                log.error(message);
+
+                throw new KeyException(message);
             }
         }
         else
@@ -429,12 +461,16 @@ public final class KeyManager
                 }
                 catch (IllegalAccessException e)
                 {
-                    throw new KeyException(String.format(
+                    String message = String.format(
                             "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                             name,
                             field.getType().getName(),
                             keyable.getClass().getName(),
-                            e.getMessage()));
+                            e.getMessage());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
                 }
             }
             else
@@ -448,12 +484,16 @@ public final class KeyManager
                     }
                     catch (IllegalAccessException e)
                     {
-                        throw new KeyException(String.format(
+                        String message = String.format(
                                 "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                                 name,
                                 field.getType().getName(),
                                 keyable.getClass().getName(),
-                                e.getMessage()));
+                                e.getMessage());
+
+                        log.error(message);
+
+                        throw new KeyException(message);
                     }
                 }
                 else
@@ -467,12 +507,16 @@ public final class KeyManager
                         }
                         catch (IllegalAccessException e)
                         {
-                            throw new KeyException(String.format(
+                            String message = String.format(
                                     "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
                                     name,
                                     field.getType().getName(),
                                     keyable.getClass().getName(),
-                                    e.getMessage()));
+                                    e.getMessage());
+
+                            log.error(message);
+
+                            throw new KeyException(message);
                         }
                     }
                 }
@@ -492,12 +536,15 @@ public final class KeyManager
 
         if (keys.containsKey(name))
         {
-            throw new KeyException(
-                    String.format(
-                            "Key with name: '%s' of type: '%s' for keyable entity: '%s' already exist with the same name!",
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName()));
+            String message = String.format(
+                    "Key with name: '%s' of type: '%s' for keyable entity: '%s' already exist with the same name!",
+                    name,
+                    field.getType().getName(),
+                    keyable.getClass().getName());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
         else
         {
@@ -531,13 +578,16 @@ public final class KeyManager
         }
         catch (IllegalAccessException e)
         {
-            throw new KeyException(
-                    String.format(
-                            "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage()));
+            String message = String.format(
+                    "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
+                    name,
+                    field.getType().getName(),
+                    keyable.getClass().getName(),
+                    e.getMessage());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
 
         // Do we have to generate the key value (auto = true) ?
@@ -552,13 +602,16 @@ public final class KeyManager
             }
             catch (IllegalAccessException e)
             {
-                throw new KeyException(
-                        String.format(
-                                "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName(),
-                                e.getMessage()));
+                String message = String.format(
+                        "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
+                        name,
+                        field.getType().getName(),
+                        keyable.getClass().getName(),
+                        e.getMessage());
+
+                log.error(message);
+
+                throw new KeyException(message);
             }
             finally
             {
@@ -615,13 +668,16 @@ public final class KeyManager
                 }
                 else
                 {
-                    throw new KeyException(
-                            String.format(
-                                    "Cannot register key with name: '%s' with value: '%s', of type: '%s' for keyable entity: '%s', because key value is not unique!",
-                                    name,
-                                    value,
-                                    field.getType().getName(),
-                                    keyable.getClass().getName()));
+                    String message = String.format(
+                            "Cannot register key with name: '%s' with value: '%s', of type: '%s' for keyable entity: '%s', because key value is not unique!",
+                            name,
+                            value,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
                 }
             }
             else
@@ -713,10 +769,13 @@ public final class KeyManager
 
         if (!found)
         {
-            throw new KeyException(
-                    String.format(
-                            "Keyable entity: '%s' does not contain a primary key! One of the defined keys must be set as the primary key",
-                            keyable.getClass().getName()));
+            String message = String.format(
+                    "Keyable entity: '%s' does not contain a primary key! One of the defined keys must be set as the primary key",
+                    keyable.getClass().getName());
+
+            log.error(message);
+
+            throw new KeyException(message);
         }
     }
 
@@ -737,10 +796,13 @@ public final class KeyManager
                 }
                 else
                 {
-                    throw new KeyException(
-                            String.format(
-                                    "Keyable entity: '%s' contains multiple fields annotated as primary keys! Only one field can be annotated as the primary key",
-                                    keyable.getClass().getName()));
+                    String message = String.format(
+                            "Keyable entity: '%s' contains multiple fields annotated as primary keys! Only one field can be annotated as the primary key",
+                            keyable.getClass().getName());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
                 }
             }
         }
@@ -907,11 +969,14 @@ public final class KeyManager
             }
         }
 
-        throw new KeyManagerException(
-                String.format(
-                        "Cannot determine type for key name: '%s' on keyable entity type: '%s'. Are you sure it's a real key?",
-                        keyName,
-                        keyableClass));
+        String message = String.format(
+                "Cannot determine type for key name: '%s' on keyable entity type: '%s'. Are you sure it's a real key?",
+                keyName,
+                keyableClass);
+
+        log.error(message);
+
+        throw new KeyManagerException(message);
     }
 
     /**
@@ -931,15 +996,13 @@ public final class KeyManager
 
             if (type == null)
             {
-                // TODO Should log the error then return null instead of raising an exception!
-                throw new KeyManagerException(
-                        String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName,
-                                keyableClass));
+                log.error(String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName, keyableClass));
+                return new ArrayList<>();
             }
         }
         catch (KeyManagerException e)
         {
-            // TODO Should log the error
+            log.error(e.getMessage());
             return new ArrayList<>();
         }
 
