@@ -47,7 +47,7 @@ public class Keyable extends AbstractKeyable
      * @param keyValue Key value.
      * @return List of found entities or an empty list if no matching entities have been found.
      */
-    public static List<? extends IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
+    public static List<IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String keyName, final @NonNull Object keyValue)
     {
         return KeyManager.getInstance().get(clazz, keyName, keyValue);
     }
@@ -60,7 +60,7 @@ public class Keyable extends AbstractKeyable
      * @param key Key.
      * @return List of found entities or an empty list if no matching entities have been found.
      */
-    public static List<? extends IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
+    public static List<IKeyable> query(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
         return KeyManager.getInstance().get(clazz, key);
     }
@@ -78,7 +78,7 @@ public class Keyable extends AbstractKeyable
     {
         List<? extends IKeyable> entities = KeyManager.getInstance().get(clazz, keyName, keyValue);
 
-        if (entities.size() > 0)
+        if (!entities.isEmpty())
         {
             return entities.get(0);
         }

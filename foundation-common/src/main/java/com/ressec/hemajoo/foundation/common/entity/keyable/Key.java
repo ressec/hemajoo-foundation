@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.lang.reflect.Field;
-import java.util.UUID;
 
 /**
  * Provides a concrete implementation of a key.
@@ -111,7 +110,6 @@ public final class Key implements IKey
                     this.isAuto = primary.auto();
                     this.reference = keyable.getClass();
                     this.value = value;
-                    break;
                 }
             }
             else
@@ -129,81 +127,10 @@ public final class Key implements IKey
                         this.isAuto = alternate.auto();
                         this.reference = keyable.getClass();
                         this.value = value;
-                        break;
                     }
                 }
             }
         }
     }
-
-    /**
-     * Creates a new key given its type, its value and the keyable entity it refers to.
-     * @param type Key type.
-     * @param value Key value.
-     * @param reference Keyable entity the key refers to.
-     * @return Newly created key.
-     */
-    public static Key create(final @NonNull Class<?> type, final @NonNull Object value, final @NonNull Class<? extends IKeyable> reference)
-    {
-        if (type != Integer.class && type != Long.class && type != String.class && type != UUID.class)
-        {
-            throw new KeyException(
-                    String.format("Cannot create key because key of type: %s is not allowed!", type.getName()));
-        }
-
-        Key key = new Key();
-
-        key.type = type;
-        key.value = value;
-
-        return key;
-    }
-
-    /**
-     * Creates a new key given its type and the keyable entity it refers to.
-     * <br><br>
-     * The key value is generated using the key manager.
-     * @param type Key type.
-     * @param reference Keyable entity the key refers to.
-     * @return Newly created key.
-     */
-    public static Key create(final @NonNull Class<?> type, final @NonNull Class<? extends IKeyable> reference)
-    {
-        if (type != Integer.class && type != Long.class && type != String.class && type != UUID.class)
-        {
-            throw new KeyException(
-                    String.format("Cannot create key because key of type: %s is not allowed!", type.getName()));
-        }
-
-//        Object value = KeyManager.getInstance().getNextValue(type, reference);
-
-        Key key = new Key();
-//
-//        key.type = type;
-//        key.value = value;
-
-        return key;
-    }
-
-//    /**
-//     * Checks if this key is valid.
-//     *
-//     * @return True if the key is valid, false otherwise.
-//     */
-//    public final boolean isValid()
-//    {
-//        return getType() != null && getUuid() != null;
-//    }
-//
-//    /**
-//     * Checks if the given key is valid.
-//     *
-//     * @param key Key to validate.
-//     * @return True if the key is valid, false otherwise.
-//     */
-//    public static boolean isValid(final @NonNull Key key)
-//    {
-//        return key.getType() != null && key.getUuid() != null;
-//    }
 }
 
