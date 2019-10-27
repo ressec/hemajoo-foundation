@@ -45,7 +45,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
+    public final List<IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
         return KeyManager.getInstance().get(clazz, name, value);
     }
