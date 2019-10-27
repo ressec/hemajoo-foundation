@@ -370,7 +370,7 @@ public final class KeyManager
         }
 
         // Check the type property.
-        if (!isFieldTypeAuthorized(field))
+        if (!isAuthorizedType(field))
         {
             String message = String.format("Key with name: '%s', of type: '%s' for keyable: '%s' has an invalid type!",
                     name,
@@ -986,7 +986,7 @@ public final class KeyManager
      * @param keyValue Key value.
      * @return List of keyables or an empty list if no keyable has been found matching the given criteria.
      */
-    public final List<? extends IKeyable> get(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
+    public final List<IKeyable> get(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
     {
         Class<?> type = null;
 
@@ -1072,18 +1072,28 @@ public final class KeyManager
      * @param field Annotated field.
      * @return True if the field has an authorized type, false otherwise.
      */
-    private boolean isFieldTypeAuthorized(final @NonNull Field field)
+    public final boolean isAuthorizedType(final @NonNull Field field)
     {
-        return field.getType().isPrimitive()
-                || field.getType() == Integer.class
-                || field.getType() == Long.class
-                || field.getType() == Double.class
-                || field.getType() == Float.class
-                || field.getType() == Boolean.class
-                || field.getType() == Short.class
-                || field.getType() == Byte.class
-                || field.getType() == Character.class
-                || field.getType() == UUID.class
-                || field.getType() == String.class;
+        return isAuthorizedType(field.getType());
+    }
+
+    /**
+     * Returns if the given field (annotated with a key annotation) is of an authorized type?
+     * @param clazz Class.
+     * @return True if the class is an authorized type, false otherwise.
+     */
+    public final boolean isAuthorizedType(final @NonNull Class<?> clazz)
+    {
+        return clazz.isPrimitive()
+                || clazz == Integer.class
+                || clazz == Long.class
+                || clazz == Double.class
+                || clazz == Float.class
+                || clazz == Boolean.class
+                || clazz == Short.class
+                || clazz == Byte.class
+                || clazz == Character.class
+                || clazz == UUID.class
+                || clazz == String.class;
     }
 }

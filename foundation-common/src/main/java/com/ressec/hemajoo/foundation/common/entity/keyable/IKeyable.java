@@ -73,7 +73,7 @@ public interface IKeyable
      * @param value Key value.
      * @return List of {@link IKeyable} entities or null if no keyable entity has been found.
      */
-    List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value);
+    List<IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value);
 
     /**
      * Retrieves a list of keyable entity according to the given key.
@@ -81,7 +81,7 @@ public interface IKeyable
      * @param key Key.
      * @return List of {@link IKeyable} entities or null if no keyable entity has been found.
      */
-    List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key);
+    List<IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key);
 
     /**
      * Retrieves the first keyable entity matching the given key name and key value.

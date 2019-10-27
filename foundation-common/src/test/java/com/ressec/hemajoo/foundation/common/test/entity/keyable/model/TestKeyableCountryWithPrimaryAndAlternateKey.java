@@ -20,6 +20,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -460,5 +462,150 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
 
         List<IKey> keys = entity.getAutoKeyList();
         Assert.assertEquals(0, keys.size());
+    }
+
+    /**
+     * Ensure the success to get a list of keyables given the keyable class, the key name and value.
+     */
+    @Test
+    public void expectSuccessToGetKeyableListByKeyNameAndValue()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        List<IKeyable> countries = entity.getList(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "France");
+        Assert.assertTrue(countries.size() > 0);
+    }
+
+    /**
+     * Ensure the success to get a list of keyables given the keyable class and a key instance.
+     */
+    @Test
+    public void expectSuccessToGetKeyableListByKeyInstance()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(france);
+
+        KeyableCountryWithPrimaryAndAlternateKey germany = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(germany);
+
+        List<IKeyable> countries = germany.getList(KeyableCountryWithPrimaryAndAlternateKey.class, germany.getKey());
+        Assert.assertTrue(countries.size() > 0);
+    }
+
+    /**
+     * Ensure the success to get a keyable given the keyable class, the key name and value.
+     */
+    @Test
+    public void expectSuccessToGetKeyableByKeyNameAndValue()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(entity);
+
+        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) entity.get(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "France");
+        Assert.assertNotNull(country);
+        Assert.assertEquals("France", country.getName());
+    }
+
+    /**
+     * Ensure the success to get a keyable given the keyable class and a key instance.
+     */
+    @Test
+    public void expectSuccessToGetKeyableByKeyInstance()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(france);
+
+        KeyableCountryWithPrimaryAndAlternateKey germany = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("Germany")
+                .iso2("DE")
+                .iso3("DEU")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(germany);
+
+        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) france.get(KeyableCountryWithPrimaryAndAlternateKey.class, france.getKey());
+        Assert.assertNotNull(country);
+        Assert.assertEquals("France", country.getName());
+    }
+
+    /**
+     * Ensure the success to retrieve a key field annotation by the name of the key.
+     */
+    @Test
+    public void expectSuccessToGetKeyAnnotation()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(france);
+
+        Annotation annotation = france.getAnnotationKey("name");
+        Assert.assertNotNull(annotation);
+
+        Field field = france.getAnnotatedField(annotation);
+        Assert.assertNotNull(field);
+    }
+
+    /**
+     * Ensure the success to retrieve key field annotations.
+     */
+    @Test
+    public void expectSuccessToGetKeyAnnotations()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .comment("comment")
+                .build();
+        Assert.assertNotNull(france);
+
+        List<Annotation> annotations = france.getAnnotationKeys();
+        Assert.assertTrue(annotations.size() > 0);
     }
 }
