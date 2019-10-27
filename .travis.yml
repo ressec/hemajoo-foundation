@@ -1,5 +1,9 @@
 sudo: false
+
 language: java
+
+# Avoid the error: The command "~/bin/install-jdk.sh --target "/home/travis/oraclejdk8" --workspace "/home/travis/.cache/install-jdk" --feature "8" --license "BCL"" failed and exited with 3 during
+dist: trusty
 
 jdk: oraclejdk8
 
