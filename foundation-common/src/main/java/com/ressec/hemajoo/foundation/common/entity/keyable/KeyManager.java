@@ -17,6 +17,7 @@ package com.ressec.hemajoo.foundation.common.entity.keyable;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -34,6 +35,7 @@ import java.util.*;
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
+@Log4j2
 public final class KeyManager
 {
     /**
@@ -931,15 +933,12 @@ public final class KeyManager
 
             if (type == null)
             {
-                // TODO Should log the error then return null instead of raising an exception!
-                throw new KeyManagerException(
-                        String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName,
-                                keyableClass));
+                log.error(String.format("Cannot retrieve type of key name: '%s', for keyable class: '%s'", keyName, keyableClass));
             }
         }
         catch (KeyManagerException e)
         {
-            // TODO Should log the error
+            log.error(e.getMessage());
             return new ArrayList<>();
         }
 

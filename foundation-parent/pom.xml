@@ -68,7 +68,7 @@
                 <version>28.1-jre</version>
             </dependency>
 
-            <!-- Log4j 1.2: http://logging.apache.org/log4j/2.x/index.html -->
+            <!-- Log4j 2: http://logging.apache.org/log4j/2.x/index.html -->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
