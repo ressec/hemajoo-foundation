@@ -39,6 +39,7 @@ public class TestKeyableCountryWithoutKey
     @After
     public void tearDown() throws Exception
     {
+        KeyManager.getInstance().shutdown();
     }
 
     /**

@@ -45,7 +45,7 @@ public abstract class AbstractKeyable implements IKeyable
     }
 
     @Override
-    public final List<? extends IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
+    public final List<IKeyable> getList(final @NonNull Class<? extends IKeyable> clazz, final @NonNull String name, final @NonNull Object value)
     {
         return KeyManager.getInstance().get(clazz, name, value);
     }
@@ -256,6 +256,8 @@ public abstract class AbstractKeyable implements IKeyable
     @Override
     public final List<IKey> getUniqueKeyList()
     {
+        PrimaryKey primary;
+        AlternateKey alternate;
         IKey key;
         List<IKey> keys = new ArrayList<>();
 
@@ -263,18 +265,26 @@ public abstract class AbstractKeyable implements IKeyable
         {
             if (annotation instanceof PrimaryKey)
             {
-                key = getKey();
-                if (key != null && key.isUnique())
+                primary = (PrimaryKey) annotation;
+                if (primary.unique())
                 {
-                    keys.add(getKey());
+                    key = getKey();
+                    if (key != null && key.isUnique())
+                    {
+                        keys.add(getKey());
+                    }
                 }
             }
             else if (annotation instanceof AlternateKey)
             {
-                key = getKey(((AlternateKey) annotation).name());
-                if (key != null && key.isUnique())
+                alternate = (AlternateKey) annotation;
+                if (alternate.unique())
                 {
-                    keys.add(key);
+                    key = getKey(((AlternateKey) annotation).name());
+                    if (key != null && key.isUnique())
+                    {
+                        keys.add(key);
+                    }
                 }
             }
         }
@@ -285,6 +295,8 @@ public abstract class AbstractKeyable implements IKeyable
     @Override
     public final List<IKey> getMandatoryKeyList()
     {
+        PrimaryKey primary;
+        AlternateKey alternate;
         IKey key;
         List<IKey> keys = new ArrayList<>();
 
@@ -293,18 +305,26 @@ public abstract class AbstractKeyable implements IKeyable
         {
             if (annotation instanceof PrimaryKey)
             {
-                key = getKey();
-                if (key != null && key.isMandatory())
+                primary = (PrimaryKey) annotation;
+                if (primary.mandatory())
                 {
-                    keys.add(key);
+                    key = getKey();
+                    if (key != null && key.isMandatory())
+                    {
+                        keys.add(key);
+                    }
                 }
             }
             else if (annotation instanceof AlternateKey)
             {
-                key = getKey(((AlternateKey) annotation).name());
-                if (key != null && key.isMandatory())
+                alternate = (AlternateKey) annotation;
+                if (alternate.mandatory())
                 {
-                    keys.add(key);
+                    key = getKey(((AlternateKey) annotation).name());
+                    if (key != null && key.isMandatory())
+                    {
+                        keys.add(key);
+                    }
                 }
             }
         }
@@ -315,6 +335,8 @@ public abstract class AbstractKeyable implements IKeyable
     @Override
     public final List<IKey> getAutoKeyList()
     {
+        PrimaryKey primary;
+        AlternateKey alternate;
         IKey key;
         List<IKey> keys = new ArrayList<>();
 
@@ -322,18 +344,26 @@ public abstract class AbstractKeyable implements IKeyable
         {
             if (annotation instanceof PrimaryKey)
             {
-                key = getKey();
-                if (key != null && key.isAuto())
+                primary = (PrimaryKey) annotation;
+                if (primary.auto())
                 {
-                    keys.add(getKey());
+                    key = getKey();
+                    if (key != null && key.isAuto())
+                    {
+                        keys.add(getKey());
+                    }
                 }
             }
             else if (annotation instanceof AlternateKey)
             {
-                key = getKey(((AlternateKey) annotation).name());
-                if (key != null && key.isAuto())
+                alternate = (AlternateKey) annotation;
+                if (alternate.auto())
                 {
-                    keys.add(key);
+                    key = getKey(((AlternateKey) annotation).name());
+                    if (key != null && key.isAuto())
+                    {
+                        keys.add(key);
+                    }
                 }
             }
         }
