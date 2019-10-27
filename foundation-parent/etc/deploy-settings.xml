@@ -1,0 +1,18 @@
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                          http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>aws-s3-snapshots</id>
+            <username>${CI_DEPLOY_S3_USERNAME}</username>
+            <password>${CI_DEPLOY_S3_PASSWORD}</password>
+        </server>
+
+        <server>
+            <id>aws-s3-releases</id>
+            <username>${CI_DEPLOY_S3_USERNAME}</username>
+            <password>${CI_DEPLOY_S3_PASSWORD}</password>
+        </server>
+    </servers>
+
+</settings>
