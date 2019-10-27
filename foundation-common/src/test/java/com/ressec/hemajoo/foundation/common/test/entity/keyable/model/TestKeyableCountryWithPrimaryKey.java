@@ -321,4 +321,72 @@ public class TestKeyableCountryWithPrimaryKey
         Assert.assertNotNull(country);
         Assert.assertEquals(name, country.getName());
     }
+
+    /**
+     * Ensure a keyable cannot be retrieved after it has been unregistered.
+     */
+    @Test
+    public void expectSuccessToUnregisterKeyableInstance()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .build();
+
+        KeyManager.getInstance().unregister(entity);
+
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
+
+        Assert.assertNull(country);
+    }
+
+    /**
+     * Ensure a keyable cannot be retrieved after it has been unregistered by its key type.
+     */
+    @Test
+    public void expectSuccessToUnregisterKeyableByKeyType()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .build();
+
+        KeyManager.getInstance().unregisterKeysByKeyType(KeyableCountryWithPrimaryKey.class, String.class);
+
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
+
+        Assert.assertNull(country);
+    }
+
+    /**
+     * Ensure a keyable cannot be retrieved after it has been unregistered by its keyable class.
+     */
+    @Test
+    public void expectSuccessToUnregisterKeyableByKeyableType()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .build();
+
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryKey.class);
+
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
+
+        Assert.assertNull(country);
+    }
+
+    /**
+     * Ensure a keyable cannot be retrieved after it has been unregistered by its keyable class.
+     */
+    @Test
+    public void expectSuccessToUnregisterKeyableByKeyName()
+    {
+        KeyableCountryWithPrimaryKey entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
+                .build();
+
+        KeyManager.getInstance().unregisterKeysByName(KeyableCountryWithPrimaryKey.class, "name");
+
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
+
+        Assert.assertNull(country);
+    }
 }
