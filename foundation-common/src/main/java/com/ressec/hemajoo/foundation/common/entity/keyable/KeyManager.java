@@ -47,8 +47,7 @@ public final class KeyManager
      * Collection of keyable entities grouped by: keyable entity type (keyable class), then by key type (key class)
      * then by key name and then by key value.
      */
-    private Map<Class<? extends IKeyable>, Map<Class<?>, Map<String, Multimap<Object, IKeyable>>>> entities =
-            new HashMap<>();
+    private Map<Class<? extends IKeyable>, Map<Class<?>, Map<String, Multimap<Object, IKeyable>>>> entities = new HashMap<>();
 
     /**
      * Collection storing the latest key value for keys with property 'auto' set to true.
@@ -232,12 +231,9 @@ public final class KeyManager
         }
 
         Multimap<Object, IKeyable> map = entities.get(keyable.getClass()).get(type).get(name);
-        if (map != null)
+        if (map != null && map.containsKey(value))
         {
-            if (map.containsKey(value))
-            {
-                map.remove(value, keyable);
-            }
+            map.remove(value, keyable);
         }
     }
 
@@ -256,12 +252,9 @@ public final class KeyManager
             {
                 PrimaryKey reference = (PrimaryKey) annotation;
                 PrimaryKey primary = element.getAnnotation(PrimaryKey.class);
-                if (primary != null)
+                if (primary != null && primary.name().equals(reference.name()))
                 {
-                    if (primary.name().equals(reference.name()))
-                    {
-                        return element;
-                    }
+                    return element;
                 }
             }
             else
@@ -270,12 +263,9 @@ public final class KeyManager
                 {
                     AlternateKey reference = (AlternateKey) annotation;
                     AlternateKey alternate = element.getAnnotation(AlternateKey.class);
-                    if (alternate != null)
+                    if (alternate != null && alternate.name().equals(reference.name()))
                     {
-                        if (alternate.name().equals(reference.name()))
-                        {
-                            return element;
-                        }
+                        return element;
                     }
                 }
             }
@@ -356,7 +346,7 @@ public final class KeyManager
             throw new KeyException(message);
         }
 
-        if (auto && value != null)
+        if (auto && (value != null && (int) value != 0))
         {
             String message = String.format(
                     "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' because key is set to 'auto' but key value is provided!",
@@ -434,7 +424,7 @@ public final class KeyManager
 
             try
             {
-                String test = (String) field.get(keyable);
+                field.get(keyable);
             }
             catch (IllegalAccessException e)
             {
@@ -457,7 +447,7 @@ public final class KeyManager
             {
                 try
                 {
-                    Integer test = (Integer) field.get(keyable);
+                    field.get(keyable);
                 }
                 catch (IllegalAccessException e)
                 {
@@ -480,7 +470,7 @@ public final class KeyManager
                 {
                     try
                     {
-                        Long test = (Long) field.get(keyable);
+                        field.get(keyable);
                     }
                     catch (IllegalAccessException e)
                     {
@@ -503,7 +493,7 @@ public final class KeyManager
                     {
                         try
                         {
-                            UUID test = (UUID) field.get(keyable);
+                            field.get(keyable);
                         }
                         catch (IllegalAccessException e)
                         {
@@ -706,7 +696,7 @@ public final class KeyManager
      * @param keyableClass Keyable entity class.
      * @return Collection of keyable.
      */
-    private Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
+    public Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
     {
         Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> collection;
 
@@ -815,7 +805,7 @@ public final class KeyManager
      * @param value Key value.
      * @return True if the given key exist, false otherwise.
      */
-    private boolean exist(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Field field, final @NonNull String name, final Object value)
+    public boolean exist(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Field field, final @NonNull String name, final Object value)
     {
         if (value == null)
         {
@@ -903,10 +893,10 @@ public final class KeyManager
         Map<Class<?>, Map<String, Object>> keyTypes = values.get(keyable.getClass());
         if (keyTypes != null)
         {
-            Map<String, Object> keys = keyTypes.get(type);
-            if (keys != null)
+            Map<String, Object> localKeys = keyTypes.get(type);
+            if (localKeys != null)
             {
-                return keys.get(name);
+                return localKeys.get(name);
             }
         }
 
@@ -923,25 +913,25 @@ public final class KeyManager
     private void updateLatestKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name, final @NonNull Object value)
     {
         Map<Class<?>, Map<String, Object>> keyTypes;
-        Map<String, Object> keys = null;
+        Map<String, Object> localKeys = null;
 
         keyTypes = values.get(keyable.getClass());
         if (keyTypes != null)
         {
-            keys = keyTypes.get(type);
-            if (keys == null)
+            localKeys = keyTypes.get(type);
+            if (localKeys == null)
             {
-                keys = new HashMap<>();
+                localKeys = new HashMap<>();
             }
 
-            keys.put(name, value);
+            localKeys.put(name, value);
         }
         else
         {
             keyTypes = new HashMap<>();
         }
 
-        keyTypes.put(type, keys);
+        keyTypes.put(type, localKeys);
         values.put(keyable.getClass(), keyTypes);
     }
 

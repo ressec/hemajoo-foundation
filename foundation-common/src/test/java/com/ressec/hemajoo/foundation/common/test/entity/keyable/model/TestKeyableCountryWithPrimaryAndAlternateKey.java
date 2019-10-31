@@ -115,7 +115,8 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .comment("Hello")
                 .build();
 
-        Keyable.retrieve(KeyableCountryWithPrimaryAndAlternateKey.class, "iso2", "FR");
+        IKeyable entity = Keyable.retrieve(KeyableCountryWithPrimaryAndAlternateKey.class, "iso2", "FR");
+        Assert.assertNotNull(entity);
     }
 
     /**
@@ -408,7 +409,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
         Assert.assertNotNull(entity);
 
         List<IKey> keys = entity.getKeyList();
-        Assert.assertEquals(13, keys.size());
+        Assert.assertEquals(14, keys.size());
     }
 
     /**
@@ -462,7 +463,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
         Assert.assertNotNull(entity);
 
         List<IKey> keys = entity.getAutoKeyList();
-        Assert.assertEquals(0, keys.size());
+        Assert.assertEquals(1, keys.size());
     }
 
     /**

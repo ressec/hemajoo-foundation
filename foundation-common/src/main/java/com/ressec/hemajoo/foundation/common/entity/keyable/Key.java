@@ -115,19 +115,16 @@ public final class Key implements IKey
             else
             {
                 AlternateKey alternate = field.getAnnotation(AlternateKey.class);
-                if (alternate != null)
+                if (alternate != null && name.equals(alternate.name()))
                 {
-                    if (name.equals(alternate.name()))
-                    {
-                        this.name = alternate.name();
-                        this.type = field.getType();
-                        this.isMandatory = alternate.mandatory();
-                        this.isUnique = alternate.unique();
-                        this.isPrimary = false;
-                        this.isAuto = alternate.auto();
-                        this.reference = keyable.getClass();
-                        this.value = value;
-                    }
+                    this.name = alternate.name();
+                    this.type = field.getType();
+                    this.isMandatory = alternate.mandatory();
+                    this.isUnique = alternate.unique();
+                    this.isPrimary = false;
+                    this.isAuto = alternate.auto();
+                    this.reference = keyable.getClass();
+                    this.value = value;
                 }
             }
         }

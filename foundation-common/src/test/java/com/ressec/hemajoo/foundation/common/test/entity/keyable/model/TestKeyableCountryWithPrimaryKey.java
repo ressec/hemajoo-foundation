@@ -160,7 +160,8 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "other", "France");
+        IKeyable entity = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "other", "France");
+        Assert.assertNotNull(entity);
     }
 
     /**

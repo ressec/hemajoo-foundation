@@ -118,29 +118,26 @@ public abstract class AbstractKeyable implements IKeyable
         for (Field field : fields)
         {
             AlternateKey alternate = field.getAnnotation(AlternateKey.class);
-            if (alternate != null)
+            if (alternate != null && alternate.name().equals(name))
             {
-                if (alternate.name().equals(name))
+                try
                 {
-                    try
-                    {
-                        field.setAccessible(true);
-                        Object value = field.get(this);
-                        field.setAccessible(false);
+                    field.setAccessible(true);
+                    Object value = field.get(this);
+                    field.setAccessible(false);
 
-                        return Key.builder()
-                                .keyable(this)
-                                .name(alternate.name())
-                                .value(value)
-                                .build();
-                    }
-                    catch (IllegalAccessException e)
-                    {
-                        throw new KeyException(
-                                String.format("Cannot retrieve alternate key on keyable: '%s', due to: '%s'",
-                                        this.getClass().getName(),
-                                        e.getMessage()));
-                    }
+                    return Key.builder()
+                            .keyable(this)
+                            .name(alternate.name())
+                            .value(value)
+                            .build();
+                }
+                catch (IllegalAccessException e)
+                {
+                    throw new KeyException(
+                            String.format("Cannot retrieve alternate key on keyable: '%s', due to: '%s'",
+                                    this.getClass().getName(),
+                                    e.getMessage()));
                 }
             }
         }
@@ -188,12 +185,9 @@ public abstract class AbstractKeyable implements IKeyable
             }
             else
             {
-                if (annotation instanceof AlternateKey)
+                if (annotation instanceof AlternateKey && ((AlternateKey) annotation).name().equals(name))
                 {
-                    if (((AlternateKey) annotation).name().equals(name))
-                    {
-                        return annotation;
-                    }
+                    return annotation;
                 }
             }
         }
@@ -220,12 +214,9 @@ public abstract class AbstractKeyable implements IKeyable
             else
             {
                 AlternateKey alternate = field.getAnnotation(AlternateKey.class);
-                if (alternate != null)
+                if (alternate != null && alternate.name().equals(name))
                 {
-                    if (alternate.name().equals(name))
-                    {
-                        return field;
-                    }
+                    return field;
                 }
             }
         }
