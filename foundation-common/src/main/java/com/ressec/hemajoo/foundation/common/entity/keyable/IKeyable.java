@@ -33,7 +33,7 @@ public interface IKeyable
      * Returns the primary key of the keyable entity, if one has been defined.
      * @return Primary {@link IKey} or null if no primary key set.
      */
-    IKey getKey();
+    IKey getPrimaryKey();
 
     /**
      * Returns the key matching the given name.
