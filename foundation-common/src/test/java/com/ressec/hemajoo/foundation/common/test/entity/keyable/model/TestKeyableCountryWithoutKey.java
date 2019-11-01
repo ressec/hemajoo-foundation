@@ -52,17 +52,4 @@ public class TestKeyableCountryWithoutKey
                 .name("France")
                 .build();
     }
-
-    /**
-     * Ensure rolling log files are generated.
-     */
-    @Ignore
-    @Test
-    public void expectLogFileRollOver()
-    {
-        for (int i = 0; i < 10000; i++)
-        {
-            log.info(String.format("Generate log line #: %d", i));
-        }
-    }
 }

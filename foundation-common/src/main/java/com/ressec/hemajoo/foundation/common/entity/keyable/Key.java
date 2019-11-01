@@ -92,7 +92,7 @@ public final class Key implements IKey
      * @param value Key value.
      */
     @Builder
-    public Key(final @NonNull IKeyable keyable, final @NonNull String name, final @NonNull Object value)
+    public Key(final @NonNull IKeyable keyable, final @NonNull String name, final Object value)
     {
         Field[] fields = keyable.getClass().getDeclaredFields();
         for (Field field : fields)
@@ -115,19 +115,16 @@ public final class Key implements IKey
             else
             {
                 AlternateKey alternate = field.getAnnotation(AlternateKey.class);
-                if (alternate != null)
+                if (alternate != null && name.equals(alternate.name()))
                 {
-                    if (name.equals(alternate.name()))
-                    {
-                        this.name = alternate.name();
-                        this.type = field.getType();
-                        this.isMandatory = alternate.mandatory();
-                        this.isUnique = alternate.unique();
-                        this.isPrimary = false;
-                        this.isAuto = alternate.auto();
-                        this.reference = keyable.getClass();
-                        this.value = value;
-                    }
+                    this.name = alternate.name();
+                    this.type = field.getType();
+                    this.isMandatory = alternate.mandatory();
+                    this.isUnique = alternate.unique();
+                    this.isPrimary = false;
+                    this.isAuto = alternate.auto();
+                    this.reference = keyable.getClass();
+                    this.value = value;
                 }
             }
         }

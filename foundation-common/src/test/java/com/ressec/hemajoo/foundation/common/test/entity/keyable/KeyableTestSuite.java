@@ -15,6 +15,7 @@
 package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithError;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithPrimaryAndAlternateKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithPrimaryKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithoutKey;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         TestKeyableCountryWithoutKey.class,
         TestKeyableCountryWithPrimaryKey.class,
+        TestKeyableCountryWithPrimaryAndAlternateKey.class,
         TestKeyableCountryWithError.class
 })
 public class KeyableTestSuite

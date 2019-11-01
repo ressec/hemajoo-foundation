@@ -96,7 +96,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name("France")
                 .build();
 
-        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, entity.getPrimaryKey());
         Assert.assertNotNull(country);
     }
 
@@ -126,7 +126,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name(name)
                 .build();
 
-        List<? extends IKeyable> countries = Keyable.query(KeyableCountryWithPrimaryKey.class, entity.getKey());
+        List<? extends IKeyable> countries = Keyable.query(KeyableCountryWithPrimaryKey.class, entity.getPrimaryKey());
         Assert.assertNotNull(countries);
         Assert.assertFalse(countries.isEmpty());
     }
@@ -149,18 +149,18 @@ public class TestKeyableCountryWithPrimaryKey
     }
 
     /**
-     * Ensure a key manager exception is raised while trying to retrieve a keyable when querying on a non-existent key name.
+     * Ensure a null value is returned while trying to retrieve a keyable based on a non-existent key name.
      */
     @Test
     public void expectSuccessToGetNullKeyableWhenQueryingNonExistentKeyName()
     {
-        String name = "France";
-
-        KeyableCountryWithPrimaryKey.builder()
-                .name(name)
+        IKeyable entity = KeyableCountryWithPrimaryKey.builder()
+                .name("France")
                 .build();
+        Assert.assertNotNull(entity);
 
-        Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "other", "France");
+        IKeyable element = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "other", "France");
+        Assert.assertNull(element);
     }
 
     /**
@@ -237,7 +237,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .build();
         Assert.assertNotNull(entity);
 
-        IKey primary = entity.getKey();
+        IKey primary = entity.getPrimaryKey();
 
         Assert.assertNotNull(primary);
         Assert.assertEquals("name", primary.getName());
@@ -314,7 +314,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .build();
         Assert.assertNotNull(entity);
 
-        IKey primary = entity.getKey();
+        IKey primary = entity.getPrimaryKey();
 
         KeyableCountryWithPrimaryKey country = (KeyableCountryWithPrimaryKey) Keyable.retrieve(KeyableCountryWithPrimaryKey.class, primary);
 
