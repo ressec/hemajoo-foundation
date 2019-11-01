@@ -17,6 +17,7 @@ package com.ressec.hemajoo.foundation.common.entity.keyable;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import lombok.NonNull;
+import lombok.Synchronized;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ClassUtils;
 
@@ -277,6 +278,7 @@ public final class KeyManager
      * Registers the keys of a keyable entity against the key manager.
      * @param keyable Keyable entity.
      */
+    @Synchronized
     private void registerKeyable(final @NonNull IKeyable keyable)
     {
         // Register all keys of this keyable entity.
@@ -592,6 +594,7 @@ public final class KeyManager
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
+
     }
 
     /**
@@ -756,7 +759,7 @@ public final class KeyManager
 
         if (isAutoKeyValueToBeGenerated(key, field, keyable))
         {
-            //value = generateNextKeyValue(keyable, field.getType(), name);
+            value = generateNextKeyValue(keyable, field.getType(), name);
 
             try
             {
@@ -858,8 +861,13 @@ public final class KeyManager
     {
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
-        // Do we have to generate the key value (auto = true) ?
-        return getFieldValue(key, field, keyable) == null && auto;
+        if (auto)
+        {
+            Object value = getFieldValue(key, field, keyable);
+            return auto && value == null || ((Integer) value) == 0;
+        }
+
+        return false;
     }
 
     private Object getFieldValue(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
@@ -1073,110 +1081,107 @@ public final class KeyManager
         return false;
     }
 
-//    /**
-//     * Generates the next key value.
-//     * @param keyable Keyable entity the key refers to.
-//     * @param type Key type.
-//     * @param name Key name.
-//     * @return Next generated key value.
-//     */
-//    private Object generateNextKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
-//    {
-//        if (type == UUID.class)
-//        {
-//            return UUID.randomUUID();
-//        }
-//
-//        if (type == Integer.class)
-//        {
-//            Integer latest = (Integer) getLatestKeyValue(keyable, type, name);
-//            if (latest == null)
-//            {
-//                latest = 1;
-//            }
-//            else
-//            {
-//                latest += 1;
-//            }
-//
-//            updateLatestKeyValue(keyable, type, name, latest);
-//
-//            return latest;
-//        }
-//
-//        if (type == Long.class)
-//        {
-//            Long latest = (Long) getLatestKeyValue(keyable, type, name);
-//            if (latest == null)
-//            {
-//                latest = 1L;
-//            }
-//            else
-//            {
-//                latest += 1;
-//            }
-//
-//            updateLatestKeyValue(keyable, type, name, latest);
-//
-//            return latest;
-//        }
-//
-//        throw new KeyException("Unsupported key type!");
-//    }
+    /**
+     * Generates the next key value.
+     * @param keyable Keyable entity the key refers to.
+     * @param type Key type.
+     * @param name Key name.
+     * @return Next generated key value.
+     */
+    private Object generateNextKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
+    {
+        if (type == UUID.class)
+        {
+            return UUID.randomUUID();
+        }
 
-//    /**
-//     * Retrieves the latest generated key value.
-//     * @param keyable Keyable entity the key refers to.
-//     * @param type Key type.
-//     * @param name Key name.
-//     * @return Next generated key value.
-//     */
-//    private Object getLatestKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
-//    {
-//        Map<Class<?>, Map<String, Object>> keyTypes = values.get(keyable.getClass());
-//        if (keyTypes != null)
-//        {
-//            Map<String, Object> localKeys = keyTypes.get(type);
-//            if (localKeys != null)
-//            {
-//                return localKeys.get(name);
-//            }
-//        }
-//
-//        return null;
-//    }
+        if (type == Integer.class || type == int.class)
+        {
+            Integer latest = (Integer) getLatestKeyValue(keyable, type, name);
+            if (latest == null)
+            {
+                latest = 1;
+            }
+            else
+            {
+                latest += 1;
+            }
 
-//    /**
-//     * Updates the latest generated key value.
-//     * @param keyable Keyable entity the key refers to.
-//     * @param type Key type.
-//     * @param name Key name.
-//     * @param value New latest key value.
-//     */
-//    private void updateLatestKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name, final @NonNull Object value)
-//    {
-//        Map<Class<?>, Map<String, Object>> keyTypes;
-//        Map<String, Object> localKeys = null;
-//
-//        keyTypes = values.get(keyable.getClass());
-//        if (keyTypes != null)
-//        {
-//            localKeys = keyTypes.get(type);
-//            if (localKeys == null)
-//            {
-//                localKeys = new HashMap<>();
-//            }
-//
-//            localKeys.put(name, value);
-//        }
-//        else
-//        {
-//            keyTypes = new HashMap<>();
-//        }
-//
-//        keyTypes.put(type, localKeys);
-//        values.put(keyable.getClass(), keyTypes);
-//    }
+            updateLatestKeyValue(keyable, type, name, latest);
+
+            return latest;
+        }
+
+        if (type == Long.class || type == long.class)
+        {
+            Long latest = (Long) getLatestKeyValue(keyable, type, name);
+            if (latest == null)
+            {
+                latest = 1L;
+            }
+            else
+            {
+                latest += 1;
+            }
+
+            updateLatestKeyValue(keyable, type, name, latest);
+
+            return latest;
+        }
+
+        throw new KeyException("Unsupported key type!");
+    }
+
+    /**
+     * Retrieves the latest generated key value.
+     * @param keyable Keyable entity the key refers to.
+     * @param type Key type.
+     * @param name Key name.
+     * @return Next generated key value.
+     */
+    private Object getLatestKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
+    {
+        Map<Class<?>, Map<String, Object>> keyTypes = values.get(keyable.getClass());
+        if (keyTypes != null)
+        {
+            Map<String, Object> keyNames = keyTypes.get(type);
+            if (keyNames != null)
+            {
+                return keyNames.get(name);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Updates the latest generated key value.
+     * @param keyable Keyable entity the key refers to.
+     * @param type Key type.
+     * @param name Key name.
+     * @param value New latest key value.
+     */
+    private void updateLatestKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name, final @NonNull Object value)
+    {
+        Map<Class<?>, Map<String, Object>> keyTypes;
+        Map<String, Object> keyNames = null;
+
+        keyTypes = values.get(keyable.getClass());
+        if (keyTypes == null)
+        {
+            keyTypes = new HashMap<>();
+        }
+
+        keyNames = keyTypes.get(type);
+        if (keyNames == null)
+        {
+            keyNames = new HashMap<>();
+        }
+
+        keyNames.put(name, value);
+        keyTypes.put(type, keyNames);
+        values.put(keyable.getClass(), keyTypes);
+    }
 
     /**
      * Retrieves the type of a key.

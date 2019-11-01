@@ -43,7 +43,7 @@ public class KeyableWithPrimaryAutoKeyAsPrimitiveInt extends Keyable
      * Creates a new test keyable entity.
      * @param primitiveInt Primitive int value.
      */
-    @Builder
+    @Builder(toBuilder = true)
     public KeyableWithPrimaryAutoKeyAsPrimitiveInt(final int primitiveInt)
     {
         this.primitiveInt = primitiveInt;

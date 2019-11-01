@@ -44,7 +44,9 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     {
         KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
                 .build();
+
         Assert.assertNotNull(entity);
+        Assert.assertNotEquals(0, entity.getPrimaryKey().getValue());
     }
 
     /**
@@ -56,6 +58,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
         KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
                 .primitiveInt(0)
                 .build();
+
         Assert.assertNotNull(entity);
     }
 
@@ -69,6 +72,30 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
         KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
                 .primitiveInt(154)
                 .build();
+
         Assert.assertNotNull(entity);
+    }
+
+    /**
+     * Ensure the success to create multiple keyables with an auto primary key of type primitive integer when the value
+     * is greater than zero.
+     */
+    @Test(timeout = 100)
+    public void expectSuccessToCreateMultipleKeyableWithPrimaryAutoKeyAsPrimitiveInt()
+    {
+        int previous = 0;
+        KeyableWithPrimaryAutoKeyAsPrimitiveInt entity;
+
+        for (int i = 0; i < 100; i++)
+        {
+            entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
+                    .primitiveInt(0)
+                    .build();
+
+            Assert.assertNotNull(entity);
+            Assert.assertNotEquals(previous, (int) entity.getPrimaryKey().getValue());
+
+            previous = (int) entity.getPrimaryKey().getValue();
+        }
     }
 }
