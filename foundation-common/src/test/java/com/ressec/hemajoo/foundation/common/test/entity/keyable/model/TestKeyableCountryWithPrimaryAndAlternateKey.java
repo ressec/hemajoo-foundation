@@ -861,4 +861,68 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .autoKey(1) // This is an auto key!
                 .build();
     }
+
+    /**
+     * Ensure the success to check a key name exist for a given keyable class and a key name.
+     */
+    @Test
+    public void expectSuccessToCheckKeyNameExist()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        boolean exist = KeyManager.getInstance().isKeyExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name");
+        Assert.assertTrue(exist);
+    }
+
+    /**
+     * Ensure the success to check a key name does not exist for a given keyable class and a key name.
+     */
+    @Test
+    public void expectSuccessToCheckKeyNameDoesNotExist()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        boolean exist = KeyManager.getInstance().isKeyExist(KeyableCountryWithPrimaryAndAlternateKey.class, "location");
+        Assert.assertFalse(exist);
+    }
+
+    /**
+     * Ensure the success to check a key value exist for a given keyable class, a key name and a key value.
+     */
+    @Test
+    public void expectSuccessToCheckKeyValueExistence()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        boolean exist = KeyManager.getInstance().isKeyValueExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "France");
+        Assert.assertTrue(exist);
+    }
+
+    /**
+     * Ensure the success to check a key value does not exist for a given keyable class, a key name and a key value.
+     */
+    @Test
+    public void expectSuccessToCheckKeyValueDoesNotExist()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        boolean exist = KeyManager.getInstance().isKeyValueExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "Germany");
+        Assert.assertFalse(exist);
+    }
 }

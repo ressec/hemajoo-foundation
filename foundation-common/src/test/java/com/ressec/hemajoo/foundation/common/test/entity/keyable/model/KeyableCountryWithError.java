@@ -15,6 +15,8 @@ import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Locale;
+
 /**
  * A keyable entity test class that does not declare any key!
  * <br><br>
@@ -40,7 +42,6 @@ public class KeyableCountryWithError extends Keyable
     /**
      * ISO Alpha-3 code of the country.
      */
-    @PrimaryKey(name = "iso3")
     @AlternateKey(name = "iso33")
     @Getter
     private String iso3;
@@ -52,10 +53,26 @@ public class KeyableCountryWithError extends Keyable
     private String name;
 
     /**
+     * Locale.
+     */
+    @AlternateKey(name = "locale")
+    @Getter
+    private Locale locale;
+
+    /**
      * Official name of the country.
      */
+    @PrimaryKey(name = "official")
+    @AlternateKey(name = "official")
     @Getter
-    private String officialName;
+    private String official;
+
+    /**
+     * Auto.
+     */
+    @AlternateKey(name = "auto", auto = true)
+    @Getter
+    private String auto;
 
     /**
      * Avoid direct instantiation of country entity.
@@ -71,16 +88,20 @@ public class KeyableCountryWithError extends Keyable
      * @param iso2 Country ISO Alpha-2 code.
      * @param iso3 Country ISO Alpha-3 code.
      * @param name Country name.
-     * @param officialName Country official name.
+     * @param official Country official name.
+     * @param locale Locale.
+     * @param auto Auto.
      */
     @Builder
-    public KeyableCountryWithError(final int numericCode, final String iso2, final String iso3, final String name, final String officialName)
+    public KeyableCountryWithError(final int numericCode, final String iso2, final String iso3, final String name, final String official, final Locale locale, final String auto)
     {
         this.numeric = numericCode;
         this.iso2 = iso2;
         this.iso3 = iso3;
         this.name = name;
-        this.officialName = officialName;
+        this.locale = locale;
+        this.official = official;
+        this.auto = auto;
 
         super.register();
     }

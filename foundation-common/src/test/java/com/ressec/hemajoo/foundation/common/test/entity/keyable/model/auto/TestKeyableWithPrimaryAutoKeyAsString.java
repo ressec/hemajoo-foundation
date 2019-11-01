@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
@@ -15,20 +15,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Locale;
-
 /**
- * Test case for the {@link KeyableCountryWithError} entity.
+ * Test case for the {@link KeyableWithPrimaryAutoKeyAsString} entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Log4j2
-public class TestKeyableCountryWithError
+public class TestKeyableWithPrimaryAutoKeyAsString
 {
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithError.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsString.class);
     }
 
     @After
@@ -38,27 +36,23 @@ public class TestKeyableCountryWithError
     }
 
     /**
-     * Ensure an exception is raised while trying to annotate a field with multiple key annotations.
+     * Ensure the failure to create a keyable with an auto primary key with a String type.
      */
     @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
+    public void expectFailureToCreateKeyableWithPrimaryAutoKeyAsString()
     {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
+        KeyableWithPrimaryAutoKeyAsString entity = KeyableWithPrimaryAutoKeyAsString.builder()
                 .build();
     }
 
     /**
-     * Ensure an exception is raised while trying to register a key with invalid type.
+     * Ensure the failure to create a keyable with an auto primary key with a String type.
      */
     @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyHasInvalidType()
+    public void expectFailureToCreateKeyableWithPrimaryAutoKeyAsStringWithValueProvided()
     {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
-                .locale(Locale.FRANCE)
+        KeyableWithPrimaryAutoKeyAsString entity = KeyableWithPrimaryAutoKeyAsString.builder()
+                .autoAsString("Paris")
                 .build();
     }
 }
