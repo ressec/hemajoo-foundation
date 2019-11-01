@@ -71,4 +71,33 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveLong
                 .build();
         Assert.assertNotNull(entity);
     }
+
+    /**
+     * Ensure the success to create one hundred keyables in less than 100 milliseconds with an auto primary key of
+     * type primitive long when the value is greater than zero.
+     */
+    @Test(timeout = 100)
+    public void expectSuccessToCreateOneHundredKeyableWithPrimaryAutoKeyAsPrimitiveLong()
+    {
+        long previous = 0;
+        KeyableWithPrimaryAutoKeyAsPrimitiveLong entity;
+
+        for (int i = 0; i < 100; i++)
+        {
+            entity = KeyableWithPrimaryAutoKeyAsPrimitiveLong.builder()
+                    .primitiveLong(0)
+                    .build();
+
+            Assert.assertNotNull(entity);
+            Assert.assertNotEquals(previous, (long) entity.getPrimaryKey().getValue());
+
+            previous = (long) entity.getPrimaryKey().getValue();
+        }
+
+        int count = KeyManager.getInstance().countByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveLong.class);
+        Assert.assertEquals(100, count);
+
+        count = KeyManager.getInstance().countByKeyName(KeyableWithPrimaryAutoKeyAsPrimitiveLong.class, "primitiveLong");
+        Assert.assertEquals(100, count);
+    }
 }

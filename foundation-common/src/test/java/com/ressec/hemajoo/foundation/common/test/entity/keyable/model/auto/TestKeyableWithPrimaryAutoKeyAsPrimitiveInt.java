@@ -77,8 +77,8 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     }
 
     /**
-     * Ensure the success to create multiple keyables with an auto primary key of type primitive integer when the value
-     * is greater than zero.
+     * Ensure the success to create one hundred keyables in less than 100 milliseconds with an auto primary key of
+     * type primitive integer when the value is greater than zero.
      */
     @Test(timeout = 100)
     public void expectSuccessToCreateMultipleKeyableWithPrimaryAutoKeyAsPrimitiveInt()
@@ -97,5 +97,8 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
 
             previous = (int) entity.getPrimaryKey().getValue();
         }
+
+        int count = KeyManager.getInstance().countByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveInt.class);
+        Assert.assertEquals(100, count);
     }
 }

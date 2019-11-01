@@ -355,7 +355,7 @@ public final class KeyManager
         if (mandatory && !auto && value == null)
         {
             String message = String.format(
-                    "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is not set!",
+                    "Cannot initialize mandatory key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is not set!",
                     name,
                     field.getType().getName(),
                     keyable.getClass().getName());
@@ -864,7 +864,31 @@ public final class KeyManager
         if (auto)
         {
             Object value = getFieldValue(key, field, keyable);
-            return auto && value == null || ((Integer) value) == 0;
+
+            if (field.getType() == Integer.class || field.getType() == int.class)
+            {
+                return auto && value == null || ((Integer) value) == 0;
+            }
+            else if (field.getType() == Long.class || field.getType() == long.class)
+            {
+                return auto && value == null || ((Long) value) == 0L;
+            }
+            else if (field.getType() == Short.class || field.getType() == short.class)
+            {
+                return auto && value == null || ((Short) value) == 0;
+            }
+            else if (field.getType() == Byte.class || field.getType() == byte.class)
+            {
+                return auto && value == null || ((Byte) value) == 0;
+            }
+            else if (field.getType() == Double.class || field.getType() == double.class)
+            {
+                return auto && value == null || ((Double) value) == 0;
+            }
+            else if (field.getType() == Float.class || field.getType() == float.class)
+            {
+                return auto && value == null || ((Float) value) == 0;
+            }
         }
 
         return false;
@@ -1272,11 +1296,101 @@ public final class KeyManager
             annotation = field.getAnnotation(PrimaryKey.class);
             if (annotation != null)
             {
-                return getKeyables(keyableClass, field.getType(), field.getName()).size();
+                return getKeyables(keyableClass, field.getType(), annotation.name()).size();
             }
         }
 
         return 0;
+    }
+
+    /**
+     * Returns the number of entities stored in the key manager for the given keyable class and key name.
+     * @param keyableClass Keyable class.
+     * @param keyName Key name.
+     * @return Number of entities stored.
+     */
+    public final int countByKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+    {
+        Annotation annotation = getAnnotationForKeyName(keyableClass, keyName);
+
+        if (annotation != null)
+        {
+            for (Field field : keyableClass.getDeclaredFields())
+            {
+                if (annotation instanceof PrimaryKey)
+                {
+                    annotation = field.getAnnotation(PrimaryKey.class);
+                    if (annotation != null && ((PrimaryKey) annotation).name().equals(keyName))
+                    {
+                        return getKeyables(keyableClass, field.getType(), keyName).size();
+                    }
+                }
+                else if (annotation instanceof AlternateKey)
+                {
+                    annotation = field.getAnnotation(AlternateKey.class);
+                    if (annotation != null && ((AlternateKey) annotation).name().equals(keyName))
+                    {
+                        return getKeyables(keyableClass, field.getType(), keyName).size();
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Returns the key annotation for a given keyable class matching the given key name.
+     * @param keyableClass Keyable class to query.
+     * @param keyName Key name.
+     * @return Annotation matching the given key name, null otherwise.
+     */
+    private Annotation getAnnotationForKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+    {
+        for (Field field : keyableClass.getDeclaredFields())
+        {
+            for (Annotation annotation : field.getAnnotations())
+            {
+                if (annotation instanceof PrimaryKey && ((PrimaryKey) annotation).name().equals(keyName))
+                {
+                    return annotation;
+                }
+
+                if (annotation instanceof AlternateKey && ((AlternateKey) annotation).name().equals(keyName))
+                {
+                    return annotation;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the field for a given keyable class annotated with the given key name.
+     * @param keyableClass Keyable class to query.
+     * @param keyName Key name.
+     * @return Field matching the given key name, null otherwise.
+     */
+    private Field getFieldForKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+    {
+        for (Field field : keyableClass.getFields())
+        {
+            for (Annotation annotation : field.getAnnotations())
+            {
+                if (annotation instanceof PrimaryKey && ((PrimaryKey) annotation).name().equals(keyName))
+                {
+                    return field;
+                }
+
+                if (annotation instanceof AlternateKey && ((AlternateKey) annotation).name().equals(keyName))
+                {
+                    return field;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
