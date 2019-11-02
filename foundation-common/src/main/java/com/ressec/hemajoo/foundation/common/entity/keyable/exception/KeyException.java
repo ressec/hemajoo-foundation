@@ -1,18 +1,12 @@
 /*
- * (C) Copyright Hemajoo Systems Inc.  2019 - All Rights Reserved
- * -----------------------------------------------------------------------------------------------
- * All information contained herein is, and remains the property of
- * Hemajoo Inc. and its suppliers, if any. The intellectual and technical
- * concepts contained herein are proprietary to Hemajoo Inc. and its
- * suppliers and may be covered by U.S. and Foreign Patents, patents
- * in process, and are protected by trade secret or copyright law.
- *
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained from
- * Hemajoo Systems Inc.
- * -----------------------------------------------------------------------------------------------
+ * (C) Copyright IBM Corp. 2019 - All Rights Reserved
+ * ---------------------------------------------------------------------------
+ * The source code for this program is not published or otherwise
+ * divested of its trade secrets, irrespective of what has
+ * been deposited with the U.S. Copyright Office.
+ * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.entity.keyable;
+package com.ressec.hemajoo.foundation.common.entity.keyable.exception;
 
 import com.ressec.hemajoo.foundation.common.exception.AbstractUncheckedException;
 

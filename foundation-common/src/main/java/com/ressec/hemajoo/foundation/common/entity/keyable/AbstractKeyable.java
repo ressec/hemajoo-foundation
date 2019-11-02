@@ -14,6 +14,7 @@
  */
 package com.ressec.hemajoo.foundation.common.entity.keyable;
 
+import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
 import lombok.NonNull;
 
 import java.lang.annotation.Annotation;

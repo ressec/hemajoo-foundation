@@ -8,8 +8,8 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.KeyableWithPrimaryAutoKeyAsPrimitiveByte;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;

@@ -6,29 +6,29 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
+package com.ressec.hemajoo.foundation.common.test.entity.exception;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
+import com.ressec.hemajoo.foundation.common.exception.AbstractCheckedException;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.KeyableWithOnlyAlternateAutoKey;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Locale;
-
 /**
- * Test case for the {@link KeyableCountryWithError} entity.
+ * Test case for the {@link AbstractCheckedException} entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Log4j2
-public class TestKeyableCountryWithError
+public class TestAbstractCheckedException
 {
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithError.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithOnlyAlternateAutoKey.class);
     }
 
     @After
@@ -38,27 +38,14 @@ public class TestKeyableCountryWithError
     }
 
     /**
-     * Ensure an exception is raised while trying to annotate a field with multiple key annotations.
+     * Ensure the failure to create a keyable with only an auto alternate key of type primitive integer.
+     * <br><br>
+     * We cannot create a keyable entity without a primary key.
      */
     @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
+    public void expectFailureToCreateKeyableWithAlternateAutoKeyAsPrimitiveInt()
     {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
-                .build();
-    }
-
-    /**
-     * Ensure an exception is raised while trying to register a key with invalid type.
-     */
-    @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyHasInvalidType()
-    {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
-                .locale(Locale.FRANCE)
+        KeyableWithOnlyAlternateAutoKey entity = KeyableWithOnlyAlternateAutoKey.builder()
                 .build();
     }
 }

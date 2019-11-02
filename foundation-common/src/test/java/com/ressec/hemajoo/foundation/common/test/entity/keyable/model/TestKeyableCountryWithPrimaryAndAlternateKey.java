@@ -14,7 +14,11 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.*;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
+import com.ressec.hemajoo.foundation.common.entity.keyable.IKeyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
