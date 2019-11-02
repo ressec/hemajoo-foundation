@@ -104,8 +104,8 @@ public final class Key implements IKey
                 {
                     this.name = primary.name();
                     this.type = field.getType();
-                    this.isMandatory = primary.mandatory();
-                    this.isUnique = primary.unique();
+                    this.isMandatory = true;
+                    this.isUnique = true;
                     this.isPrimary = true;
                     this.isAuto = primary.auto();
                     this.reference = keyable.getClass();

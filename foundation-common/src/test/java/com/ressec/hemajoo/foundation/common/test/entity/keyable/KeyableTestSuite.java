@@ -14,13 +14,8 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithError;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithPrimaryAndAlternateKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithPrimaryKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.TestKeyableCountryWithoutKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto.TestKeyableWithOnlyAlternateAutoKey;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto.TestKeyableWithPrimaryAutoKeyAsPrimitiveInt;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto.TestKeyableWithPrimaryAutoKeyAsString;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.*;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -37,8 +32,15 @@ import org.junit.runners.Suite;
         TestKeyableCountryWithError.class,
 
         TestKeyableWithOnlyAlternateAutoKey.class,
-        TestKeyableWithPrimaryAutoKeyAsPrimitiveInt.class,
-        TestKeyableWithPrimaryAutoKeyAsString.class
+        TestKeyableWithPrimaryAutoKeyAsString.class,
+        TestKeyableWithPrimaryAutoKeyAsPrimitiveByte.class,
+        TestKeyableWithPrimaryAutoKeyAsPrimitiveShort.class,
+        TestKeyableWithPrimaryAutoKeyAsPrimitiveInteger.class,
+        TestKeyableWithPrimaryAutoKeyAsPrimitiveLong.class,
+
+        TestKeyableWithMultiplePrimaryKey.class,
+        TestKeyableWithSameAlternateKeyName.class,
+        TestKeyableWithPrimaryKeyNameDifferentFromKeyName.class,
 })
 public class KeyableTestSuite
 {

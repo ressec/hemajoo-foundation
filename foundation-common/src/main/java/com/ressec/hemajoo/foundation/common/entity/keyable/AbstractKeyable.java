@@ -251,7 +251,7 @@ public abstract class AbstractKeyable implements IKeyable
         for (Annotation annotation : getAnnotationKeys())
         {
             key = annotation instanceof PrimaryKey ? getKey(((PrimaryKey) annotation).name()) : getKey(((AlternateKey) annotation).name());
-            isUnique = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).unique() : ((AlternateKey) annotation).unique();
+            isUnique = annotation instanceof PrimaryKey || ((AlternateKey) annotation).unique();
 
             if (isUnique && key != null && key.isUnique())
             {
@@ -273,7 +273,7 @@ public abstract class AbstractKeyable implements IKeyable
         for (Annotation annotation : annotations)
         {
             key = annotation instanceof PrimaryKey ? getKey(((PrimaryKey) annotation).name()) : getKey(((AlternateKey) annotation).name());
-            isMandatory = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).mandatory() : ((AlternateKey) annotation).mandatory();
+            isMandatory = annotation instanceof PrimaryKey || ((AlternateKey) annotation).mandatory();
 
             if (isMandatory && key != null && key.isMandatory())
             {

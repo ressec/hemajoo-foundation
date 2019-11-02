@@ -6,11 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
-import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithOnlyAlternateAutoKey extends Keyable
+public class KeyableWithDifferentKeyAndFieldName extends Keyable
 {
     /**
-     * Field defined as an alternate key with property 'auto' set to true and of type primitive int.
+     * Primary field key where the key name is different from teh field name.
      */
-    @AlternateKey(name = "numeric", auto = true)
+    @PrimaryKey(name = "official")
     @Getter
-    private int numeric;
+    private String name;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithOnlyAlternateAutoKey()
+    private KeyableWithDifferentKeyAndFieldName()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param numeric Numeric value.
+     * @param name Name.
      */
     @Builder
-    public KeyableWithOnlyAlternateAutoKey(final int numeric)
+    public KeyableWithDifferentKeyAndFieldName(final String name)
     {
-        this.numeric = numeric;
+        this.name = name;
 
         super.register();
     }

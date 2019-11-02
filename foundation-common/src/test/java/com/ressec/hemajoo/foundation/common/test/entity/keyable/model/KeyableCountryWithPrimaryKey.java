@@ -34,7 +34,7 @@ public class KeyableCountryWithPrimaryKey extends Keyable
     /**
      * Name.
      */
-    @PrimaryKey(name = "name", unique = true, mandatory = true, auto = false)
+    @PrimaryKey(name = "name")
     @Getter
     private String name;
 

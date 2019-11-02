@@ -53,6 +53,7 @@ public final class KeyManager
 
     /**
      * Collection storing the latest key value for keys with property 'auto' set to true.
+     * Keyable class, then key type, then key name, then value of the latest key.
      */
     private Map<Class<? extends IKeyable>, Map<Class<?>, Map<String, Object>>> values = new HashMap<>();
 
@@ -112,17 +113,6 @@ public final class KeyManager
             {
                 checkKey(primary, field, keyable);
                 addKey(primary, field, keyable);
-
-                // Check if the field is also annotated as an alternate key ?
-                AlternateKey alternate = field.getAnnotation(AlternateKey.class);
-                if (alternate != null)
-                {
-                    throw new KeyException(
-                            String.format(
-                                    "Field: '%s' of keyable entity: '%s' is already annotated as a primary key and cannot also be declared as an alternate key!",
-                                    field.getName(),
-                                    keyable.getClass().getName()));
-                }
             }
             else
             {
@@ -157,15 +147,6 @@ public final class KeyManager
             {
                 unregisterKey(keyable, field, annotation);
             }
-            else
-            {
-                String name = annotation instanceof PrimaryKey ? ((PrimaryKey) annotation).name() : ((AlternateKey) annotation).name();
-
-                throw new KeyException(String.format(
-                        "Cannot unregister key with name: %s, on keyable entity: '%s' because no related field found!",
-                        name,
-                        keyable.getClass().getName()));
-            }
         }
     }
 
@@ -177,6 +158,15 @@ public final class KeyManager
     public final void unregisterKeysByKeyType(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Class<?> keyType)
     {
         entities.get(keyableClass).remove(keyType);
+
+        try
+        {
+            values.get(keyableClass).remove(keyType);
+        }
+        catch (NullPointerException e)
+        {
+            // Do nothing ... it means no latest value!
+        }
     }
 
     /**
@@ -185,7 +175,17 @@ public final class KeyManager
      */
     public final void unregisterKeysByKeyableType(final @NonNull Class<? extends IKeyable> keyableClass)
     {
+        // Remove the keys.
         entities.remove(keyableClass);
+
+        try
+        {
+            values.remove(keyableClass);
+        }
+        catch (NullPointerException e)
+        {
+            // Do nothing ... it means no latest value!
+        }
     }
 
     /**
@@ -199,6 +199,15 @@ public final class KeyManager
         Class<?> keyType = getKeyTypeFor(keyableClass, keyName);
 
         entities.get(keyableClass).get(keyType).remove(keyName);
+
+        try
+        {
+            values.get(keyableClass).get(keyType).remove(keyName);
+        }
+        catch (NullPointerException e)
+        {
+            // Do nothing ... it means no latest value!
+        }
     }
 
     /**
@@ -347,7 +356,7 @@ public final class KeyManager
     private void validateMandatoryKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
-        boolean mandatory = key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
+        boolean mandatory = key instanceof PrimaryKey || ((AlternateKey) key).mandatory();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
         Object value = getFieldValue(key, field, keyable);
@@ -400,9 +409,9 @@ public final class KeyManager
 
         if (auto)
         {
-            if (field.getType() == Byte.class || field.getType() == byte.class)
+            try
             {
-                try
+                if (field.getType() == Byte.class || field.getType() == byte.class)
                 {
                     if ((Byte) field.get(keyable) != 0)
                     {
@@ -417,23 +426,7 @@ public final class KeyManager
                         throw new KeyException(message);
                     }
                 }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
-            }
-            else if (field.getType() == Short.class || field.getType() == short.class)
-            {
-                try
+                else if (field.getType() == Short.class || field.getType() == short.class)
                 {
                     if ((Short) field.get(keyable) != 0)
                     {
@@ -448,23 +441,7 @@ public final class KeyManager
                         throw new KeyException(message);
                     }
                 }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
-            }
-            else if (field.getType() == Integer.class || field.getType() == int.class)
-            {
-                try
+                else if (field.getType() == Integer.class || field.getType() == int.class)
                 {
                     if ((Integer) field.get(keyable) != 0)
                     {
@@ -479,23 +456,7 @@ public final class KeyManager
                         throw new KeyException(message);
                     }
                 }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
-            }
-            else if (field.getType() == Long.class || field.getType() == long.class)
-            {
-                try
+                else if (field.getType() == Long.class || field.getType() == long.class)
                 {
                     if ((Long) field.get(keyable) != 0)
                     {
@@ -510,90 +471,30 @@ public final class KeyManager
                         throw new KeyException(message);
                     }
                 }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
             }
-            else if (field.getType() == Double.class || field.getType() == double.class)
+            catch (IllegalAccessException e)
             {
-                try
-                {
-                    if ((Double) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
+                String message = String.format(
+                        ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
+                        name,
+                        field.getType().getName(),
+                        keyable.getClass().getName(),
+                        e.getMessage());
 
-                        log.error(message);
+                log.error(message);
 
-                        throw new KeyException(message);
-                    }
-                }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
-            }
-            else if (field.getType() == Float.class || field.getType() == float.class)
-            {
-                try
-                {
-                    if ((Float) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
-
-                        log.error(message);
-
-                        throw new KeyException(message);
-                    }
-                }
-                catch (IllegalAccessException e)
-                {
-                    String message = String.format(
-                            ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName(),
-                            e.getMessage());
-
-                    log.error(message);
-
-                    throw new KeyException(message);
-                }
+                throw new KeyException(message);
             }
         }
     }
 
+    /**
+     * @param key
+     * @param field
+     * @param keyable
+     */
     private void validateAutoStandardKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
-        String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
-        boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
-
 
     }
 
@@ -608,105 +509,42 @@ public final class KeyManager
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
-        field.setAccessible(true);
-
-        if (field.getType() == String.class)
+        try
         {
-            if (auto)
+            field.setAccessible(true);
+
+            if (field.getType() == String.class)
             {
-                field.setAccessible(false);
-                String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
-                        name,
-                        field.getType().getName(),
-                        keyable.getClass().getName());
+                if (auto)
+                {
+                    field.setAccessible(false);
+                    String message = String.format(
+                            "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
+                            name,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
 
-                log.error(message);
+                    log.error(message);
 
-                throw new KeyException(message);
+                    throw new KeyException(message);
+                }
             }
 
-            try
-            {
-                field.get(keyable);
-            }
-            catch (IllegalAccessException e)
-            {
-                field.setAccessible(false);
-                String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
-                        name,
-                        field.getType().getName(),
-                        keyable.getClass().getName(),
-                        e.getMessage());
-
-                log.error(message);
-
-                throw new KeyException(message);
-            }
+            field.get(keyable);
         }
-        else if (field.getType() == Integer.class || field.getType() == int.class)
+        catch (IllegalAccessException e)
         {
-            try
-            {
-                field.get(keyable);
-            }
-            catch (IllegalAccessException e)
-            {
-                field.setAccessible(false);
-                String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
-                        name,
-                        field.getType().getName(),
-                        keyable.getClass().getName(),
-                        e.getMessage());
+            field.setAccessible(false);
+            String message = String.format(
+                    "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
+                    name,
+                    field.getType().getName(),
+                    keyable.getClass().getName(),
+                    e.getMessage());
 
-                log.error(message);
+            log.error(message);
 
-                throw new KeyException(message);
-            }
-        }
-        else if (field.getType() == Long.class || field.getType() == long.class)
-        {
-            try
-            {
-                field.get(keyable);
-            }
-            catch (IllegalAccessException e)
-            {
-                field.setAccessible(false);
-                String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
-                        name,
-                        field.getType().getName(),
-                        keyable.getClass().getName(),
-                        e.getMessage());
-
-                log.error(message);
-
-                throw new KeyException(message);
-            }
-        }
-        else if (field.getType() == UUID.class)
-        {
-            try
-            {
-                field.get(keyable);
-            }
-            catch (IllegalAccessException e)
-            {
-                field.setAccessible(false);
-                String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
-                        name,
-                        field.getType().getName(),
-                        keyable.getClass().getName(),
-                        e.getMessage());
-
-                log.error(message);
-
-                throw new KeyException(message);
-            }
+            throw new KeyException(message);
         }
     }
 
@@ -751,9 +589,9 @@ public final class KeyManager
         Multimap<Object, IKeyable> map3;
 
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
-        boolean unique = key instanceof PrimaryKey ? ((PrimaryKey) key).unique() : ((AlternateKey) key).unique();
+        boolean unique = key instanceof PrimaryKey || ((AlternateKey) key).unique();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
-        boolean mandatory = key instanceof PrimaryKey ? ((PrimaryKey) key).mandatory() : ((AlternateKey) key).mandatory();
+        boolean mandatory = key instanceof PrimaryKey || ((AlternateKey) key).mandatory();
 
         Object value = getFieldValue(key, field, keyable);
 
@@ -867,27 +705,23 @@ public final class KeyManager
 
             if (field.getType() == Integer.class || field.getType() == int.class)
             {
-                return auto && value == null || ((Integer) value) == 0;
+                return value == null || (Integer) value == 0;
             }
             else if (field.getType() == Long.class || field.getType() == long.class)
             {
-                return auto && value == null || ((Long) value) == 0L;
+                return value == null || ((Long) value) == 0L;
             }
             else if (field.getType() == Short.class || field.getType() == short.class)
             {
-                return auto && value == null || ((Short) value) == 0;
+                return value == null || ((Short) value) == 0;
             }
             else if (field.getType() == Byte.class || field.getType() == byte.class)
             {
-                return auto && value == null || ((Byte) value) == 0;
+                return value == null || ((Byte) value) == 0;
             }
-            else if (field.getType() == Double.class || field.getType() == double.class)
+            else if (field.getType() == UUID.class)
             {
-                return auto && value == null || ((Double) value) == 0;
-            }
-            else if (field.getType() == Float.class || field.getType() == float.class)
-            {
-                return auto && value == null || ((Float) value) == 0;
+                return value == null;
             }
         }
 
@@ -1114,12 +948,69 @@ public final class KeyManager
      */
     private Object generateNextKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
     {
-        if (type == UUID.class)
+        if (type == Byte.class || type == byte.class)
         {
-            return UUID.randomUUID();
-        }
+            Byte latest = (Byte) getLatestKeyValue(keyable, type, name);
 
-        if (type == Integer.class || type == int.class)
+            if (latest == null)
+            {
+                latest = 1;
+            }
+            else
+            {
+                if (latest == Byte.MAX_VALUE)
+                {
+                    String message = String.format(
+                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            name,
+                            type.getName(),
+                            keyable.getClass().getName(),
+                            Byte.MAX_VALUE);
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+
+                latest = Integer.valueOf(latest + 1).byteValue();
+            }
+
+            updateLatestKeyValue(keyable, type, name, latest);
+
+            return latest;
+        }
+        else if (type == Short.class || type == short.class)
+        {
+            Short latest = (Short) getLatestKeyValue(keyable, type, name);
+
+            if (latest == null)
+            {
+                latest = 1;
+            }
+            else
+            {
+                if (latest == Short.MAX_VALUE)
+                {
+                    String message = String.format(
+                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            name,
+                            type.getName(),
+                            keyable.getClass().getName(),
+                            Short.MAX_VALUE);
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+
+                latest = Integer.valueOf(latest + 1).shortValue();
+            }
+
+            updateLatestKeyValue(keyable, type, name, latest);
+
+            return latest;
+        }
+        else if (type == Integer.class || type == int.class)
         {
             Integer latest = (Integer) getLatestKeyValue(keyable, type, name);
             if (latest == null)
@@ -1128,6 +1019,20 @@ public final class KeyManager
             }
             else
             {
+                if (latest == Integer.MAX_VALUE)
+                {
+                    String message = String.format(
+                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            name,
+                            type.getName(),
+                            keyable.getClass().getName(),
+                            Integer.MAX_VALUE);
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+
                 latest += 1;
             }
 
@@ -1135,22 +1040,40 @@ public final class KeyManager
 
             return latest;
         }
-
-        if (type == Long.class || type == long.class)
+        else if (type == Long.class || type == long.class)
         {
             Long latest = (Long) getLatestKeyValue(keyable, type, name);
+
             if (latest == null)
             {
                 latest = 1L;
             }
             else
             {
+                if (latest == Long.MAX_VALUE)
+                {
+                    String message = String.format(
+                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            name,
+                            type.getName(),
+                            keyable.getClass().getName(),
+                            Long.MAX_VALUE);
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+
                 latest += 1;
             }
 
             updateLatestKeyValue(keyable, type, name, latest);
 
             return latest;
+        }
+        else if (type == UUID.class)
+        {
+            return UUID.randomUUID();
         }
 
         throw new KeyException("Unsupported key type!");
@@ -1311,6 +1234,7 @@ public final class KeyManager
      */
     public final int countByKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
     {
+        Annotation fieldAnnotation;
         Annotation annotation = getAnnotationForKeyName(keyableClass, keyName);
 
         if (annotation != null)
@@ -1319,16 +1243,16 @@ public final class KeyManager
             {
                 if (annotation instanceof PrimaryKey)
                 {
-                    annotation = field.getAnnotation(PrimaryKey.class);
-                    if (annotation != null && ((PrimaryKey) annotation).name().equals(keyName))
+                    fieldAnnotation = field.getAnnotation(PrimaryKey.class);
+                    if (fieldAnnotation != null && ((PrimaryKey) fieldAnnotation).name().equals(keyName))
                     {
                         return getKeyables(keyableClass, field.getType(), keyName).size();
                     }
                 }
                 else if (annotation instanceof AlternateKey)
                 {
-                    annotation = field.getAnnotation(AlternateKey.class);
-                    if (annotation != null && ((AlternateKey) annotation).name().equals(keyName))
+                    fieldAnnotation = field.getAnnotation(AlternateKey.class);
+                    if (fieldAnnotation != null && ((AlternateKey) fieldAnnotation).name().equals(keyName))
                     {
                         return getKeyables(keyableClass, field.getType(), keyName).size();
                     }
@@ -1366,32 +1290,32 @@ public final class KeyManager
         return null;
     }
 
-    /**
-     * Returns the field for a given keyable class annotated with the given key name.
-     * @param keyableClass Keyable class to query.
-     * @param keyName Key name.
-     * @return Field matching the given key name, null otherwise.
-     */
-    private Field getFieldForKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
-    {
-        for (Field field : keyableClass.getFields())
-        {
-            for (Annotation annotation : field.getAnnotations())
-            {
-                if (annotation instanceof PrimaryKey && ((PrimaryKey) annotation).name().equals(keyName))
-                {
-                    return field;
-                }
-
-                if (annotation instanceof AlternateKey && ((AlternateKey) annotation).name().equals(keyName))
-                {
-                    return field;
-                }
-            }
-        }
-
-        return null;
-    }
+//    /**
+//     * Returns the field for a given keyable class annotated with the given key name.
+//     * @param keyableClass Keyable class to query.
+//     * @param keyName Key name.
+//     * @return Field matching the given key name, null otherwise.
+//     */
+//    private Field getFieldForKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+//    {
+//        for (Field field : keyableClass.getFields())
+//        {
+//            for (Annotation annotation : field.getAnnotations())
+//            {
+//                if (annotation instanceof PrimaryKey && ((PrimaryKey) annotation).name().equals(keyName))
+//                {
+//                    return field;
+//                }
+//
+//                if (annotation instanceof AlternateKey && ((AlternateKey) annotation).name().equals(keyName))
+//                {
+//                    return field;
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Returns a list of registered keyables matching the given parameters.
@@ -1424,7 +1348,7 @@ public final class KeyManager
      * @param field Annotated field.
      * @return True if the field has an authorized type, false otherwise.
      */
-    public final boolean isAuthorizedType(final @NonNull Field field)
+    private boolean isAuthorizedType(final @NonNull Field field)
     {
         return isAuthorizedType(field.getType());
     }
@@ -1434,8 +1358,12 @@ public final class KeyManager
      * @param clazz Class.
      * @return True if the class is an authorized type, false otherwise.
      */
-    public final boolean isAuthorizedType(final @NonNull Class<?> clazz)
+    private boolean isAuthorizedType(final @NonNull Class<?> clazz)
     {
-        return ClassUtils.isPrimitiveOrWrapper(clazz) || clazz == String.class || clazz == UUID.class;
+        return clazz == Byte.class || clazz == byte.class ||
+                clazz == Short.class || clazz == short.class ||
+                clazz == Integer.class || clazz == int.class ||
+                clazz == Long.class || clazz == long.class ||
+                clazz == String.class || clazz == UUID.class;
     }
 }

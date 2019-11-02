@@ -6,10 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyException;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.KeyableWithPrimaryAutoKeyAsPrimitiveInteger;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Assert;
@@ -17,17 +18,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test case for the {@link KeyableWithPrimaryAutoKeyAsPrimitiveInt} entity.
+ * Test case for the {@link KeyableWithPrimaryAutoKeyAsPrimitiveInteger} entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Log4j2
-public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
+public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInteger
 {
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsPrimitiveInt.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsPrimitiveInteger.class);
     }
 
     @After
@@ -42,7 +43,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     @Test
     public void expectSuccessToCreateKeyableWithPrimaryAutoKeyAsPrimitiveInt()
     {
-        KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
+        KeyableWithPrimaryAutoKeyAsPrimitiveInteger entity = KeyableWithPrimaryAutoKeyAsPrimitiveInteger.builder()
                 .build();
 
         Assert.assertNotNull(entity);
@@ -55,7 +56,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     @Test
     public void expectSuccessToCreateKeyableWithPrimaryAutoKeyAsPrimitiveIntWithValueEqualZero()
     {
-        KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
+        KeyableWithPrimaryAutoKeyAsPrimitiveInteger entity = KeyableWithPrimaryAutoKeyAsPrimitiveInteger.builder()
                 .primitiveInt(0)
                 .build();
 
@@ -69,7 +70,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     @Test(expected = KeyException.class)
     public void expectFailureToCreateKeyableWithPrimaryAutoKeyAsPrimitiveIntWithValueGreaterThanZero()
     {
-        KeyableWithPrimaryAutoKeyAsPrimitiveInt entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
+        KeyableWithPrimaryAutoKeyAsPrimitiveInteger entity = KeyableWithPrimaryAutoKeyAsPrimitiveInteger.builder()
                 .primitiveInt(154)
                 .build();
 
@@ -84,11 +85,11 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
     public void expectSuccessToCreateMultipleKeyableWithPrimaryAutoKeyAsPrimitiveInt()
     {
         int previous = 0;
-        KeyableWithPrimaryAutoKeyAsPrimitiveInt entity;
+        KeyableWithPrimaryAutoKeyAsPrimitiveInteger entity;
 
         for (int i = 0; i < 100; i++)
         {
-            entity = KeyableWithPrimaryAutoKeyAsPrimitiveInt.builder()
+            entity = KeyableWithPrimaryAutoKeyAsPrimitiveInteger.builder()
                     .primitiveInt(0)
                     .build();
 
@@ -98,7 +99,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInt
             previous = (int) entity.getPrimaryKey().getValue();
         }
 
-        int count = KeyManager.getInstance().countByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveInt.class);
+        int count = KeyManager.getInstance().countByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveInteger.class);
         Assert.assertEquals(100, count);
     }
 }

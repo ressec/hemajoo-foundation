@@ -233,7 +233,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     }
 
     /**
-     * Ensure the success to retrieve null when querying based on a non-existent key name.
+     * Ensure an exception is raised when trying to retrieve a keyable using a null key.
      */
     @Test(expected = NullPointerException.class)
     public void expectNullPointerExceptionWhenUsingNullKey()
@@ -410,7 +410,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
         Assert.assertNotNull(entity);
 
         List<IKey> keys = entity.getKeyList();
-        Assert.assertEquals(14, keys.size());
+        Assert.assertEquals(10, keys.size());
     }
 
     /**
@@ -658,54 +658,6 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     }
 
     /**
-     * EEnsure the success to initialize and retrieve a keyable based on a primitive double key.
-     */
-    @Test
-    public void expectSuccessToCreateAndRetrievePrimitiveDoubleKey()
-    {
-        double value = 14.58;
-
-        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name("France")
-                .iso3("FRA")
-                .doubleKey(value)
-                .build();
-        Assert.assertNotNull(france);
-
-        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) france.get(
-                KeyableCountryWithPrimaryAndAlternateKey.class,
-                "doubleKey",
-                value);
-
-        Assert.assertNotNull(country);
-        Assert.assertEquals(value, country.getDoubleKey(), 0.001);
-    }
-
-    /**
-     * Ensure the success to initialize and retrieve a keyable based on a primitive float key.
-     */
-    @Test
-    public void expectSuccessToCreateAndRetrievePrimitiveFloatKey()
-    {
-        float value = 14.12f;
-
-        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name("France")
-                .iso3("FRA")
-                .floatKey(value)
-                .build();
-        Assert.assertNotNull(france);
-
-        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) france.get(
-                KeyableCountryWithPrimaryAndAlternateKey.class,
-                "floatKey",
-                value);
-
-        Assert.assertNotNull(country);
-        Assert.assertEquals(value, country.getFloatKey(), 0.001);
-    }
-
-    /**
      * Ensure the success to initialize and retrieve a keyable based on a primitive integer key.
      */
     @Test
@@ -727,30 +679,6 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
 
         Assert.assertNotNull(country);
         Assert.assertEquals(value, country.getIntegerKey());
-    }
-
-    /**
-     * Ensure the success to initialize and retrieve a keyable based on a primitive boolean key.
-     */
-    @Test
-    public void expectSuccessToCreateAndRetrievePrimitiveBooleanKey()
-    {
-        boolean value = true;
-
-        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name("France")
-                .iso3("FRA")
-                .booleanKey(value)
-                .build();
-        Assert.assertNotNull(france);
-
-        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) france.get(
-                KeyableCountryWithPrimaryAndAlternateKey.class,
-                "booleanKey",
-                value);
-
-        Assert.assertNotNull(country);
-        Assert.assertEquals(value, country.isBooleanKey());
     }
 
     /**
@@ -799,30 +727,6 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
 
         Assert.assertNotNull(country);
         Assert.assertEquals(value, country.getByteKey());
-    }
-
-    /**
-     * Ensure the success to initialize and retrieve a keyable based on a primitive char key.
-     */
-    @Test
-    public void expectSuccessToCreateAndRetrievePrimitiveCharKey()
-    {
-        char value = 'è';
-
-        KeyableCountryWithPrimaryAndAlternateKey france = KeyableCountryWithPrimaryAndAlternateKey.builder()
-                .name("France")
-                .iso3("FRA")
-                .charKey(value)
-                .build();
-        Assert.assertNotNull(france);
-
-        KeyableCountryWithPrimaryAndAlternateKey country = (KeyableCountryWithPrimaryAndAlternateKey) france.get(
-                KeyableCountryWithPrimaryAndAlternateKey.class,
-                "charKey",
-                value);
-
-        Assert.assertNotNull(country);
-        Assert.assertEquals(value, country.getCharKey());
     }
 
     /**
@@ -924,5 +828,38 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
 
         boolean exist = KeyManager.getInstance().isKeyValueExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "Germany");
         Assert.assertFalse(exist);
+    }
+
+    /**
+     * Ensure the success to retrieve the count of registered keyables based on a key name.
+     */
+    @Test
+    public void expectSuccessToRetrieveKeyableCountByKeyName()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        int count = KeyManager.getInstance().countByKeyName(KeyableCountryWithPrimaryAndAlternateKey.class, "iso3");
+        Assert.assertEquals(1, count);
+    }
+
+
+    /**
+     * Ensure the success to unregister a keyable instance only.
+     */
+    @Test
+    public void expectSuccessToUnregisterKeyable()
+    {
+        KeyableCountryWithPrimaryAndAlternateKey entity = KeyableCountryWithPrimaryAndAlternateKey.builder()
+                .name("France")
+                .iso2("FR")
+                .iso3("FRA")
+                .build();
+        Assert.assertNotNull(entity);
+
+        KeyManager.getInstance().unregister(entity);
     }
 }

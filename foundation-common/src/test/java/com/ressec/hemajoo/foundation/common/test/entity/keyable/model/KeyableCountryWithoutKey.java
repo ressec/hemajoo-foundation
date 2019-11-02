@@ -30,34 +30,10 @@ import lombok.Getter;
 public class KeyableCountryWithoutKey extends Keyable
 {
     /**
-     * Numeric ISO code of the country.
+     * Numeric.
      */
     @Getter
     private int numeric;
-
-    /**
-     * ISO Alpha-2 code of the country.
-     */
-    @Getter
-    private String iso2;
-
-    /**
-     * ISO Alpha-3 code of the country.
-     */
-    @Getter
-    private String iso3;
-
-    /**
-     * Name of the country.
-     */
-    @Getter
-    private String name;
-
-    /**
-     * Official name of the country.
-     */
-    @Getter
-    private String officialName;
 
     /**
      * Avoid direct instantiation of country entity.
@@ -68,21 +44,13 @@ public class KeyableCountryWithoutKey extends Keyable
     }
 
     /**
-     * Creates a new test country entity.
-     * @param numericCode Country ISO numeric code.
-     * @param iso2 Country ISO Alpha-2 code.
-     * @param iso3 Country ISO Alpha-3 code.
-     * @param name Country name.
-     * @param officialName Country official name.
+     * Creates a new test keyable entity.
+     * @param numeric Numeric code.
      */
     @Builder
-    public KeyableCountryWithoutKey(final int numericCode, final String iso2, final String iso3, final String name, final String officialName)
+    public KeyableCountryWithoutKey(final int numeric)
     {
-        this.numeric = numericCode;
-        this.iso2 = iso2;
-        this.iso3 = iso3;
-        this.name = name;
-        this.officialName = officialName;
+        this.numeric = numeric;
 
         super.register();
     }
