@@ -19,7 +19,6 @@ import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -49,7 +48,7 @@ public class TestKeyableCountryWithoutKey
     public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
     {
         KeyableCountryWithoutKey entity = KeyableCountryWithoutKey.builder()
-                .name("France")
+                .numeric(250)
                 .build();
     }
 }

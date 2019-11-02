@@ -15,20 +15,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Locale;
-
 /**
- * Test case for the {@link KeyableCountryWithError} entity.
+ * Test case for the {@link KeyableWithSameAlternateKeyName} entity.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Log4j2
-public class TestKeyableCountryWithError
+public class TestKeyableWithMultiplePrimaryKey
 {
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithError.class);
+        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithMultiplePrimaryKey.class);
     }
 
     @After
@@ -38,27 +36,14 @@ public class TestKeyableCountryWithError
     }
 
     /**
-     * Ensure an exception is raised while trying to annotate a field with multiple key annotations.
+     * Ensure an exception is raised while trying to create a keyable having multiple primary keys.
      */
     @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyableHasNoPrimaryKey()
+    public void expectFailureToCreateKeyableWhenMultiplePrimaryKey()
     {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
-                .build();
-    }
-
-    /**
-     * Ensure an exception is raised while trying to register a key with invalid type.
-     */
-    @Test(expected = KeyException.class)
-    public void expectFailureToCreateKeyableWhenKeyHasInvalidType()
-    {
-        KeyableCountryWithError entity = KeyableCountryWithError.builder()
-                .name("France")
-                .iso3("FRA")
-                .locale(Locale.FRANCE)
+        KeyableWithMultiplePrimaryKey entity = KeyableWithMultiplePrimaryKey.builder()
+                .numeric(250)
+                .name("FRA")
                 .build();
     }
 }
