@@ -38,14 +38,6 @@ public abstract class AbstractCheckedException extends Exception
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new checked exception.
-     */
-    public AbstractCheckedException()
-    {
-        super();
-    }
-
-    /**
      * Creates a new checked exception based on a parent exception.
      *
      * @param exception Parent exception.

@@ -8,14 +8,14 @@
  */
 package com.ressec.hemajoo.foundation.common.entity.keyable.exception;
 
-import com.ressec.hemajoo.foundation.common.exception.AbstractUncheckedException;
+import com.ressec.hemajoo.foundation.common.exception.AbstractCheckedException;
 
 /**
- * Exception thrown to indicate an error occurred when manipulating the key manager.
+ * Exception thrown to indicate an error occurred when manipulating a key.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
-public class KeyManagerException extends AbstractUncheckedException
+public class KeyViolationException extends AbstractCheckedException
 {
     /**
      * Default serialization identifier.
@@ -26,7 +26,7 @@ public class KeyManagerException extends AbstractUncheckedException
      * Creates a new exception based on a parent exception.
      * @param exception Parent exception.
      */
-    public KeyManagerException(final Exception exception)
+    public KeyViolationException(final Exception exception)
     {
         super(exception);
     }
@@ -35,17 +35,17 @@ public class KeyManagerException extends AbstractUncheckedException
      * Creates a new exception based on a parent exception.
      * @param message Message of the exception.
      */
-    public KeyManagerException(final String message)
+    public KeyViolationException(final String message)
     {
         super(message);
     }
 
     /**
      * Creates a new exception based on a message and a parent exception.
-     * @param message   Message of the exception.
+     * @param message Message of the exception.
      * @param exception Parent exception.
      */
-    public KeyManagerException(final String message, final Exception exception)
+    public KeyViolationException(final String message, final Exception exception)
     {
         super(message + exception.getMessage(), exception);
     }

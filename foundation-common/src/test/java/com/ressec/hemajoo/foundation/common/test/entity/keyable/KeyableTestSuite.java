@@ -14,6 +14,8 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
+import com.ressec.hemajoo.foundation.common.test.entity.exception.TestCheckedException;
+import com.ressec.hemajoo.foundation.common.test.entity.exception.TestUncheckedException;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.*;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.*;
 import org.junit.runner.RunWith;
@@ -41,6 +43,9 @@ import org.junit.runners.Suite;
         TestKeyableWithMultiplePrimaryKey.class,
         TestKeyableWithSameAlternateKeyName.class,
         TestKeyableWithPrimaryKeyNameDifferentFromKeyName.class,
+
+        TestCheckedException.class,
+        TestUncheckedException.class,
 })
 public class KeyableTestSuite
 {

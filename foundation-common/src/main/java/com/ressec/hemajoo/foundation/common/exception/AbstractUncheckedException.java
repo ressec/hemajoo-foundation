@@ -34,14 +34,6 @@ public abstract class AbstractUncheckedException extends RuntimeException
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new unchecked empty exception.
-     */
-    public AbstractUncheckedException()
-    {
-        super();
-    }
-
-    /**
      * Creates a new unchecked exception based on a parent exception.
      *
      * @param exception Parent exception.

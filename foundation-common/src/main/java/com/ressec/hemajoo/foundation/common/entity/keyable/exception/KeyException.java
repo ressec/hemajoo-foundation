@@ -23,14 +23,6 @@ public class KeyException extends AbstractUncheckedException
     private static final long serialVersionUID = 1L;
 
     /**
-     * Avoid creating empty exception.
-     */
-    private KeyException()
-    {
-        super();
-    }
-
-    /**
      * Creates a new exception based on a parent exception.
      * @param exception Parent exception.
      */
