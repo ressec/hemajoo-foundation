@@ -972,7 +972,7 @@ public final class KeyManager
                     throw new KeyException(message);
                 }
 
-                latest = Integer.valueOf(latest + 1).byteValue();
+                latest = (byte) (latest + 1);
             }
 
             updateLatestKeyValue(keyable, type, name, latest);
@@ -1003,7 +1003,7 @@ public final class KeyManager
                     throw new KeyException(message);
                 }
 
-                latest = Integer.valueOf(latest + 1).shortValue();
+                latest = (short) (latest + 1);
             }
 
             updateLatestKeyValue(keyable, type, name, latest);
