@@ -399,7 +399,7 @@ public final class KeyManager
      * Validates an auto key value when type is primitive or wrapper.
      * @param key Annotation of the key.
      * @param field Annotated field.
-     * @param keyable Keyable holding the annotated field.
+     * @param keyable Keyable entity holding the annotated field.
      */
     private void validateAutoPrimitiveOrWrapperKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
@@ -413,65 +413,20 @@ public final class KeyManager
         {
             try
             {
-                if (field.getType() == Byte.class || field.getType() == byte.class)
+                if (field.getType() == Byte.class || field.getType() == byte.class && (Byte) field.get(keyable) != 0 ||
+                        field.getType() == Short.class || field.getType() == short.class && (Short) field.get(keyable) != 0 ||
+                        field.getType() == Integer.class || field.getType() == int.class && (Integer) field.get(keyable) != 0 ||
+                        field.getType() == Long.class || field.getType() == long.class && (Long) field.get(keyable) != 0)
                 {
-                    if ((Byte) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
+                    String message = String.format(
+                            AUTO_KEY_VALUE_PROVIDED_MESSAGE,
+                            name,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
 
-                        log.error(message);
+                    log.error(message);
 
-                        throw new KeyException(message);
-                    }
-                }
-                else if (field.getType() == Short.class || field.getType() == short.class)
-                {
-                    if ((Short) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
-
-                        log.error(message);
-
-                        throw new KeyException(message);
-                    }
-                }
-                else if (field.getType() == Integer.class || field.getType() == int.class)
-                {
-                    if ((Integer) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
-
-                        log.error(message);
-
-                        throw new KeyException(message);
-                    }
-                }
-                else if (field.getType() == Long.class || field.getType() == long.class)
-                {
-                    if ((Long) field.get(keyable) != 0)
-                    {
-                        String message = String.format(
-                                AUTO_KEY_VALUE_PROVIDED_MESSAGE,
-                                name,
-                                field.getType().getName(),
-                                keyable.getClass().getName());
-
-                        log.error(message);
-
-                        throw new KeyException(message);
-                    }
+                    throw new KeyException(message);
                 }
             }
             catch (IllegalAccessException e)
@@ -491,13 +446,62 @@ public final class KeyManager
     }
 
     /**
-     * @param key
-     * @param field
-     * @param keyable
+     * Validates an auto key value when type is not a primitive or a primitive wrapper.
+     * @param key Annotation of the key.
+     * @param field Annotated field.
+     * @param keyable Keyable entity holding the annotated field.
      */
     private void validateAutoStandardKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
+        final String ILLEGAL_ACCESS_EXCEPTION_MESSAGE = "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' due to: %s";
+        final String AUTO_KEY_VALUE_PROVIDED_MESSAGE = "Cannot initialize (auto) key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is provided!";
 
+        String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
+        boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
+
+        try
+        {
+            if (auto)
+            {
+                if (field.getType() == String.class)
+                {
+                    String message = String.format(
+                            "Cannot initialize mandatory key with name: %s, of type: %s, declared on keyable entity: '%s' because 'auto' keys are not allowed with key of type 'string'!",
+                            name,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+                else if (field.getType() == UUID.class && field.get(keyable) != null)
+                {
+                    String message = String.format(
+                            AUTO_KEY_VALUE_PROVIDED_MESSAGE,
+                            name,
+                            field.getType().getName(),
+                            keyable.getClass().getName());
+
+                    log.error(message);
+
+                    throw new KeyException(message);
+                }
+            }
+        }
+        catch (IllegalAccessException e)
+        {
+            String message = String.format(
+                    ILLEGAL_ACCESS_EXCEPTION_MESSAGE,
+                    name,
+                    field.getType().getName(),
+                    keyable.getClass().getName(),
+                    e.getMessage());
+
+            log.error(message);
+
+            throw new KeyException(message);
+        }
     }
 
     /**
@@ -515,21 +519,18 @@ public final class KeyManager
         {
             field.setAccessible(true);
 
-            if (field.getType() == String.class)
+            if (field.getType() == String.class && auto)
             {
-                if (auto)
-                {
-                    field.setAccessible(false);
-                    String message = String.format(
-                            "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
-                            name,
-                            field.getType().getName(),
-                            keyable.getClass().getName());
+                field.setAccessible(false);
+                String message = String.format(
+                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
+                        name,
+                        field.getType().getName(),
+                        keyable.getClass().getName());
 
-                    log.error(message);
+                log.error(message);
 
-                    throw new KeyException(message);
-                }
+                throw new KeyException(message);
             }
 
             field.get(keyable);
@@ -634,23 +635,10 @@ public final class KeyManager
         {
             if (field.getType().isPrimitive())
             {
-                if (value instanceof Integer && (Integer) value == 0)
-                {
-                    skip = true;
-                }
-                else if (value instanceof Long && (Long) value == 0)
-                {
-                    skip = true;
-                }
-                else if (value instanceof Byte && (Byte) value == 0)
-                {
-                    skip = true;
-                }
-                else if (value instanceof Double && (Double) value == 0.0)
-                {
-                    skip = true;
-                }
-                else if (value instanceof Float && (Float) value == 0.0f)
+                if (value instanceof Integer && (Integer) value == 0 ||
+                        value instanceof Long && (Long) value == 0 ||
+                        value instanceof Byte && (Byte) value == 0 ||
+                        value instanceof Short && (Short) value == 0)
                 {
                     skip = true;
                 }
