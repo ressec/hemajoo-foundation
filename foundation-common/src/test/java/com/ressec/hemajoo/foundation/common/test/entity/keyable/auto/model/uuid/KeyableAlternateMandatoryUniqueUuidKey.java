@@ -6,47 +6,57 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.uuid;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
+import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 /**
  * A keyable entity test class.
- * <br><br>
- * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsPrimitiveByte extends Keyable
+public class KeyableAlternateMandatoryUniqueUuidKey extends Keyable
 {
     /**
-     * Field defined as a primary key with property 'auto' set to true and of type primitive byte.
+     * Field defined as a primary UUID auto key.
      */
-    @PrimaryKey(name = "primitiveByte", auto = true)
+    @PrimaryKey(name = "primaryUuid", auto = true)
     @Getter
-    private byte primitiveByte;
+    private UUID primaryUuid;
+
+    /**
+     * Field defined as an alternate UUID unique key.
+     */
+    @AlternateKey(name = "alternateMandatoryUniqueUuid", auto = false, mandatory = true, unique = true)
+    @Getter
+    private UUID alternateMandatoryUniqueUuid;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsPrimitiveByte()
+    private KeyableAlternateMandatoryUniqueUuidKey()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param primitiveByte Primitive byte value.
+     * @param primaryUuid UUID value.
+     * @param alternateMandatoryUniqueUuid UUID value.
      */
-    @Builder(toBuilder = true)
-    public KeyableWithPrimaryAutoKeyAsPrimitiveByte(final byte primitiveByte)
+    @Builder
+    public KeyableAlternateMandatoryUniqueUuidKey(final UUID primaryUuid, final UUID alternateMandatoryUniqueUuid)
     {
-        this.primitiveByte = primitiveByte;
+        this.primaryUuid = primaryUuid;
+        this.alternateMandatoryUniqueUuid = alternateMandatoryUniqueUuid;
 
         super.register();
     }

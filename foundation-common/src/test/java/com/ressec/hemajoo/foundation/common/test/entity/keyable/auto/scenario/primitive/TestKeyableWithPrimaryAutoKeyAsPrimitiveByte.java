@@ -6,11 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.KeyableWithPrimaryAutoKeyAsPrimitiveByte;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive.KeyableWithPrimaryAutoKeyAsPrimitiveByte;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Assert;
@@ -78,10 +78,10 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveByte
     }
 
     /**
-     * Ensure the success to create one hundred keyables in less than 100 milliseconds with an auto primary key of
+     * Ensure the success to create one hundred keyables in less than 1000 milliseconds with an auto primary key of
      * type primitive byte when the value is greater than zero.
      */
-    @Test(timeout = 100)
+    @Test(timeout = 1000)
     public void expectSuccessToCreateMultipleKeyableWithPrimaryAutoKeyAsPrimitiveByte()
     {
         byte previous = 0;

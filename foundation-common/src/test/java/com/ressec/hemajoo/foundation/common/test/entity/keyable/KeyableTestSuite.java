@@ -16,7 +16,8 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
 import com.ressec.hemajoo.foundation.common.test.entity.exception.TestCheckedException;
 import com.ressec.hemajoo.foundation.common.test.entity.exception.TestUncheckedException;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.*;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive.*;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid.TestKeyableAlternateAutoUuidKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.model.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -28,6 +29,10 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+
+        // Auto
+        TestKeyableAlternateAutoUuidKey.class,
+
         TestKeyableCountryWithoutKey.class,
         TestKeyableCountryWithPrimaryKey.class,
         TestKeyableCountryWithPrimaryAndAlternateKey.class,

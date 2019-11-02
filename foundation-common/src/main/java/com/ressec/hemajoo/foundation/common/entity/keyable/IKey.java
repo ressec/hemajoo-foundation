@@ -40,6 +40,12 @@ public interface IKey
     Object getValue();
 
     /**
+     * Returns the keyable class this key refers to.
+     * @return Keyable class reference.
+     */
+    Class<? extends IKeyable> getReferenceClass();
+
+    /**
      * Returns if the key is the primary key ?
      * @return True if the key is the primary key, false otherwise.
      */

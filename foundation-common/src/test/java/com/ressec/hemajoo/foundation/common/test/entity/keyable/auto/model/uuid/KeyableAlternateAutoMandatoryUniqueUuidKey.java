@@ -6,47 +6,57 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.uuid;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
+import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 /**
  * A keyable entity test class.
- * <br><br>
- * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsPrimitiveLong extends Keyable
+public class KeyableAlternateAutoMandatoryUniqueUuidKey extends Keyable
 {
     /**
-     * Field defined as a primary key with property 'auto' set to true and of type primitive long.
+     * Field defined as a primary UUID auto key.
      */
-    @PrimaryKey(name = "primitiveLong", auto = true)
+    @PrimaryKey(name = "primaryUuid", auto = true)
     @Getter
-    private long primitiveLong;
+    private UUID primaryUuid;
+
+    /**
+     * Field defined as an alternate UUID unique key.
+     */
+    @AlternateKey(name = "alternateAutoMandatoryUniqueUuid", auto = true, mandatory = true, unique = true)
+    @Getter
+    private UUID alternateAutoMandatoryUniqueUuid;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsPrimitiveLong()
+    private KeyableAlternateAutoMandatoryUniqueUuidKey()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param primitiveLong Primitive long value.
+     * @param primaryUuid UUID value.
+     * @param alternateAutoMandatoryUniqueUuid UUID value.
      */
     @Builder
-    public KeyableWithPrimaryAutoKeyAsPrimitiveLong(final long primitiveLong)
+    public KeyableAlternateAutoMandatoryUniqueUuidKey(final UUID primaryUuid, final UUID alternateAutoMandatoryUniqueUuid)
     {
-        this.primitiveLong = primitiveLong;
+        this.primaryUuid = primaryUuid;
+        this.alternateAutoMandatoryUniqueUuid = alternateAutoMandatoryUniqueUuid;
 
         super.register();
     }

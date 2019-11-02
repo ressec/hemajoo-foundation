@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithDifferentKeyAndFieldName extends Keyable
+public class KeyableWithPrimaryAutoKeyAsString extends Keyable
 {
     /**
-     * Primary field key where the key name is different from teh field name.
+     * Primary string key with auto property set to true.
      */
-    @PrimaryKey(name = "official")
+    @PrimaryKey(name = "autoAsString", auto = true)
     @Getter
-    private String name;
+    private String autoAsString;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithDifferentKeyAndFieldName()
+    private KeyableWithPrimaryAutoKeyAsString()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param name Name.
+     * @param autoAsString Auto as a String.
      */
     @Builder
-    public KeyableWithDifferentKeyAndFieldName(final String name)
+    public KeyableWithPrimaryAutoKeyAsString(final String name, final String autoAsString)
     {
-        this.name = name;
+        this.autoAsString = autoAsString;
 
         super.register();
     }

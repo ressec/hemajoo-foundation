@@ -45,7 +45,7 @@ public final class Key implements IKey
      * Keyable entity class this key refers to.
      */
     @Getter
-    private Class<? extends IKeyable> reference;
+    private Class<? extends IKeyable> referenceClass;
 
     /**
      * Value of the key.
@@ -108,7 +108,7 @@ public final class Key implements IKey
                     this.isUnique = true;
                     this.isPrimary = true;
                     this.isAuto = primary.auto();
-                    this.reference = keyable.getClass();
+                    this.referenceClass = keyable.getClass();
                     this.value = value;
                 }
             }
@@ -123,7 +123,7 @@ public final class Key implements IKey
                     this.isUnique = alternate.unique();
                     this.isPrimary = false;
                     this.isAuto = alternate.auto();
-                    this.reference = keyable.getClass();
+                    this.referenceClass = keyable.getClass();
                     this.value = value;
                 }
             }

@@ -6,11 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.KeyableWithOnlyAlternateAutoKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive.KeyableWithOnlyAlternateAutoKey;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Before;

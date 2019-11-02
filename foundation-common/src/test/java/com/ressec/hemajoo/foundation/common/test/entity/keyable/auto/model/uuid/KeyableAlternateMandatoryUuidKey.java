@@ -6,47 +6,57 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.uuid;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
+import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
 import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 /**
  * A keyable entity test class.
- * <br><br>
- * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsString extends Keyable
+public class KeyableAlternateMandatoryUuidKey extends Keyable
 {
     /**
-     * Primary string key with auto property set to true.
+     * Field defined as a primary UUID auto key.
      */
-    @PrimaryKey(name = "autoAsString", auto = true)
+    @PrimaryKey(name = "primaryUuid", auto = true)
     @Getter
-    private String autoAsString;
+    private UUID primaryUuid;
+
+    /**
+     * Field defined as an alternate UUID mandatory key.
+     */
+    @AlternateKey(name = "alternateMandatoryUuid", auto = false, mandatory = true, unique = false)
+    @Getter
+    private UUID alternateMandatoryUuid;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsString()
+    private KeyableAlternateMandatoryUuidKey()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param autoAsString Auto as a String.
+     * @param primaryUuid UUID value.
+     * @param alternateMandatoryUuid UUID value.
      */
     @Builder
-    public KeyableWithPrimaryAutoKeyAsString(final String name, final String autoAsString)
+    public KeyableAlternateMandatoryUuidKey(final UUID primaryUuid, final UUID alternateMandatoryUuid)
     {
-        this.autoAsString = autoAsString;
+        this.primaryUuid = primaryUuid;
+        this.alternateMandatoryUuid = alternateMandatoryUuid;
 
         super.register();
     }

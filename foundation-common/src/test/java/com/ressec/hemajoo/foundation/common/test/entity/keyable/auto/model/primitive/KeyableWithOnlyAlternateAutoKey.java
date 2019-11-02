@@ -6,11 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
+import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsPrimitiveInteger extends Keyable
+public class KeyableWithOnlyAlternateAutoKey extends Keyable
 {
     /**
-     * Field defined as a primary key with property 'auto' set to true and of type primitive int.
+     * Field defined as an alternate key with property 'auto' set to true and of type primitive int.
      */
-    @PrimaryKey(name = "primitiveInt", auto = true)
+    @AlternateKey(name = "numeric", auto = true)
     @Getter
-    private int primitiveInt;
+    private int numeric;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsPrimitiveInteger()
+    private KeyableWithOnlyAlternateAutoKey()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param primitiveInt Primitive int value.
+     * @param numeric Numeric value.
      */
-    @Builder(toBuilder = true)
-    public KeyableWithPrimaryAutoKeyAsPrimitiveInteger(final int primitiveInt)
+    @Builder
+    public KeyableWithOnlyAlternateAutoKey(final int numeric)
     {
-        this.primitiveInt = primitiveInt;
+        this.numeric = numeric;
 
         super.register();
     }

@@ -366,7 +366,7 @@ public final class KeyManager
         if (mandatory && !auto && value == null)
         {
             String message = String.format(
-                    "Cannot initialize mandatory key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is not set!",
+                    "Cannot initialize mandatory key with name: '%s', of type: '%s', declared on keyable entity: '%s' because key value is not set!",
                     name,
                     field.getType().getName(),
                     keyable.getClass().getName());
@@ -403,8 +403,8 @@ public final class KeyManager
      */
     private void validateAutoPrimitiveOrWrapperKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
-        final String ILLEGAL_ACCESS_EXCEPTION_MESSAGE = "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' due to: %s";
-        final String AUTO_KEY_VALUE_PROVIDED_MESSAGE = "Cannot initialize (auto) key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is provided!";
+        final String ILLEGAL_ACCESS_EXCEPTION_MESSAGE = "Cannot initialize key with name: '%s', of type: '%s', declared on keyable entity: '%s' due to: %s";
+        final String AUTO_KEY_VALUE_PROVIDED_MESSAGE = "Cannot initialize (auto) key with name: '%s', of type: '%s', declared on keyable entity: '%s' because key value is provided!";
 
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
@@ -453,8 +453,8 @@ public final class KeyManager
      */
     private void validateAutoStandardKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
-        final String ILLEGAL_ACCESS_EXCEPTION_MESSAGE = "Cannot initialize key with name: %s, of type: %s, declared on keyable entity: '%s' due to: %s";
-        final String AUTO_KEY_VALUE_PROVIDED_MESSAGE = "Cannot initialize (auto) key with name: %s, of type: %s, declared on keyable entity: '%s' because key value is provided!";
+        final String ILLEGAL_ACCESS_EXCEPTION_MESSAGE = "Cannot initialize key with name: '%s', of type: '%s', declared on keyable entity: '%s' due to: %s";
+        final String AUTO_KEY_VALUE_PROVIDED_MESSAGE = "Cannot initialize (auto) key with name: '%s', of type: '%s', declared on keyable entity: '%s' because key value is provided!";
 
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
@@ -466,7 +466,7 @@ public final class KeyManager
                 if (field.getType() == String.class)
                 {
                     String message = String.format(
-                            "Cannot initialize mandatory key with name: %s, of type: %s, declared on keyable entity: '%s' because 'auto' keys are not allowed with key of type 'string'!",
+                            "Cannot initialize mandatory key with name: '%s', of type: '%s', declared on keyable entity: '%s' because 'auto' keys are not allowed with key of type 'string'!",
                             name,
                             field.getType().getName(),
                             keyable.getClass().getName());
@@ -523,7 +523,7 @@ public final class KeyManager
             {
                 field.setAccessible(false);
                 String message = String.format(
-                        "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
+                        "Cannot initialize key with name: '%s', of type: '%s', on keyable entity: '%s'. A key of type String cannot have the 'auto' property set to true!",
                         name,
                         field.getType().getName(),
                         keyable.getClass().getName());
@@ -539,7 +539,7 @@ public final class KeyManager
         {
             field.setAccessible(false);
             String message = String.format(
-                    "Cannot initialize key with name: %s, of type: %s, on keyable entity: '%s', due to: %s",
+                    "Cannot initialize key with name: '%s', of type: '%s', on keyable entity: '%s', due to: %s",
                     name,
                     field.getType().getName(),
                     keyable.getClass().getName(),
@@ -610,7 +610,7 @@ public final class KeyManager
             catch (IllegalAccessException e)
             {
                 String message = String.format(
-                        "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
+                        "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: %s",
                         name,
                         field.getType().getName(),
                         keyable.getClass().getName(),
@@ -733,7 +733,7 @@ public final class KeyManager
         catch (IllegalAccessException e)
         {
             String message = String.format(
-                    "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: '%s'",
+                    "Cannot register key with name: '%s' of type: '%s' for keyable entity: '%s', due to: %s",
                     name,
                     field.getType().getName(),
                     keyable.getClass().getName(),
@@ -761,19 +761,19 @@ public final class KeyManager
         return collection;
     }
 
-    /**
-     * Returns the collection of keyables by keyable type.
-     * @param keyableClass Keyable entity class.
-     * @return Collection of keyable.
-     */
-    private Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
-    {
-        Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> collection;
-
-        collection = entities.computeIfAbsent(keyableClass, k -> new HashMap<>());
-
-        return collection;
-    }
+//    /**
+//     * Returns the collection of keyables by keyable type.
+//     * @param keyableClass Keyable entity class.
+//     * @return Collection of keyable.
+//     */
+//    private Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
+//    {
+//        Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> collection;
+//
+//        collection = entities.computeIfAbsent(keyableClass, k -> new HashMap<>());
+//
+//        return collection;
+//    }
 
     /**
      * Returns the collection of keyables by key type.
@@ -938,6 +938,8 @@ public final class KeyManager
      */
     private Object generateNextKeyValue(final @NonNull IKeyable keyable, final @NonNull Class<?> type, final @NonNull String name)
     {
+        final String KEY_HAS_REACHED_LIMIT = "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!";
+
         if (type == Byte.class || type == byte.class)
         {
             Byte latest = (Byte) getLatestKeyValue(keyable, type, name);
@@ -951,7 +953,7 @@ public final class KeyManager
                 if (latest == Byte.MAX_VALUE)
                 {
                     String message = String.format(
-                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            KEY_HAS_REACHED_LIMIT,
                             name,
                             type.getName(),
                             keyable.getClass().getName(),
@@ -982,7 +984,7 @@ public final class KeyManager
                 if (latest == Short.MAX_VALUE)
                 {
                     String message = String.format(
-                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            KEY_HAS_REACHED_LIMIT,
                             name,
                             type.getName(),
                             keyable.getClass().getName(),
@@ -1012,7 +1014,7 @@ public final class KeyManager
                 if (latest == Integer.MAX_VALUE)
                 {
                     String message = String.format(
-                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            KEY_HAS_REACHED_LIMIT,
                             name,
                             type.getName(),
                             keyable.getClass().getName(),
@@ -1043,7 +1045,7 @@ public final class KeyManager
                 if (latest == Long.MAX_VALUE)
                 {
                     String message = String.format(
-                            "Key name: '%s' with type: '%s' for keyable entity: '%s' has reached its limit: '%d', no more value can be generated!",
+                            KEY_HAS_REACHED_LIMIT,
                             name,
                             type.getName(),
                             keyable.getClass().getName(),
@@ -1251,6 +1253,34 @@ public final class KeyManager
         }
 
         return 0;
+    }
+
+    /**
+     * Returns the number of entities stored in the key manager for the given key.
+     * @param key Key.
+     * @return Number of registered entities.
+     */
+    public final int countByKey(final @NonNull IKey key)
+    {
+        if (key.getReferenceClass() == null)
+        {
+            log.error("The provided key cannot contain a null keyable reference class!");
+            throw new KeyException("The provided key cannot contain a null keyable reference class!");
+        }
+
+        if (key.getType() == null)
+        {
+            log.error("The provided key cannot contain a null key type!");
+            throw new KeyException("The provided key cannot contain a null key type!");
+        }
+
+        if (key.getName() == null)
+        {
+            log.error("The provided key cannot contain a null key name!");
+            throw new KeyException("The provided key cannot contain a null key name!");
+        }
+
+        return getKeyables(key.getReferenceClass(), key.getType(), key.getName()).size();
     }
 
     /**
