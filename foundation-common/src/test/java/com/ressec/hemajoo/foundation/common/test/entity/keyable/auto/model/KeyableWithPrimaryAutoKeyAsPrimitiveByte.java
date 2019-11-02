@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsPrimitiveInt extends Keyable
+public class KeyableWithPrimaryAutoKeyAsPrimitiveByte extends Keyable
 {
     /**
-     * Field defined as a primary key with property 'auto' set to true and of type primitive int.
+     * Field defined as a primary key with property 'auto' set to true and of type primitive byte.
      */
-    @PrimaryKey(name = "primitiveInt", auto = true)
+    @PrimaryKey(name = "primitiveByte", auto = true)
     @Getter
-    private int primitiveInt;
+    private byte primitiveByte;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsPrimitiveInt()
+    private KeyableWithPrimaryAutoKeyAsPrimitiveByte()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param primitiveInt Primitive int value.
+     * @param primitiveByte Primitive byte value.
      */
     @Builder(toBuilder = true)
-    public KeyableWithPrimaryAutoKeyAsPrimitiveInt(final int primitiveInt)
+    public KeyableWithPrimaryAutoKeyAsPrimitiveByte(final byte primitiveByte)
     {
-        this.primitiveInt = primitiveInt;
+        this.primitiveByte = primitiveByte;
 
         super.register();
     }

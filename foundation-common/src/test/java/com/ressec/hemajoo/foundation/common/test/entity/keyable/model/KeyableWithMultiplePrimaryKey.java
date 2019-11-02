@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
@@ -16,37 +16,44 @@ import lombok.Getter;
 
 /**
  * A keyable entity test class.
- * <br><br>
- * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsPrimitiveLong extends Keyable
+public class KeyableWithMultiplePrimaryKey extends Keyable
 {
     /**
-     * Field defined as a primary key with property 'auto' set to true and of type primitive long.
+     * Numeric.
      */
-    @PrimaryKey(name = "primitiveLong", auto = true)
+    @PrimaryKey(name = "numeric")
     @Getter
-    private long primitiveLong;
+    private int numeric;
 
     /**
-     * Avoid direct instantiation of entity.
+     * Name.
      */
-    private KeyableWithPrimaryAutoKeyAsPrimitiveLong()
+    @PrimaryKey(name = "name")
+    @Getter
+    private String name;
+
+    /**
+     * Avoid direct instantiation of this entity.
+     */
+    private KeyableWithMultiplePrimaryKey()
     {
         // Empty.
     }
 
     /**
-     * Creates a new test keyable entity.
-     * @param primitiveLong Primitive long value.
+     * Creates a new keyable entity.
+     * @param numeric Numeric.
+     * @param name Name.
      */
     @Builder
-    public KeyableWithPrimaryAutoKeyAsPrimitiveLong(final long primitiveLong)
+    public KeyableWithMultiplePrimaryKey(final int numeric, final String name, final String other)
     {
-        this.primitiveLong = primitiveLong;
+        this.numeric = numeric;
+        this.name = name;
 
         super.register();
     }

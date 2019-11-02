@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.model.auto;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithPrimaryAutoKeyAsString extends Keyable
+public class KeyableWithPrimaryAutoKeyAsPrimitiveShort extends Keyable
 {
     /**
-     * Primary string key with auto property set to true.
+     * Field defined as a primary key with property 'auto' set to true and of type primitive short.
      */
-    @PrimaryKey(name = "autoAsString", auto = true)
+    @PrimaryKey(name = "primitiveShort", auto = true)
     @Getter
-    private String autoAsString;
+    private short primitiveShort;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithPrimaryAutoKeyAsString()
+    private KeyableWithPrimaryAutoKeyAsPrimitiveShort()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param autoAsString Auto as a String.
+     * @param primitiveShort Primitive short value.
      */
-    @Builder
-    public KeyableWithPrimaryAutoKeyAsString(final String name, final String autoAsString)
+    @Builder(toBuilder = true)
+    public KeyableWithPrimaryAutoKeyAsPrimitiveShort(final short primitiveShort)
     {
-        this.autoAsString = autoAsString;
+        this.primitiveShort = primitiveShort;
 
         super.register();
     }

@@ -61,13 +61,6 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     private String name;
 
     /**
-     * A character key.
-     */
-    @AlternateKey(name = "charKey", unique = false, mandatory = false, auto = false)
-    @Getter
-    private char charKey;
-
-    /**
      * A byte key.
      */
     @AlternateKey(name = "byteKey", unique = false, mandatory = false, auto = false)
@@ -94,27 +87,6 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
     @AlternateKey(name = "longKey", unique = false, mandatory = false, auto = false)
     @Getter
     private long longKey;
-
-    /**
-     * A double key.
-     */
-    @AlternateKey(name = "doubleKey", unique = false, mandatory = false, auto = false)
-    @Getter
-    private double doubleKey;
-
-    /**
-     * A float key.
-     */
-    @AlternateKey(name = "floatKey", unique = false, mandatory = false, auto = false)
-    @Getter
-    private float floatKey;
-
-    /**
-     * A boolean key.
-     */
-    @AlternateKey(name = "booleanKey", unique = false, mandatory = false, auto = false)
-    @Getter
-    private boolean booleanKey;
 
     /**
      * A UUID key.
@@ -157,14 +129,10 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
      * @param iso2 Country ISO Alpha-2 code.
      * @param iso3 Country ISO Alpha-3 code.
      * @param numeric Country ISO numeric code.
-     * @param booleanKey A primitive boolean key.
-     * @param charKey A primitive char key.
      * @param byteKey A primitive byte key.
      * @param shortKey A primitive short key.
      * @param integerKey A primitive integer key.
      * @param longKey A primitive long key.
-     * @param doubleKey A primitive double key.
-     * @param floatKey A primitive float key.
      * @param uuidKey A UUID key.
      * @param autoKey An auto generated key.
      * @param comment Country comment.
@@ -175,14 +143,10 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
             final String iso2,
             final String iso3,
             final int numeric,
-            final boolean booleanKey,
             final byte byteKey,
-            final char charKey,
             final short shortKey,
             final int integerKey,
             final long longKey,
-            final double doubleKey,
-            final float floatKey,
             final UUID uuidKey,
             final int autoKey,
             final String comment)
@@ -191,14 +155,10 @@ public class KeyableCountryWithPrimaryAndAlternateKey extends AbstractKeyable
         this.iso2 = iso2;
         this.iso3 = iso3;
         this.numeric = numeric;
-        this.booleanKey = booleanKey;
-        this.charKey = charKey;
         this.byteKey = byteKey;
         this.shortKey = shortKey;
         this.integerKey = integerKey;
         this.longKey = longKey;
-        this.doubleKey = doubleKey;
-        this.floatKey = floatKey;
         this.uuidKey = uuidKey;
         this.autoKey = autoKey;
         this.comment = comment;
