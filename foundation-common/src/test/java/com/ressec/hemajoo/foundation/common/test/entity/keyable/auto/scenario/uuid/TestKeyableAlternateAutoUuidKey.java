@@ -8,9 +8,7 @@
  */
 package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid;
 
-import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
-import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
-import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.*;
 import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.uuid.KeyableAlternateAutoUuidKey;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +21,12 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Test case for the {@link KeyableAlternateAutoUuidKey} entity.<br><br>
+ * Test case for the {@link KeyableAlternateAutoUuidKey} entity.
+ * <p>
+ * The underlying test class implements two keys:<ul>
+ * <li>a {@link PrimaryKey#auto()} key of type {@link UUID}</li>
+ * <li>an {@link AlternateKey#auto()} key of type {@link UUID}.</li>
+ * </ul></p>
  * This test case is intended to cover tests for keyable entities implementing an alternate auto key of type UUID.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
@@ -49,13 +52,22 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
+     * Creates a keyable instance without providing a primary nor an alternate key value.
+     * @return Created keyable entity.
+     */
+    private KeyableAlternateAutoUuidKey createKeyableWithoutPrimaryAndAlternateKeyValue()
+    {
+        return KeyableAlternateAutoUuidKey.builder().build();
+    }
+
+    /**
      * Create multiple keyable instances.
      */
     private void createMultipleKeyable(final int count)
     {
         for (int i = 0; i < count; i++)
         {
-            KeyableAlternateAutoUuidKey.builder().build();
+            createKeyableWithoutPrimaryAndAlternateKeyValue();
         }
     }
 
@@ -70,23 +82,17 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to create a keyable with a primary auto UUID key and an alternate UUID auto key.<br><br>
-     * In this test, has the two keys are declared as 'auto', we do not provide any key value at creation time
-     * as the key manager is responsible to generate key values.
+     * Ensure the success to create a keyable.
      */
     @Test
-    public void expectSuccessToCreateKeyableWithAlternateAutoUuidKey()
+    public void expectSuccessToCreateKeyable()
     {
-        KeyableAlternateAutoUuidKey entity = KeyableAlternateAutoUuidKey.builder()
-                .build();
+        KeyableAlternateAutoUuidKey entity = createKeyableWithoutPrimaryAndAlternateKeyValue();
         Assert.assertNotNull(entity);
-        Assert.assertNotNull(entity.getPrimaryKey());
-        Assert.assertNotNull(entity.getPrimaryUuid());
-        Assert.assertNotNull(entity.getAlternateAutoUuid());
     }
 
     /**
-     * Ensure the failure to create a keyable with a primary UUID auto key when the key value is provided.
+     * Ensure an exception is raised while trying to create a keyable with an auto primary UUID when a key value is provided.
      */
     @Test(expected = KeyException.class) // TODO Should throw a KeyInitializationException instead of a KeyException
     public void expectFailureToCreateKeyableWithAutoPrimaryUuidKeyWhenValueIsProvided()
@@ -97,7 +103,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the failure to create a keyable with an alternate UUID auto key when the key value is provided.
+     * Ensure an exception is raised while trying to create a keyable with an auto alternate UUID key when the key value is provided.
      */
     @Test(expected = KeyException.class) // TODO Should throw a KeyInitializationException instead of a KeyException
     public void expectFailureToCreateKeyableWithAutoAlternateUuidKeyWhenValueIsProvided()
@@ -108,12 +114,12 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to retrieve a keyable by its primary key.
+     * Ensure the success to retrieve a keyable entity by its primary key.
      */
     @Test
     public void expectSuccessToRetrieveKeyableByPrimaryKey()
     {
-        KeyableAlternateAutoUuidKey entity = KeyableAlternateAutoUuidKey.builder().build();
+        KeyableAlternateAutoUuidKey entity = createKeyableWithoutPrimaryAndAlternateKeyValue();
 
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
@@ -125,12 +131,12 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to retrieve a keyable by its primary key name.
+     * Ensure the success to retrieve a keyable entity by its primary key name.
      */
     @Test
     public void expectSuccessToRetrieveKeyableByPrimaryKeyName()
     {
-        KeyableAlternateAutoUuidKey entity = KeyableAlternateAutoUuidKey.builder().build();
+        KeyableAlternateAutoUuidKey entity = createKeyableWithoutPrimaryAndAlternateKeyValue();
 
         UUID keyValue = entity.getPrimaryUuid();
         Assert.assertNotNull(keyValue);
@@ -142,7 +148,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to retrieve a keyable by its alternate key.
+     * Ensure the success to retrieve a keyable entity by its alternate key.
      */
     @Test
     public void expectSuccessToRetrieveKeyableByAlternateKey()
@@ -159,7 +165,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to retrieve a keyable by its alternate key name.
+     * Ensure the success to retrieve a keyable entity by its alternate key name.
      */
     @Test
     public void expectSuccessToRetrieveKeyableByAlternateKeyName()
@@ -176,7 +182,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to query for a keyable by its primary key name.
+     * Ensure the success to query for a keyable entity by its primary key name.
      */
     @Test
     public void expectSuccessToQueryKeyableByPrimaryKeyName()
@@ -197,7 +203,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to query for a keyable by its primary key.
+     * Ensure the success to query for a keyable entity by its primary key.
      */
     @Test
     public void expectSuccessToQueryKeyableByPrimaryKey()
@@ -216,7 +222,7 @@ public class TestKeyableAlternateAutoUuidKey
     }
 
     /**
-     * Ensure the success to unregister a keyable by its instance.
+     * Ensure the success to unregister a keyable entity by its instance.
      */
     @Test
     public void expectSuccessToUnregisterKeyableByInstance()
@@ -304,42 +310,6 @@ public class TestKeyableAlternateAutoUuidKey
 
         keyable = (KeyableAlternateAutoUuidKey) Keyable.retrieve(KeyableAlternateAutoUuidKey.class, alternate);
         Assert.assertNotNull(keyable);
-    }
-
-    /**
-     * Ensure the success to create multiple keyables.<br><br>
-     * This test method is used to validate that the key manager count methods are working as expected.
-     */
-    @Test
-    public void expectSuccessToCreateMultipleKeyable()
-    {
-        UUID previous = null;
-        KeyableAlternateAutoUuidKey entity = null;
-
-        for (int i = 0; i < 100; i++)
-        {
-            entity = KeyableAlternateAutoUuidKey.builder().build();
-
-            Assert.assertNotNull(entity);
-            Assert.assertNotEquals(previous, entity.getPrimaryKey().getValue());
-
-            previous = (UUID) entity.getPrimaryKey().getValue();
-        }
-
-        IKey key = entity.getKey("alternateAutoUuid");
-        Assert.assertNotNull(key);
-
-        int count = KeyManager.getInstance().countByKeyableClass(KeyableAlternateAutoUuidKey.class);
-        Assert.assertEquals(100, count);
-
-        count = KeyManager.getInstance().countByKeyName(KeyableAlternateAutoUuidKey.class, "primaryUuid");
-        Assert.assertEquals(100, count);
-
-        count = KeyManager.getInstance().countByKeyName(KeyableAlternateAutoUuidKey.class, "alternateAutoUuid");
-        Assert.assertEquals(100, count);
-
-        count = KeyManager.getInstance().countByKey(key);
-        Assert.assertEquals(100, count);
     }
 
     /**
