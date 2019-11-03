@@ -16,37 +16,35 @@ import lombok.Getter;
 
 /**
  * A keyable entity test class.
- * <br><br>
- * This class is used for testing purpose only!
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithDifferentKeyAndFieldName extends Keyable
+public class KeyablePrimaryAutoPrimitiveIntKey extends Keyable
 {
     /**
-     * Primary field key where the key name is different from teh field name.
+     * Primary key.
      */
-    @PrimaryKey(name = "official")
+    @PrimaryKey(name = "primary", auto = true)
     @Getter
-    private String name;
+    private int primary;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithDifferentKeyAndFieldName()
+    private KeyablePrimaryAutoPrimitiveIntKey()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param name Name.
+     * @param primary int value.
      */
     @Builder
-    public KeyableWithDifferentKeyAndFieldName(final String name)
+    public KeyablePrimaryAutoPrimitiveIntKey(final int primary)
     {
-        this.name = name;
+        this.primary = primary;
 
         super.register();
     }

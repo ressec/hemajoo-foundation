@@ -16,7 +16,8 @@ package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
 import com.ressec.hemajoo.foundation.common.test.entity.exception.TestCheckedException;
 import com.ressec.hemajoo.foundation.common.test.entity.exception.TestUncheckedException;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive.*;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive.TestKeyablePrimaryAutoPrimitiveIntKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid.TestKeyableAlternateAutoMandatoryUuidKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid.TestKeyableAlternateAutoUuidKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid.TestKeyableAlternateMandatoryUuidKey;
 import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.uuid.TestKeyableAlternateUniqueUuidKey;
@@ -32,10 +33,14 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 
-        // Auto
+        // Auto primary
+        TestKeyablePrimaryAutoPrimitiveIntKey.class,
+
+        // Auto primary & alternate
         TestKeyableAlternateAutoUuidKey.class,
         TestKeyableAlternateUniqueUuidKey.class,
         TestKeyableAlternateMandatoryUuidKey.class,
+        TestKeyableAlternateAutoMandatoryUuidKey.class,
 
         TestKeyableCountryWithoutKey.class,
         TestKeyableCountryWithPrimaryKey.class,

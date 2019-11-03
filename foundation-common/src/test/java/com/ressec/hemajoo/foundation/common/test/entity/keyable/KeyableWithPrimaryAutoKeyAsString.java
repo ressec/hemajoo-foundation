@@ -6,11 +6,11 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
-import com.ressec.hemajoo.foundation.common.entity.keyable.AlternateKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
+import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,31 +22,31 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyableWithOnlyAlternateAutoKey extends Keyable
+public class KeyableWithPrimaryAutoKeyAsString extends Keyable
 {
     /**
-     * Field defined as an alternate key with property 'auto' set to true and of type primitive int.
+     * Primary string key with auto property set to true.
      */
-    @AlternateKey(name = "numeric", auto = true)
+    @PrimaryKey(name = "autoAsString", auto = true)
     @Getter
-    private int numeric;
+    private String autoAsString;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyableWithOnlyAlternateAutoKey()
+    private KeyableWithPrimaryAutoKeyAsString()
     {
         // Empty.
     }
 
     /**
      * Creates a new test keyable entity.
-     * @param numeric Numeric value.
+     * @param autoAsString Auto as a String.
      */
     @Builder
-    public KeyableWithOnlyAlternateAutoKey(final int numeric)
+    public KeyableWithPrimaryAutoKeyAsString(final String name, final String autoAsString)
     {
-        this.numeric = numeric;
+        this.autoAsString = autoAsString;
 
         super.register();
     }
