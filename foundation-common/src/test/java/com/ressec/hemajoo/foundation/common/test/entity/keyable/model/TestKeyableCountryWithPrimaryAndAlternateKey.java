@@ -39,7 +39,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Before
     public void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryAndAlternateKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithPrimaryAndAlternateKey.class);
     }
 
     @After
@@ -281,7 +281,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
     @Test
     public void expectSuccessToRegisterKeyableWithPrimaryKey()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryAndAlternateKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithPrimaryAndAlternateKey.class);
 
         Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyableCountryWithPrimaryAndAlternateKey.class));
 
@@ -782,7 +782,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
 
-        boolean exist = KeyManager.getInstance().isKeyExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name");
+        boolean exist = KeyManager.getInstance().existKey(KeyableCountryWithPrimaryAndAlternateKey.class, "name");
         Assert.assertTrue(exist);
     }
 
@@ -798,7 +798,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
 
-        boolean exist = KeyManager.getInstance().isKeyExist(KeyableCountryWithPrimaryAndAlternateKey.class, "location");
+        boolean exist = KeyManager.getInstance().existKey(KeyableCountryWithPrimaryAndAlternateKey.class, "location");
         Assert.assertFalse(exist);
     }
 
@@ -814,7 +814,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
 
-        boolean exist = KeyManager.getInstance().isKeyValueExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "France");
+        boolean exist = KeyManager.getInstance().existKeyValue(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "France");
         Assert.assertTrue(exist);
     }
 
@@ -830,7 +830,7 @@ public class TestKeyableCountryWithPrimaryAndAlternateKey
                 .build();
         Assert.assertNotNull(entity);
 
-        boolean exist = KeyManager.getInstance().isKeyValueExist(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "Germany");
+        boolean exist = KeyManager.getInstance().existKeyValue(KeyableCountryWithPrimaryAndAlternateKey.class, "name", "Germany");
         Assert.assertFalse(exist);
     }
 

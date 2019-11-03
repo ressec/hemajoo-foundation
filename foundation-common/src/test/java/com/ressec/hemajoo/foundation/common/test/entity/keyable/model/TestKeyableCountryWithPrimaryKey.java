@@ -35,7 +35,7 @@ public class TestKeyableCountryWithPrimaryKey
     @Before
     public void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithPrimaryKey.class);
     }
 
     @After
@@ -349,7 +349,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name("France")
                 .build();
 
-        KeyManager.getInstance().unregisterKeysByKeyType(KeyableCountryWithPrimaryKey.class, String.class);
+        KeyManager.getInstance().unregisterByKeyClass(KeyableCountryWithPrimaryKey.class, String.class);
 
         IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
 
@@ -366,7 +366,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name("France")
                 .build();
 
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithPrimaryKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithPrimaryKey.class);
 
         IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
 
@@ -383,7 +383,7 @@ public class TestKeyableCountryWithPrimaryKey
                 .name("France")
                 .build();
 
-        KeyManager.getInstance().unregisterKeysByName(KeyableCountryWithPrimaryKey.class, "name");
+        KeyManager.getInstance().unregisterByKeyName(KeyableCountryWithPrimaryKey.class, "name");
 
         IKeyable country = Keyable.retrieve(KeyableCountryWithPrimaryKey.class, "name", "France");
 

@@ -27,7 +27,7 @@ public class TestKeyableWithPrimaryAutoKeyAsString
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsString.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithPrimaryAutoKeyAsString.class);
     }
 
     @After

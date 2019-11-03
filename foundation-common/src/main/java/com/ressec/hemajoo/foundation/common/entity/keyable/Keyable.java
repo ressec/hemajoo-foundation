@@ -15,6 +15,7 @@
 package com.ressec.hemajoo.foundation.common.entity.keyable;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
+import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyManagerException;
 import lombok.NonNull;
 
 import java.util.List;
@@ -96,6 +97,11 @@ public class Keyable extends AbstractKeyable
      */
     public static IKeyable retrieve(final @NonNull Class<? extends IKeyable> clazz, final @NonNull IKey key)
     {
+        if (key.getValue() == null)
+        {
+            throw new KeyManagerException("Cannot retrieve a specific keyable instance with a key containing a null value! Use the query service instead.");
+        }
+
         return retrieve(clazz, key.getName(), key.getValue());
     }
 }

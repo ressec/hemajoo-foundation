@@ -26,7 +26,7 @@ public class TestKeyableWithMultiplePrimaryKey
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithMultiplePrimaryKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithMultiplePrimaryKey.class);
     }
 
     @After

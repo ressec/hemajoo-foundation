@@ -26,7 +26,7 @@ public class TestKeyableWithPrimaryKeyNotMandatory
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryKeyNotMandatory.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithPrimaryKeyNotMandatory.class);
     }
 
     @After

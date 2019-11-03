@@ -28,7 +28,7 @@ public class TestKeyableCountryWithError
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithError.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithError.class);
     }
 
     @After

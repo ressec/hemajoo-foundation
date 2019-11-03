@@ -27,7 +27,7 @@ public class TestKeyableWithOnlyAlternateAutoKey
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithOnlyAlternateAutoKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithOnlyAlternateAutoKey.class);
     }
 
     @After

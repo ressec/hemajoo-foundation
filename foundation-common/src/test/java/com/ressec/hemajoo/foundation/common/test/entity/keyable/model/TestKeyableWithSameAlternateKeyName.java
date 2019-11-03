@@ -26,7 +26,7 @@ public class TestKeyableWithSameAlternateKeyName
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithSameAlternateKeyName.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithSameAlternateKeyName.class);
     }
 
     @After

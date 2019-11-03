@@ -32,7 +32,7 @@ public class TestKeyableCountryWithoutKey
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableCountryWithoutKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableCountryWithoutKey.class);
     }
 
     @After

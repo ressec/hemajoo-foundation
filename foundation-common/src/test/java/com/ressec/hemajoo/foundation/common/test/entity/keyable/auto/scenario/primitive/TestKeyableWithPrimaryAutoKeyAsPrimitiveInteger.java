@@ -28,7 +28,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveInteger
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsPrimitiveInteger.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveInteger.class);
     }
 
     @After

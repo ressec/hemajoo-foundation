@@ -23,7 +23,8 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Test case for the {@link KeyableAlternateAutoUuidKey} entity.
+ * Test case for the {@link KeyableAlternateAutoUuidKey} entity.<br><br>
+ * This test case is intended to cover tests for keyable entities implementing an alternate auto key of type UUID.
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
@@ -36,13 +37,13 @@ public class TestKeyableAlternateAutoUuidKey
     private Random random = new Random();
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableAlternateAutoUuidKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableAlternateAutoUuidKey.class);
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
         KeyManager.getInstance().shutdown();
     }
@@ -90,7 +91,7 @@ public class TestKeyableAlternateAutoUuidKey
     @Test(expected = KeyException.class) // TODO Should throw a KeyInitializationException instead of a KeyException
     public void expectFailureToCreateKeyableWithAutoPrimaryUuidKeyWhenValueIsProvided()
     {
-        KeyableAlternateAutoUuidKey entity = KeyableAlternateAutoUuidKey.builder()
+        KeyableAlternateAutoUuidKey.builder()
                 .primaryUuid(UUID.randomUUID())
                 .build();
     }
@@ -101,7 +102,7 @@ public class TestKeyableAlternateAutoUuidKey
     @Test(expected = KeyException.class) // TODO Should throw a KeyInitializationException instead of a KeyException
     public void expectFailureToCreateKeyableWithAutoAlternateUuidKeyWhenValueIsProvided()
     {
-        KeyableAlternateAutoUuidKey entity = KeyableAlternateAutoUuidKey.builder()
+        KeyableAlternateAutoUuidKey.builder()
                 .alternateAutoUuid(UUID.randomUUID())
                 .build();
     }
@@ -247,7 +248,7 @@ public class TestKeyableAlternateAutoUuidKey
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableAlternateAutoUuidKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableAlternateAutoUuidKey.class);
 
         KeyableAlternateAutoUuidKey keyable = (KeyableAlternateAutoUuidKey) Keyable.retrieve(
                 KeyableAlternateAutoUuidKey.class, key);
@@ -268,7 +269,7 @@ public class TestKeyableAlternateAutoUuidKey
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyManager.getInstance().unregisterKeysByKeyType(KeyableAlternateAutoUuidKey.class, UUID.class);
+        KeyManager.getInstance().unregisterByKeyClass(KeyableAlternateAutoUuidKey.class, UUID.class);
 
         KeyableAlternateAutoUuidKey keyable = (KeyableAlternateAutoUuidKey) Keyable.retrieve(
                 KeyableAlternateAutoUuidKey.class, key);
@@ -293,7 +294,7 @@ public class TestKeyableAlternateAutoUuidKey
         Assert.assertNotNull(alternate);
 
         // TODO Unregistering a primary key should be forbidden
-        KeyManager.getInstance().unregisterKeysByName(KeyableAlternateAutoUuidKey.class, "primaryUuid");
+        KeyManager.getInstance().unregisterByKeyName(KeyableAlternateAutoUuidKey.class, "primaryUuid");
 
         KeyableAlternateAutoUuidKey keyable = (KeyableAlternateAutoUuidKey) Keyable.retrieve(
                 KeyableAlternateAutoUuidKey.class, primary);

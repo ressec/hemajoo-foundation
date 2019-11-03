@@ -135,8 +135,26 @@ public final class KeyManager
     }
 
     /**
-     * Unregisters the given keyable entity (and all its keys).
-     * @param keyable Keyable entity.
+     * Unregisters all keys of all instances of the given keyable class.
+     * @param keyableClass Keyable class.
+     */
+    public final void unregisterByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
+    {
+        entities.remove(keyableClass);
+
+        try
+        {
+            values.remove(keyableClass);
+        }
+        catch (NullPointerException e)
+        {
+            // Do nothing ... it means no latest value!
+        }
+    }
+
+    /**
+     * Unregisters all the keys of the given keyable instance.
+     * @param keyable Keyable entity instance.
      */
     public final void unregister(final @NonNull IKeyable keyable)
     {
@@ -153,17 +171,17 @@ public final class KeyManager
     }
 
     /**
-     * Unregisters all keys of given a key type and a given keyable type.
+     * Unregisters all the keys of a given keyable class and a given key class.
      * @param keyableClass Keyable class.
-     * @param keyType Key type.
+     * @param keyClass Key class.
      */
-    public final void unregisterKeysByKeyType(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Class<?> keyType)
+    public final void unregisterByKeyClass(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull Class<?> keyClass)
     {
-        entities.get(keyableClass).remove(keyType);
+        entities.get(keyableClass).remove(keyClass);
 
         try
         {
-            values.get(keyableClass).remove(keyType);
+            values.get(keyableClass).remove(keyClass);
         }
         catch (NullPointerException e)
         {
@@ -172,39 +190,20 @@ public final class KeyManager
     }
 
     /**
-     * Unregisters all keys and of all keyables of a given keyable type.
-     * @param keyableClass Keyable type.
-     */
-    public final void unregisterKeysByKeyableType(final @NonNull Class<? extends IKeyable> keyableClass)
-    {
-        // Remove the keys.
-        entities.remove(keyableClass);
-
-        try
-        {
-            values.remove(keyableClass);
-        }
-        catch (NullPointerException e)
-        {
-            // Do nothing ... it means no latest value!
-        }
-    }
-
-    /**
-     * Unregisters a key given its name.<br>
+     * Unregisters the key of a given keyable class and a given key name.<br>
      * This service will unregister all keys matching the given key name for all keyable entities of the given type.
      * @param keyableClass Keyable class.
      * @param keyName Key name.
      */
-    public final void unregisterKeysByName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+    public final void unregisterByKeyName(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
     {
-        Class<?> keyType = getKeyTypeFor(keyableClass, keyName);
+        Class<?> keyClass = getKeyTypeFor(keyableClass, keyName);
 
-        entities.get(keyableClass).get(keyType).remove(keyName);
+        entities.get(keyableClass).get(keyClass).remove(keyName);
 
         try
         {
-            values.get(keyableClass).get(keyType).remove(keyName);
+            values.get(keyableClass).get(keyClass).remove(keyName);
         }
         catch (NullPointerException e)
         {
@@ -718,6 +717,13 @@ public final class KeyManager
         return false;
     }
 
+    /**
+     * Returns the value of the given field annotated with a key annotation.
+     * @param key Key annotation.
+     * @param field Field annotated.
+     * @param keyable Keyable entity holding the annotated field.
+     * @return Value of the field.
+     */
     private Object getFieldValue(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
         Object value;
@@ -760,20 +766,6 @@ public final class KeyManager
 
         return collection;
     }
-
-//    /**
-//     * Returns the collection of keyables by keyable type.
-//     * @param keyableClass Keyable entity class.
-//     * @return Collection of keyable.
-//     */
-//    private Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> getCollectionByKeyableClass(final @NonNull Class<? extends IKeyable> keyableClass)
-//    {
-//        Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> collection;
-//
-//        collection = entities.computeIfAbsent(keyableClass, k -> new HashMap<>());
-//
-//        return collection;
-//    }
 
     /**
      * Returns the collection of keyables by key type.
@@ -874,7 +866,7 @@ public final class KeyManager
      * @param keyName Key name.
      * @return True if the given key name exist for the given keyable class, false otherwise.
      */
-    public final boolean isKeyExist(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
+    public final boolean existKey(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName)
     {
         // Key Class | Key Name | Key Value | Keyable
         Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> keyables = entities.get(keyableClass);
@@ -902,7 +894,7 @@ public final class KeyManager
      * @param keyValue Key value.
      * @return True if the given key name exist for the given keyable class, false otherwise.
      */
-    public final boolean isKeyValueExist(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
+    public final boolean existKeyValue(final @NonNull Class<? extends IKeyable> keyableClass, final @NonNull String keyName, final @NonNull Object keyValue)
     {
         // Key Class | Key Name | Key Value | Keyable
         Map<Class<?>, Map<String, Multimap<Object, IKeyable>>> keyables = entities.get(keyableClass);
@@ -1280,7 +1272,9 @@ public final class KeyManager
             throw new KeyException("The provided key cannot contain a null key name!");
         }
 
-        return getKeyables(key.getReferenceClass(), key.getType(), key.getName()).size();
+        // TODO getKeyables could be removed and replaced by entities.get(...)
+        //return getKeyables(key.getReferenceClass(), key.getType(), key.getName()).size();
+        return entities.get(key.getReferenceClass()).get(key.getType()).get(key.getName()).size();
     }
 
     /**

@@ -28,7 +28,7 @@ public class TestKeyableWithPrimaryAutoKeyAsPrimitiveByte
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithPrimaryAutoKeyAsPrimitiveByte.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithPrimaryAutoKeyAsPrimitiveByte.class);
     }
 
     @After

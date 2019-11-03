@@ -28,7 +28,7 @@ public class TestKeyableWithPrimaryKeyNameDifferentFromKeyName
     @Before
     public void setUp() throws Exception
     {
-        KeyManager.getInstance().unregisterKeysByKeyableType(KeyableWithDifferentKeyAndFieldName.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyableWithDifferentKeyAndFieldName.class);
     }
 
     @After
