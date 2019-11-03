@@ -6,14 +6,13 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.scenario.primitive.primary;
 
 import com.ressec.hemajoo.foundation.common.entity.keyable.IKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.KeyManager;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
-import com.ressec.hemajoo.foundation.common.entity.keyable.PrimaryKey;
 import com.ressec.hemajoo.foundation.common.entity.keyable.exception.KeyException;
-import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive.KeyablePrimaryAutoPrimitiveIntKey;
+import com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive.primary.KeyablePrimaryNotAutoPrimitiveIntKey;
 import lombok.extern.log4j.Log4j2;
 import org.junit.After;
 import org.junit.Assert;
@@ -23,17 +22,17 @@ import org.junit.Test;
 import java.util.Random;
 
 /**
- * Test case for the {@link KeyablePrimaryAutoPrimitiveIntKey} entity.
+ * Test case for the {@link KeyablePrimaryNotAutoPrimitiveIntKey} entity.
  * <p>
  * The underlying test class implements only a primitive key:<ul>
- * - a {@link PrimaryKey#auto()} key of type primitive int</li>
+ * - a primary key of type primitive int with the property auto set to false</li>
  * </ul>
  * </p>
  * @author <a href="mailto:christophe.resse@gmail.com">Christophe Resse</a>
  * @version 1.0.0
  */
 @Log4j2
-public class TestKeyablePrimaryAutoPrimitiveIntKey
+public class TestKeyablePrimaryNotAutoPrimitiveIntKey
 {
     /**
      * Random number generator.
@@ -43,7 +42,7 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Before
     public void setUp()
     {
-        KeyManager.getInstance().unregisterByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class);
     }
 
     @After
@@ -53,12 +52,15 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     }
 
     /**
-     * Creates a keyable instance.
+     * Creates a keyable entity.
+     * @param primary Primary key value.
      * @return Created keyable entity.
      */
-    private KeyablePrimaryAutoPrimitiveIntKey createKeyable()
+    private KeyablePrimaryNotAutoPrimitiveIntKey createKeyable(final int primary)
     {
-        return KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        return KeyablePrimaryNotAutoPrimitiveIntKey.builder()
+                .primary(primary)
+                .build();
     }
 
     /**
@@ -66,9 +68,11 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
      */
     private void createMultipleKeyable(final int count)
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 1; i < count + 1; i++)
         {
-            createKeyable();
+            KeyablePrimaryNotAutoPrimitiveIntKey entity = KeyablePrimaryNotAutoPrimitiveIntKey.builder()
+                    .primary(i)
+                    .build();
         }
     }
 
@@ -88,20 +92,30 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToCreateKeyable()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = createKeyable();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
     }
 
     /**
-     * Ensure an exception is raised while trying to create a keyable with a primary key with auto property when a key
-     * value is provided.
+     * Ensure an exception is raised while trying to create a keyable not providing a primary key value.
      */
-    @Test(expected = KeyException.class) // TODO Should throw a KeyInitializationException instead of a KeyException
-    public void expectFailureToCreateKeyableWithPrimaryKeyAutoWhenKeyValueIsProvided()
+    @Test(expected = KeyException.class)
+    public void expectFailureToCreateKeyable()
     {
-        KeyablePrimaryAutoPrimitiveIntKey.builder()
-                .primary(158)
-                .build();
+        KeyablePrimaryNotAutoPrimitiveIntKey.builder().build();
+    }
+
+    /**
+     * Ensure an exception is raised while trying to create a keyable by providing a primary key value already used.
+     */
+    @Test(expected = KeyException.class)
+    public void expectFailureToCreateKeyableWithPrimaryKeyValueAlreadyUsed()
+    {
+        int value = getRandomNumber(100);
+
+        createMultipleKeyable(value);
+
+        createKeyable(1); // This key is already used!
     }
 
     /**
@@ -110,13 +124,13 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToRetrieveKeyableByPrimaryKey()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = createKeyable();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
 
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, key);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, key);
         Assert.assertNotNull(keyable);
         Assert.assertEquals(entity.getPrimary(), keyable.getPrimary());
     }
@@ -127,13 +141,13 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToRetrieveKeyableByPrimaryKeyName()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = createKeyable();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
 
         int keyValue = entity.getPrimary();
         Assert.assertNotEquals(0, keyValue);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, "primary", keyValue);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, "primary", keyValue);
         Assert.assertNotNull(keyable);
         Assert.assertEquals(entity.getPrimary(), keyable.getPrimary());
     }
@@ -144,14 +158,14 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToQueryKeyableByPrimaryKeyName()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = createKeyable();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         int keyValue = entity.getPrimary();
         Assert.assertNotEquals(0, keyValue);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.query(
-                KeyablePrimaryAutoPrimitiveIntKey.class,
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.query(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class,
                 "primary",
                 keyValue).get(0);
 
@@ -165,14 +179,14 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToQueryKeyableByPrimaryKey()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = createKeyable();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.query(
-                KeyablePrimaryAutoPrimitiveIntKey.class, key).get(0);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.query(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, key).get(0);
 
         Assert.assertNotNull(keyable);
         Assert.assertEquals(entity.getPrimary(), keyable.getPrimary());
@@ -184,7 +198,7 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToUnregisterKeyableByInstance()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();
@@ -192,11 +206,11 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
 
         KeyManager.getInstance().unregister(entity);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, key);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, key);
         Assert.assertNull(keyable);
 
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class));
     }
 
     /**
@@ -205,19 +219,19 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToUnregisterKeyableByKeyableClass()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyManager.getInstance().unregisterByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class);
+        KeyManager.getInstance().unregisterByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, key);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, key);
         Assert.assertNull(keyable);
 
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class));
     }
 
     /**
@@ -226,19 +240,19 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToUnregisterKeyableByKeyClass()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();
         Assert.assertNotNull(key);
 
-        KeyManager.getInstance().unregisterByKeyClass(KeyablePrimaryAutoPrimitiveIntKey.class, int.class);
+        KeyManager.getInstance().unregisterByKeyClass(KeyablePrimaryNotAutoPrimitiveIntKey.class, int.class);
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, key);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, key);
         Assert.assertNull(keyable);
 
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class));
     }
 
     /**
@@ -247,20 +261,20 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
     @Test
     public void expectSuccessToUnregisterKeyableByKeyName()
     {
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(1);
         Assert.assertNotNull(entity);
 
         IKey primary = entity.getPrimaryKey();
         Assert.assertNotNull(primary);
 
         // TODO Unregistering a primary key should be forbidden
-        KeyManager.getInstance().unregisterByKeyName(KeyablePrimaryAutoPrimitiveIntKey.class, "primary");
+        KeyManager.getInstance().unregisterByKeyName(KeyablePrimaryNotAutoPrimitiveIntKey.class, "primary");
 
-        KeyablePrimaryAutoPrimitiveIntKey keyable = (KeyablePrimaryAutoPrimitiveIntKey) Keyable.retrieve(
-                KeyablePrimaryAutoPrimitiveIntKey.class, primary);
+        KeyablePrimaryNotAutoPrimitiveIntKey keyable = (KeyablePrimaryNotAutoPrimitiveIntKey) Keyable.retrieve(
+                KeyablePrimaryNotAutoPrimitiveIntKey.class, primary);
         Assert.assertNull(keyable);
 
-        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class));
+        Assert.assertEquals(0, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class));
     }
 
     /**
@@ -273,7 +287,7 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
 
         createMultipleKeyable(value);
 
-        Assert.assertEquals(value, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryAutoPrimitiveIntKey.class));
+        Assert.assertEquals(value, KeyManager.getInstance().countByKeyableClass(KeyablePrimaryNotAutoPrimitiveIntKey.class));
     }
 
     /**
@@ -286,7 +300,7 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
 
         createMultipleKeyable(value);
 
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(254);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();
@@ -305,7 +319,7 @@ public class TestKeyablePrimaryAutoPrimitiveIntKey
 
         createMultipleKeyable(value);
 
-        KeyablePrimaryAutoPrimitiveIntKey entity = KeyablePrimaryAutoPrimitiveIntKey.builder().build();
+        KeyablePrimaryNotAutoPrimitiveIntKey entity = createKeyable(145);
         Assert.assertNotNull(entity);
 
         IKey key = entity.getPrimaryKey();

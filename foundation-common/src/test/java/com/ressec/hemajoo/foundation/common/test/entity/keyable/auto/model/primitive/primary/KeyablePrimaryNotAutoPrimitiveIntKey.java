@@ -6,7 +6,7 @@
  * been deposited with the U.S. Copyright Office.
  * ---------------------------------------------------------------------------
  */
-package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive;
+package com.ressec.hemajoo.foundation.common.test.entity.keyable.auto.model.primitive.primary;
 
 import com.ressec.hemajoo.foundation.common.annotation.Internal;
 import com.ressec.hemajoo.foundation.common.entity.keyable.Keyable;
@@ -20,19 +20,19 @@ import lombok.Getter;
  * @version 1.0.0
  */
 @Internal
-public class KeyablePrimaryAutoPrimitiveIntKey extends Keyable
+public class KeyablePrimaryNotAutoPrimitiveIntKey extends Keyable
 {
     /**
      * Primary key.
      */
-    @PrimaryKey(name = "primary", auto = true)
+    @PrimaryKey(name = "primary", auto = false)
     @Getter
     private int primary;
 
     /**
      * Avoid direct instantiation of entity.
      */
-    private KeyablePrimaryAutoPrimitiveIntKey()
+    private KeyablePrimaryNotAutoPrimitiveIntKey()
     {
         // Empty.
     }
@@ -42,7 +42,7 @@ public class KeyablePrimaryAutoPrimitiveIntKey extends Keyable
      * @param primary int value.
      */
     @Builder
-    public KeyablePrimaryAutoPrimitiveIntKey(final int primary)
+    public KeyablePrimaryNotAutoPrimitiveIntKey(final int primary)
     {
         this.primary = primary;
 

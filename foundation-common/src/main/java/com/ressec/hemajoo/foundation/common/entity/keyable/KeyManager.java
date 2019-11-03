@@ -356,23 +356,43 @@ public final class KeyManager
      */
     private void validateMandatoryKey(final @NonNull Annotation key, final @NonNull Field field, final @NonNull IKeyable keyable)
     {
+        boolean useIntValue = false;
+        int intValue = 0;
+
         String name = key instanceof PrimaryKey ? ((PrimaryKey) key).name() : ((AlternateKey) key).name();
         boolean mandatory = key instanceof PrimaryKey || ((AlternateKey) key).mandatory();
         boolean auto = key instanceof PrimaryKey ? ((PrimaryKey) key).auto() : ((AlternateKey) key).auto();
 
         Object value = getFieldValue(key, field, keyable);
 
-        if (mandatory && !auto && value == null)
+        try
         {
-            String message = String.format(
-                    "Cannot initialize mandatory key with name: '%s', of type: '%s', declared on keyable entity: '%s' because key value is not set!",
-                    name,
-                    field.getType().getName(),
-                    keyable.getClass().getName());
+            intValue = (int) value;
+            useIntValue = true;
+        }
+        catch (NullPointerException npe)
+        {
+            System.out.println("toto"); // TODO What to do here?
+        }
+        catch (ClassCastException cce)
+        {
+            useIntValue = false;
+        }
 
-            log.error(message);
+        if (mandatory && !auto)
+        {
+            if (!useIntValue && value == null || useIntValue && intValue == 0)
+            {
+                String message = String.format(
+                        "Cannot initialize mandatory key with name: '%s', of type: '%s', declared on keyable entity: '%s' because key value is not set!",
+                        name,
+                        field.getType().getName(),
+                        keyable.getClass().getName());
 
-            throw new KeyException(message);
+                log.error(message);
+
+                throw new KeyException(message);
+            }
         }
     }
 
