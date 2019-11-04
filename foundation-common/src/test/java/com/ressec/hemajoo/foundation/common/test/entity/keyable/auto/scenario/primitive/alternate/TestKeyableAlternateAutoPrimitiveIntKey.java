@@ -112,7 +112,7 @@ public class TestKeyableAlternateAutoPrimitiveIntKey
     public void expectFailureToCreateKeyableWithAutoAlternateUuidKeyWhenValueIsProvided()
     {
         KeyableAlternateAutoPrimitiveIntKey.builder()
-                .alternate(UUID.randomUUID())
+                .alternate(145)
                 .build();
     }
 
